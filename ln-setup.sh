@@ -1,10 +1,24 @@
 #! /usr/bin/env sh
 
-ln -s "$HOME/dotfiles/.zshrc" "$HOME/.zshrc"
-ln -s "$HOME/dotfiles/oh-my-zsh" "$HOME/.oh-my-zsh"
-ln -s "$HOME/dotfiles/functions" "$HOME/functions"
-ln -s "$HOME/dotfiles/tmux-theme/.tmux.conf" "$HOME/.tmux.conf"
-ln -s "$HOME/dotfiles/.tmux.conf.local" "$HOME/.tmux.conf"
-ln -s "$HOME/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" "$HOME/highlighting.zsh"
-ln -s "$HOME/dotfiles/zsh-autosuggestions/zsh-autosuggestions.zsh" "$HOME/autosuggestion.zsh"
+DOTFILES_HOME="${DOTFILES_HOME:-"$HOME/dotfiles"}"
+
+linkit() {
+  (2>&1 ln -s "$@") > /dev/null || true
+}
+
+# Basic
+linkit "$DOTFILES_HOME/.zshrc" "$HOME/.zshrc"
+
+# Zsh themes and plugins
+linkit "$DOTFILES_HOME/oh-my-zsh" "$HOME/.oh-my-zsh"
+linkit "$DOTFILES_HOME/functions" "$HOME/functions"
+linkit "$DOTFILES_HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" "$HOME/highlighting.zsh"
+linkit "$DOTFILES_HOME/zsh-autosuggestions/zsh-autosuggestions.zsh" "$HOME/autosuggestion.zsh"
+
+# Tmux
+linkit "$DOTFILES_HOME/tmux-theme/.tmux.conf" "$HOME/.tmux.conf"
+linkit "$DOTFILES_HOME/.tmux.conf.local" "$HOME/.tmux.conf"
+
+linkit "$DOTFILES_HOME/.vimrc" "$HOME/.vimrc"
+linkit "$DOTFILES_HOME/.vimrc" "$HOME/.config/nvim/init.vim"
 

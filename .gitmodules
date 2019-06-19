@@ -1,0 +1,20 @@
+[submodule "oh-my-zsh"]
+	path = oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh.git
+	shallow = true
+[submodule "pure"]
+	path = pure
+	url = https://github.com/sindresorhus/pure.git
+	shallow = true
+[submodule "tmux-theme"]
+	path = tmux-theme
+	url = https://github.com/gpakosz/.tmux.git
+	shallow = true
+[submodule "zsh-syntax-highlighting"]
+	path = zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+	shallow = true
+[submodule "zsh-autosuggestions"]
+	path = zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+	shallow = true

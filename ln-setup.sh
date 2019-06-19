@@ -3,7 +3,9 @@
 DOTFILES_HOME="${DOTFILES_HOME:-"$HOME/dotfiles"}"
 
 linkit() {
-  (2>&1 ln -s "$@") > /dev/null || true
+  if [ ! -e "$2" ]; then
+    ln -s "$1" "$2"
+  fi
 }
 
 # Basic

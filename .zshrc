@@ -4,12 +4,20 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/home/augustomoura/.oh-my-zsh"
 export fpath=( "$HOME/dotfiles/functions" $fpath )
+export PATH="$HOME/bin:$PATH:$HOME/.cargo/bin"
+
+export EDITOR=vim
+alias editor='$EDITOR'
+
+export ZSH_TMUX_AUTOSTART=true
+export ZSH_TMUX_AUTOSTART_ONCE=false
+export ZSH_TMUX_AUTOCONNECT=false
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME=""
+ZSH_THEME="" # Using Pure theme
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -108,6 +116,10 @@ source $ZSH/oh-my-zsh.sh
 autoload -U promptinit; promptinit
 prompt pure
 
+export RC_FILE="$HOME/.zshrc"
+export DOTFILES_HOME="$HOME/dotfiles"
+
+# Uses lsd if available on list aliases
 LS_COMMAND=ls
 if 2>&1 type lsd > /dev/null; then
   LS_COMMAND=lsd
@@ -115,17 +127,46 @@ if 2>&1 type lsd > /dev/null; then
   alias tree='lsd --tree'
 fi
 
-alias ll="$LS_COMMAND -lah"
+alias ll=$LS_COMMAND' -lah'
+alias reloadrc='source $RC_FILE'
+alias rc='editor $RC_FILE'
+alias lrc='editor $HOME/.local.zsh'
+alias t7='tail -f -n 700'
+alias npmr='npm run'
+alias dotfiles='cd "$DOTFILES_HOME"'
 
+# r shadows R language cli
+disable r
+
+# Enable hightlighting if exists
 if [ -e "$HOME/highlighting.zsh" ]; then
   source "$HOME/highlighting.zsh"
 fi
 
+# Enable autosuggestions if exists
 if [ -e "$HOME/autosuggestion.zsh" ]; then
   source "$HOME/autosuggestion.zsh"
 fi
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# This speeds up pasting w/ autosuggest
+# https://github.com/zsh-users/zsh-autosuggestions/issues/238
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic
+}
+
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
+
 export SDKMAN_DIR="/home/augustomoura/.sdkman"
-[[ -s "/home/augustomoura/.sdkman/bin/sdkman-init.sh" ]] && source "/home/augustomoura/.sdkman/bin/sdkman-init.sh"
+[ -s "/home/augustomoura/.sdkman/bin/sdkman-init.sh" ] && source "/home/augustomoura/.sdkman/bin/sdkman-init.sh"
+
+export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+
+if [ -e "$HOME/.local.zsh" ]; then
+  source "$HOME/.local.zsh"
+fi
 

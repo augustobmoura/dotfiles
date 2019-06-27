@@ -10,7 +10,7 @@ export EDITOR=vim
 alias editor='$EDITOR'
 
 export ZSH_TMUX_AUTOSTART=true
-export ZSH_TMUX_AUTOSTART_ONCE=false
+export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false
 
 # Set name of the theme to load --- if set to "random", it will
@@ -83,6 +83,13 @@ plugins=(
   gradle
   tmux
   ripgrep
+  cargo
+  colored-man-pages
+  docker
+  fancy-ctrl-z
+  httpie
+  sdk
+  sudo
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -127,6 +134,11 @@ if 2>&1 type lsd > /dev/null; then
   alias tree='lsd --tree'
 fi
 
+# Adding a alias to ghostscript, `gs` is used as a `git status` alias
+if 2>&1 type -p gs > /dev/null; then
+  alias gsc="$(which gs)"
+fi
+
 alias ll=$LS_COMMAND' -lah'
 alias reloadrc='source $RC_FILE'
 alias rc='editor $RC_FILE'
@@ -134,6 +146,8 @@ alias lrc='editor $HOME/.local.zsh'
 alias t7='tail -f -n 700'
 alias npmr='npm run'
 alias dotfiles='cd "$DOTFILES_HOME"'
+alias o='xdg-open'
+alias gs='git status'
 
 # r shadows R language cli
 disable r

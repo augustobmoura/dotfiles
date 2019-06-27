@@ -1,0 +1,6 @@
+#! /usr/bin/env sh
+
+export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+export RC_FILE="$HOME/.zshrc"
+export EDITOR=vim
+

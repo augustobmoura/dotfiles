@@ -6,8 +6,9 @@ export ZSH="/home/augustomoura/.oh-my-zsh"
 export fpath=( "$HOME/dotfiles/functions" $fpath )
 export PATH="$HOME/bin:$PATH:$HOME/.cargo/bin"
 
-export EDITOR=vim
-alias editor='$EDITOR'
+export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+
+source "$DOTFILES_HOME/shared/variables"
 
 export ZSH_TMUX_AUTOSTART=true
 export ZSH_TMUX_AUTOSTART_ONCE=true
@@ -120,34 +121,10 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+source "$DOTFILES_HOME/shared/aliases"
+
 autoload -U promptinit; promptinit
 prompt pure
-
-export RC_FILE="$HOME/.zshrc"
-export DOTFILES_HOME="$HOME/dotfiles"
-
-# Uses lsd if available on list aliases
-LS_COMMAND=ls
-if 2>&1 type lsd > /dev/null; then
-  LS_COMMAND=lsd
-
-  alias tree='lsd --tree'
-fi
-
-# Adding a alias to ghostscript, `gs` is used as a `git status` alias
-if 2>&1 type -p gs > /dev/null; then
-  alias gsc="$(which gs)"
-fi
-
-alias ll=$LS_COMMAND' -lah'
-alias reloadrc='source $RC_FILE'
-alias rc='editor $RC_FILE'
-alias lrc='editor $HOME/.local.zsh'
-alias t7='tail -f -n 700'
-alias npmr='npm run'
-alias dotfiles='cd "$DOTFILES_HOME"'
-alias o='xdg-open'
-alias gs='git status'
 
 # r shadows R language cli
 disable r

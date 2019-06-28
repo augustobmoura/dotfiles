@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/augustomoura/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 export fpath=( "$HOME/dotfiles/functions" $fpath )
 export PATH="$HOME/bin:$PATH:$HOME/.cargo/bin"
 
@@ -123,10 +123,11 @@ source $ZSH/oh-my-zsh.sh
 
 source "$DOTFILES_HOME/shared/aliases"
 
+# Activates Pure them
 autoload -U promptinit; promptinit
 prompt pure
 
-# r shadows R language cli
+# I don't like having r as 
 disable r
 
 # Enable hightlighting if exists
@@ -152,8 +153,8 @@ pastefinish() {
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
-export SDKMAN_DIR="/home/augustomoura/.sdkman"
-[ -s "/home/augustomoura/.sdkman/bin/sdkman-init.sh" ] && source "/home/augustomoura/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="$HOME/.sdkman"
+[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 

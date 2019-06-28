@@ -3,7 +3,7 @@
 DOTFILES_HOME="${DOTFILES_HOME:-"$HOME/dotfiles"}"
 
 linkit() {
-  if [ -e "$2" ]; then
+  if [ -e "$2" ] || [ -h "$2" ]; then
     echo "File $2 already exists, override it? (y/N) "
     read confirmed
     case "$confimerd" in
@@ -22,7 +22,7 @@ linkit() {
 linkit "$DOTFILES_HOME/.zshrc" "$HOME/.zshrc"
 
 # Zsh themes and plugins
-linkit "$DOTFILES_HOME/oh-my-zsh" "$HOME/.oh-my-zsh"
+linkit "$DOTFILES_HOME/third-party/oh-my-zsh" "$HOME/.oh-my-zsh"
 linkit "$DOTFILES_HOME/functions" "$HOME/functions"
 linkit "$DOTFILES_HOME/third-party/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" "$HOME/highlighting.zsh"
 linkit "$DOTFILES_HOME/third-party/zsh-autosuggestions/zsh-autosuggestions.zsh" "$HOME/autosuggestion.zsh"

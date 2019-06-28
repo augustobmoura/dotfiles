@@ -1,20 +1,20 @@
 [submodule "oh-my-zsh"]
-	path = oh-my-zsh
+	path = third-party/oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
 	shallow = true
 [submodule "pure"]
-	path = pure
+	path = third-party/pure
 	url = https://github.com/sindresorhus/pure.git
 	shallow = true
 [submodule "tmux-theme"]
-	path = tmux-theme
+	path = third-party/tmux-theme
 	url = https://github.com/gpakosz/.tmux.git
 	shallow = true
 [submodule "zsh-syntax-highlighting"]
-	path = zsh-syntax-highlighting
+	path = third-party/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 	shallow = true
 [submodule "zsh-autosuggestions"]
-	path = zsh-autosuggestions
+	path = third-party/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
 	shallow = true

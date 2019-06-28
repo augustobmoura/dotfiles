@@ -3,7 +3,7 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-export fpath=( "$HOME/dotfiles/functions" $fpath )
+export fpath=( "$HOME/functions" $fpath )
 export PATH="$HOME/bin:$PATH:$HOME/.cargo/bin"
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"

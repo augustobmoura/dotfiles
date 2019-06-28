@@ -1,5 +1,7 @@
 #! /usr/bin/env sh
 
+set -e
+
 DOTFILES_HOME="${DOTFILES_HOME:-"$HOME/dotfiles"}"
 
 linkit() {
@@ -18,14 +20,20 @@ linkit() {
   ln -s "$1" "$2"
 }
 
+# Functions
+mkdir "$HOME/functions"
+
 # Basic
 linkit "$DOTFILES_HOME/.zshrc" "$HOME/.zshrc"
 
 # Zsh themes and plugins
 linkit "$DOTFILES_HOME/third-party/oh-my-zsh" "$HOME/.oh-my-zsh"
-linkit "$DOTFILES_HOME/functions" "$HOME/functions"
 linkit "$DOTFILES_HOME/third-party/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" "$HOME/highlighting.zsh"
 linkit "$DOTFILES_HOME/third-party/zsh-autosuggestions/zsh-autosuggestions.zsh" "$HOME/autosuggestion.zsh"
+
+# Pure theme
+linkit "$DOTFILES_HOME/third-party/pure/async.zsh" "$HOME/functions/async"
+linkit "$DOTFILES_HOME/third-party/pure/pure.zsh" "$HOME/functions/prompt_pure_setup"
 
 # Tmux
 linkit "$DOTFILES_HOME/third-party/tmux-theme/.tmux.conf" "$HOME/.tmux.conf"

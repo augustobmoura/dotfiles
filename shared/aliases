@@ -23,3 +23,7 @@ alias dotfiles='cd "$DOTFILES_HOME"'
 alias o='xdg-open'
 alias gs='git status'
 
+if 2>&1 type nvim > /dev/null; then
+  alias vim='nvim'
+fi
+

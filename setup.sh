@@ -1,6 +1,7 @@
 #! /usr/bin/env sh
 
 set -e
+set -x
 
 DOTFILES_HOME="${DOTFILES_HOME:-"$HOME/dotfiles"}"
 
@@ -8,8 +9,10 @@ linkit() {
   if [ -e "$2" ] || [ -h "$2" ]; then
     echo "File $2 already exists, override it? (y/N) "
     read confirmed
-    case "$confimerd" in
-      [yY]|[yY][eE][sS]);;
+    case "$confirmed" in
+      [yY]|[yY][eE][sS])
+          mv "$2" "$2.old"
+          ;;
       *)
         return 0
 	;;
@@ -21,7 +24,7 @@ linkit() {
 }
 
 # Functions
-mkdir "$HOME/functions"
+mkdir -p "$HOME/functions"
 
 # Basic
 linkit "$DOTFILES_HOME/.zshrc" "$HOME/.zshrc"

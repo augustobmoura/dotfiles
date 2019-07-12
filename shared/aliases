@@ -22,6 +22,7 @@ alias npmr='npm run'
 alias dotfiles='cd "$DOTFILES_HOME"'
 alias o='xdg-open'
 alias gs='git status'
+alias xclip='xclip -selection p'
 
 # yep
 alias :q='echo "u foooool"; sleep 1; exit'

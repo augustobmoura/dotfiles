@@ -4,9 +4,10 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export fpath=( "$HOME/functions" $fpath )
-export PATH="$HOME/bin:$PATH:$HOME/.cargo/bin"
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+
+export PATH="$HOME/bin:$DOTFILES_HOME/bin:$PATH:$HOME/.cargo/bin"
 
 source "$DOTFILES_HOME/shared/variables"
 
@@ -127,8 +128,16 @@ source "$DOTFILES_HOME/shared/aliases"
 autoload -U promptinit; promptinit
 prompt pure
 
-# I don't like having r as 
+# Personal preference
 disable r
+
+# Base16 color scheme
+BASE16_SHELL="$DOTFILES_HOME/third-party/base16-shell/"
+[ -n "$PS1" ] && \
+    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+type base16_seti &> /dev/null && base16_seti
 
 # Enable hightlighting if exists
 if [ -e "$HOME/highlighting.zsh" ]; then
@@ -152,6 +161,7 @@ pastefinish() {
 }
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
+
 
 export SDKMAN_DIR="$HOME/.sdkman"
 [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ] && source "$HOME/.sdkman/bin/sdkman-init.sh"

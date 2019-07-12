@@ -1,7 +1,6 @@
 #! /usr/bin/env sh
 
 set -e
-set -x
 
 DOTFILES_HOME="${DOTFILES_HOME:-"$HOME/dotfiles"}"
 
@@ -14,6 +13,7 @@ linkit() {
           mv "$2" "$2.old"
           ;;
       *)
+        echo "Skipping file $2"
         return 0
 	;;
     esac
@@ -45,4 +45,6 @@ linkit "$DOTFILES_HOME/.tmux.conf.local" "$HOME/.tmux.conf.local"
 # VIM
 linkit "$DOTFILES_HOME/.vimrc" "$HOME/.vimrc"
 linkit "$DOTFILES_HOME/.vimrc" "$HOME/.config/nvim/init.vim"
+mkdir -p "$HOME/.config/nvim/site/autoload"
+linkit "$DOTFILES_HOME/.vimrc" "$HOME/.config/nvim/site/autoload/plug.vim"
 

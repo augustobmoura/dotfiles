@@ -17,3 +17,6 @@
 [submodule "third-party/oh-my-zsh"]
 	path = third-party/oh-my-zsh
 	url = git@github.com:robbyrussell/oh-my-zsh.git
+[submodule "third-party/base16-shell"]
+	path = third-party/base16-shell
+	url = https://github.com/chriskempson/base16-shell.git

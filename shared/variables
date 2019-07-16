@@ -3,4 +3,5 @@
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 export RC_FILE="$HOME/.zshrc"
 export EDITOR=vim
+export GIT_PAGER='less -F -X'
 

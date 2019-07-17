@@ -16,4 +16,7 @@ endif
 set nu
 set rnu
 
+set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·
+set tabstop=2
+
 nmap <Esc> :noh<CR>

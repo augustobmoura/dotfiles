@@ -84,6 +84,7 @@ plugins=(
   node
   gradle
   tmux
+  asdf
   ripgrep
   cargo
   colored-man-pages
@@ -162,11 +163,8 @@ pastefinish() {
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
-
 export SDKMAN_DIR="$HOME/.sdkman"
 [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 
 if [ -e "$HOME/.local.zsh" ]; then
   source "$HOME/.local.zsh"

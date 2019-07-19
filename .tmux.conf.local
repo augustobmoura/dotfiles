@@ -297,4 +297,5 @@ tmux_conf_copy_to_os_clipboard=false
 setw -g automatic-rename off
 setw -g allow-rename off
 setw -g pane-border-status top
+setw -g main-pane-width 110
 

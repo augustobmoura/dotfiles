@@ -14,6 +14,7 @@ if 2>&1 type -p gs > /dev/null; then
 fi
 
 alias ll=$LS_COMMAND' -lah'
+alias editor='$EDITOR'
 alias reloadrc='source $RC_FILE'
 alias rc='editor $RC_FILE'
 alias lrc='editor $HOME/.local.zsh'

@@ -5,3 +5,7 @@ export RC_FILE="$HOME/.zshrc"
 export EDITOR=vim
 export GIT_PAGER='less -F -X'
 
+if type nvim 2>&1 > /dev/null; then
+  export EDITOR=nvim
+fi
+

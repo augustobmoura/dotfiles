@@ -24,6 +24,9 @@ alias o='xdg-open'
 alias gs='git status'
 alias xclip='xclip -selection p'
 
+# from https://datagrok.org/git/git-serve/
+alias git_quickup='git daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/'
+
 # yep
 alias :q='echo "u foooool"; sleep 1; exit'
 

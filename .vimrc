@@ -28,7 +28,6 @@ if filereadable(expand("~/.vimrc_background"))
 endif
 colorscheme base16-seti
 
-
 " Keymaps
 set nu
 set rnu
@@ -36,6 +35,8 @@ set rnu
 " Invisibles
 set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·
 set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 
 " Ale
 let g:ale_sign_column_always = 1

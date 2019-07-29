@@ -25,6 +25,11 @@ alias o='xdg-open'
 alias gs='git status'
 alias xclip='xclip -selection p'
 
+# Tmux is started by default, sometimes I need to get a session without it
+# usually to open a new terminal emulator like allacrity or gnome-terminal and
+# ssh something
+alias notmux='env TMUX="" ZSH_TMUX_AUTOSTART=false'
+
 # from https://datagrok.org/git/git-serve/
 alias git_quickup='git daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/'
 

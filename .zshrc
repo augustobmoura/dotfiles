@@ -6,6 +6,12 @@ export ZSH="$HOME/.oh-my-zsh"
 export fpath=( "$HOME/functions" $fpath )
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+export IS_JETBRAINS=$([[ $TERMINAL_EMULATOR == 'JetBrains-JediTerm' ]]; echo $?)
+
+function isjetbrains() {
+	[[ $TERMINAL_EMULATOR == 'JetBrains-JediTerm' ]]
+	return $?
+}
 
 export PATH="$HOME/bin:$DOTFILES_HOME/bin:$PATH:$HOME/.cargo/bin"
 
@@ -14,6 +20,10 @@ source "$DOTFILES_HOME/shared/variables"
 export ZSH_TMUX_AUTOSTART=${ZSH_TMUX_AUTOSTART:-true}
 export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false
+
+if isjetbrains; then
+	export ZSH_TMUX_AUTOSTART=false
+fi
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -80,19 +90,19 @@ ZSH_THEME="" # Using Pure theme
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
-  node
-  gradle
-  tmux
-  asdf
-  ripgrep
-  cargo
-  colored-man-pages
-  docker
-  fancy-ctrl-z
-  httpie
-  sdk
-  sudo
+	git
+	node
+	gradle
+	tmux
+	asdf
+	ripgrep
+	cargo
+	colored-man-pages
+	docker
+	fancy-ctrl-z
+	httpie
+	sdk
+	sudo
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -135,30 +145,30 @@ disable r
 # Base16 color scheme
 export BASE16_SHELL="$DOTFILES_HOME/third-party/base16-shell/"
 [ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
+	[ -s "$BASE16_SHELL/profile_helper.sh" ] && 
+		eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 type base16_seti &> /dev/null && base16_seti
 
 # Enable hightlighting if exists
 if [ -e "$HOME/highlighting.zsh" ]; then
-  source "$HOME/highlighting.zsh"
+	source "$HOME/highlighting.zsh"
 fi
 
 # Enable autosuggestions if exists
 if [ -e "$HOME/autosuggestion.zsh" ]; then
-  source "$HOME/autosuggestion.zsh"
+	source "$HOME/autosuggestion.zsh"
 fi
 
 # This speeds up pasting w/ autosuggest
 # https://github.com/zsh-users/zsh-autosuggestions/issues/238
 pasteinit() {
-  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
-  zle -N self-insert url-quote-magic
+	OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+	zle -N self-insert url-quote-magic
 }
 
 pastefinish() {
-  zle -N self-insert $OLD_SELF_INSERT
+	zle -N self-insert $OLD_SELF_INSERT
 }
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
@@ -169,6 +179,6 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 
 if [ -e "$HOME/.local.zsh" ]; then
-  source "$HOME/.local.zsh"
+	source "$HOME/.local.zsh"
 fi
 

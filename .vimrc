@@ -3,6 +3,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'chriskempson/base16-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'w0rp/ale'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
 
@@ -40,5 +41,8 @@ set shiftwidth=2
 
 " Ale
 let g:ale_sign_column_always = 1
+
+" Activae deoplete
+let g:deoplete#enable_at_startup = 1
 
 nmap <Esc> :noh<CR>

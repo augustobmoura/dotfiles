@@ -176,7 +176,9 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 export SDKMAN_DIR="$HOME/.sdkman"
 [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+if type n &> /dev/null; then
+	export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+fi
 
 if [ -e "$HOME/.local.zsh" ]; then
 	source "$HOME/.local.zsh"

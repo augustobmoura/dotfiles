@@ -44,5 +44,9 @@ let g:ale_sign_column_always = 1
 
 " Activae deoplete
 let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option('sources', {
+\ '_': ['ale', 'foobar'],
+\ })
 
+" Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>

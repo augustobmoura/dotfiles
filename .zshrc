@@ -17,8 +17,13 @@ export PATH="$HOME/bin:$DOTFILES_HOME/bin:$PATH:$HOME/.cargo/bin"
 
 source "$DOTFILES_HOME/shared/variables"
 
+export TMUX_AUTOSTART=${ZSH_TMUX_AUTOSTART:-true}
 export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false
+
+if isjetbrains; then
+	export TMUX_AUTOSTART=false
+fi
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,

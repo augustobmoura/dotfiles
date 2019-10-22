@@ -1,6 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Uncoment to skip config (test in )
+if [ "x$AGT_SKIP_CONFIG" != x ]; then
+	return 0
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export fpath=( "$HOME/functions" $fpath )
@@ -183,4 +188,8 @@ fi
 if [ -e "$HOME/.local.zsh" ]; then
 	source "$HOME/.local.zsh"
 fi
+
+# Bind alt-j & alt-k to Down & Up for historic in the home row
+bindkey -s '^[j' '^[[A'
+bindkey -s '^[k' '^[[B'
 

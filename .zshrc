@@ -22,7 +22,7 @@ export PATH="$HOME/bin:$DOTFILES_HOME/bin:$PATH:$HOME/.cargo/bin"
 
 source "$DOTFILES_HOME/shared/variables"
 
-export TMUX_AUTOSTART=${ZSH_TMUX_AUTOSTART:-true}
+export ZSH_TMUX_AUTOSTART=${ZSH_TMUX_AUTOSTART:-true}
 export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false
 
@@ -190,6 +190,6 @@ if [ -e "$HOME/.local.zsh" ]; then
 fi
 
 # Bind alt-j & alt-k to Down & Up for historic in the home row
-bindkey -s '^[j' '^[[A'
-bindkey -s '^[k' '^[[B'
+bindkey -s '^[j' '^[OB'
+bindkey -s '^[k' '^[OA'
 

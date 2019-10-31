@@ -11,7 +11,6 @@ export ZSH="$HOME/.oh-my-zsh"
 export fpath=( "$HOME/functions" $fpath )
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
-export IS_JETBRAINS=$([[ $TERMINAL_EMULATOR == 'JetBrains-JediTerm' ]]; echo $?)
 
 function isjetbrains() {
 	[[ $TERMINAL_EMULATOR == 'JetBrains-JediTerm' ]]
@@ -27,7 +26,7 @@ export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false
 
 if isjetbrains; then
-	export TMUX_AUTOSTART=false
+	export ZSH_TMUX_AUTOSTART=false
 fi
 
 # Set name of the theme to load --- if set to "random", it will

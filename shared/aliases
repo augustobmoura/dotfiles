@@ -25,6 +25,7 @@ alias o='xdg-open'
 alias gs='git status'
 alias xclip='xclip -selection c'
 alias r='ranger'
+alias bc='bc -lq'
 
 # Tmux is started by default, sometimes I need to get a session without it
 # usually to open a new terminal emulator like allacrity or gnome-terminal and

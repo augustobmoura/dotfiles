@@ -194,9 +194,11 @@ if [ -e "$HOME/.local.zsh" ]; then
 	source "$HOME/.local.zsh"
 fi
 
+<<<<<<< HEAD
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
+=======
 # Bind alt-j & alt-k to Down & Up for historic in the home row
 bindkey -s '^[j' '^[OB'
 bindkey -s '^[k' '^[OA'
 
+>>>>>>> fd8abe786334363f7b425245255fce577075542d

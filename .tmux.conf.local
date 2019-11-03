@@ -299,7 +299,3 @@ setw -g allow-rename off
 setw -g pane-border-status top
 setw -g main-pane-width 110
 
-# Add some vim like bindings to Up and Down
-bind -T root M-j send-keys Down
-bind -T root M-k send-keys Up
-

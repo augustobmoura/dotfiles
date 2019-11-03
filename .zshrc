@@ -6,10 +6,15 @@ export ZSH="$HOME/.oh-my-zsh"
 export fpath=( "$HOME/functions" $fpath )
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
-export IS_JETBRAINS=$([[ $TERMINAL_EMULATOR == 'JetBrains-JediTerm' ]]; echo $?)
 
 function isjetbrains() {
-	[[ $TERMINAL_EMULATOR == 'JetBrains-JediTerm' ]]
+	[[ $TERMINAL_EMULATOR =~ 'JetBrains-JediTerm' ]]
+	return $?
+}
+
+function isvscode() {
+	# Needs to be configured in VSCode to pass this env var
+	[[ $TERMINAL_EMULATOR =~ 'VSCode' ]]
 	return $?
 }
 
@@ -21,7 +26,7 @@ export ZSH_TMUX_AUTOSTART=${ZSH_TMUX_AUTOSTART:-true}
 export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false
 
-if isjetbrains; then
+if isjetbrains || isvscode; then
 	export ZSH_TMUX_AUTOSTART=false
 fi
 
@@ -184,3 +189,4 @@ if [ -e "$HOME/.local.zsh" ]; then
 	source "$HOME/.local.zsh"
 fi
 
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

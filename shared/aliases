@@ -23,7 +23,6 @@ alias npmr='npm run'
 alias dotfiles='cd "$DOTFILES_HOME"'
 alias o='xdg-open'
 alias gs='git status'
-alias xclip='xclip -selection c'
 alias r='ranger'
 alias bc='bc -lq'
 
@@ -36,7 +35,8 @@ alias notmux='env TMUX="" ZSH_TMUX_AUTOSTART=false'
 alias git_quickup='git daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/'
 
 # yep
-alias :q='echo "u foooool"; sleep 1; exit'
+alias :q='echo "u foooool"; sleep 1'
+alias :wq='echo dumbass; sleep 1'
 
 if 2>&1 type nvim > /dev/null; then
   alias vim='nvim'

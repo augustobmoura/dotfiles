@@ -96,6 +96,8 @@ ZSH_THEME="" # Using Pure theme
 plugins=(
 	git
 	node
+	yarn
+	npm
 	gradle
 	tmux
 	asdf
@@ -106,7 +108,6 @@ plugins=(
 	fancy-ctrl-z
 	httpie
 	sdk
-	sudo
 )
 
 source $ZSH/oh-my-zsh.sh

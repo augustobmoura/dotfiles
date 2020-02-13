@@ -8,6 +8,12 @@ if 2>&1 type lsd > /dev/null; then
   alias tree='lsd --tree'
 fi
 
+if 2>&1 type exa > /dev/null; then
+  LS_COMMAND=exa
+
+  alias tree='exa --tree'
+fi
+
 # Adding a alias to ghostscript, `gs` is used as a `git status` alias
 if 2>&1 type -p gs > /dev/null; then
   alias gsc="$(which gs)"

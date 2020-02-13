@@ -17,6 +17,11 @@ function isjetbrains() {
 	return $?
 }
 
+function cmd_exists() {
+	type "$@" &> /dev/null
+	return $?
+}
+
 function isvscode() {
 	# Needs to be configured in VSCode to pass this env var
 	[[ $TERMINAL_EMULATOR =~ 'VSCode' ]]
@@ -39,7 +44,7 @@ fi
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="" # Using Pure theme
+ZSH_THEME="" # Custom theme
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -146,9 +151,14 @@ source $ZSH/oh-my-zsh.sh
 
 source "$DOTFILES_HOME/shared/aliases"
 
-# Activates Pure them
-autoload -U promptinit; promptinit
-prompt pure
+if type starship &> /dev/null; then
+	# Activates starship
+	eval "$(starship init zsh)"
+else
+	# Activates Pure them
+	autoload -U promptinit; promptinit
+	prompt pure
+fi
 
 # Personal preference
 disable r
@@ -159,7 +169,7 @@ export BASE16_SHELL="$DOTFILES_HOME/third-party/base16-shell/"
 	[ -s "$BASE16_SHELL/profile_helper.sh" ] && 
 		eval "$("$BASE16_SHELL/profile_helper.sh")"
 
-type base16_seti &> /dev/null && base16_seti
+cmd_exists base16_seti && base16_seti
 
 # Enable hightlighting if exists
 if [ -e "$HOME/highlighting.zsh" ]; then
@@ -187,8 +197,21 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 export SDKMAN_DIR="$HOME/.sdkman"
 [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-if type n &> /dev/null; then
+if cmd_exists n; then
 	export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+fi
+
+direnv_path=$(which direnv)
+direnv_md5=67905c5b9230f22a2b74825a0bbd5fb7
+if [ $? = 0 ]; then
+	local n_md5="$(md5sum "$direnv_path" | cut -d' ' -f1)"
+	if [ $direnv_md5 = $n_md5 ]; then
+		eval "$(direnv hook zsh)"
+	else
+		echo "Incosistent direnv hash" >&2
+		hd <<< $direnv_md5
+		hd <<< $n_md5
+	fi
 fi
 
 if [ -e "$HOME/.local.zsh" ]; then

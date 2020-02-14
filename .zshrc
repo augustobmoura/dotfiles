@@ -224,6 +224,6 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 bindkey -s '^[j' '^[OB'
 bindkey -s '^[k' '^[OA'
 
-if [ -f "HOME/.config/broot/launcher/bash/br" ]; then
-	source "HOME/.config/broot/launcher/bash/br"
+if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
+	source "$HOME/.config/broot/launcher/bash/br"
 fi

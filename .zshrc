@@ -32,13 +32,13 @@ export PATH="$HOME/bin:$DOTFILES_HOME/bin:$PATH:$HOME/.cargo/bin"
 
 source "$DOTFILES_HOME/shared/variables"
 
-export ZSH_TMUX_AUTOSTART=${ZSH_TMUX_AUTOSTART:-true}
-export ZSH_TMUX_AUTOSTART_ONCE=true
-export ZSH_TMUX_AUTOCONNECT=false
-
 if isjetbrains || isvscode; then
 	export ZSH_TMUX_AUTOSTART=false
 fi
+
+export ZSH_TMUX_AUTOSTART=${ZSH_TMUX_AUTOSTART:-true}
+export ZSH_TMUX_AUTOSTART_ONCE=true
+export ZSH_TMUX_AUTOCONNECT=false
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -93,7 +93,7 @@ fi
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-if type direnv &> /dev/null; then
+if cmd_exists direnv; then
 	eval "$(direnv hook zsh)"
 fi
 
@@ -212,7 +212,7 @@ if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
 	source "$HOME/.config/broot/launcher/bash/br"
 fi
 
-if type starship &> /dev/null; then
+if cmd_exists starship; then
 	# Activates starship
 	eval "$(starship init zsh)"
 else

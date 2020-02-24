@@ -40,12 +40,6 @@ if isjetbrains || isvscode; then
 	export ZSH_TMUX_AUTOSTART=false
 fi
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="" # Custom theme
-
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
@@ -99,6 +93,16 @@ ZSH_THEME="" # Custom theme
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+if type direnv &> /dev/null; then
+	eval "$(direnv hook zsh)"
+fi
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="" # Custom theme
+
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -151,15 +155,6 @@ source $ZSH/oh-my-zsh.sh
 
 source "$DOTFILES_HOME/shared/aliases"
 
-if type starship &> /dev/null; then
-	# Activates starship
-	eval "$(starship init zsh)"
-else
-	# Activates Pure them
-	autoload -U promptinit; promptinit
-	prompt pure
-fi
-
 # Personal preference
 disable r
 
@@ -201,18 +196,6 @@ if cmd_exists n; then
 	export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 fi
 
-direnv_path=$(which direnv)
-direnv_md5=67905c5b9230f22a2b74825a0bbd5fb7
-if [ $? = 0 ]; then
-	local n_md5="$(md5sum "$direnv_path" | cut -d' ' -f1)"
-	if [ $direnv_md5 = $n_md5 ]; then
-		eval "$(direnv hook zsh)"
-	else
-		echo "Incosistent direnv hash" >&2
-		hd <<< $direnv_md5
-		hd <<< $n_md5
-	fi
-fi
 
 if [ -e "$HOME/.local.zsh" ]; then
 	source "$HOME/.local.zsh"
@@ -226,4 +209,13 @@ bindkey -s '^[k' '^[OA'
 
 if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
 	source "$HOME/.config/broot/launcher/bash/br"
+fi
+
+if type starship &> /dev/null; then
+	# Activates starship
+	eval "$(starship init zsh)"
+else
+	# Activates Pure them
+	autoload -U promptinit; promptinit
+	prompt pure
 fi

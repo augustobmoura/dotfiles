@@ -123,6 +123,7 @@ plugins=(
 	fancy-ctrl-z
 	httpie
 	sdk
+	emoji
 )
 
 source $ZSH/oh-my-zsh.sh

@@ -76,3 +76,6 @@ linkit "$DOTFILES_HOME/.vimrc" "$HOME/.config/nvim/site/autoload/plug.vim"
 # asdf
 linkit "$DOTFILES_HOME/third-party/asdf" "$HOME/.asdf"
 
+# i3
+mkdir -p "$HOME/.i3"
+linkit "$DOTFILES_HOME/i3config" "$HOME/.i3/config"

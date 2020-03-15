@@ -70,8 +70,8 @@ linkit "$DOTFILES_HOME/.tmux.conf.local" "$HOME/.tmux.conf.local"
 # VIM
 linkit "$DOTFILES_HOME/.vimrc" "$HOME/.vimrc"
 linkit "$DOTFILES_HOME/.vimrc" "$HOME/.config/nvim/init.vim"
-mkdir -p "$HOME/.config/nvim/site/autoload"
-linkit "$DOTFILES_HOME/.vimrc" "$HOME/.config/nvim/site/autoload/plug.vim"
+mkdir -p "$HOME/.local/share/nvim/site/autoload"
+linkit "$DOTFILES_HOME/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
 
 # asdf
 linkit "$DOTFILES_HOME/third-party/asdf" "$HOME/.asdf"

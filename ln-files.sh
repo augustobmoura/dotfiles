@@ -64,7 +64,7 @@ linkit "$DOTFILES_HOME/third-party/pure/async.zsh" "$HOME/functions/async"
 linkit "$DOTFILES_HOME/third-party/pure/pure.zsh" "$HOME/functions/prompt_pure_setup"
 
 # Tmux
-linkit "$DOTFILES_HOME/third-party/tmux-theme/.tmux.conf" "$HOME/.tmux.conf"
+linkit "$DOTFILES_HOME/third-party/oh-my-tmux/.tmux.conf" "$HOME/.tmux.conf"
 linkit "$DOTFILES_HOME/.tmux.conf.local" "$HOME/.tmux.conf.local"
 
 # VIM

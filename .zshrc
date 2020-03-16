@@ -220,3 +220,8 @@ else
 	autoload -U promptinit; promptinit
 	prompt pure
 fi
+
+br_path=$HOME/.config/broot/launcher/bash/br
+if cmd_exists broot && [ -x "$br_path" ]; then
+	source "$br_path"
+fi

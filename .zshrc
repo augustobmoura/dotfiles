@@ -202,7 +202,7 @@ if [ -e "$HOME/.local.zsh" ]; then
 	source "$HOME/.local.zsh"
 fi
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.local/bin:$PATH"
 
 # Bind alt-j & alt-k to Down & Up for historic in the home row
 bindkey -s '^[j' '^[OB'
@@ -219,4 +219,9 @@ else
 	# Activates Pure them
 	autoload -U promptinit; promptinit
 	prompt pure
+fi
+
+br_path=$HOME/.config/broot/launcher/bash/br
+if cmd_exists broot && [ -x "$br_path" ]; then
+	source "$br_path"
 fi

@@ -64,14 +64,14 @@ linkit "$DOTFILES_HOME/third-party/pure/async.zsh" "$HOME/functions/async"
 linkit "$DOTFILES_HOME/third-party/pure/pure.zsh" "$HOME/functions/prompt_pure_setup"
 
 # Tmux
-linkit "$DOTFILES_HOME/third-party/tmux-theme/.tmux.conf" "$HOME/.tmux.conf"
+linkit "$DOTFILES_HOME/third-party/oh-my-tmux/.tmux.conf" "$HOME/.tmux.conf"
 linkit "$DOTFILES_HOME/.tmux.conf.local" "$HOME/.tmux.conf.local"
 
 # VIM
 linkit "$DOTFILES_HOME/.vimrc" "$HOME/.vimrc"
 linkit "$DOTFILES_HOME/.vimrc" "$HOME/.config/nvim/init.vim"
-mkdir -p "$HOME/.config/nvim/site/autoload"
-linkit "$DOTFILES_HOME/.vimrc" "$HOME/.config/nvim/site/autoload/plug.vim"
+mkdir -p "$HOME/.local/share/nvim/site/autoload"
+linkit "$DOTFILES_HOME/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
 
 # asdf
 linkit "$DOTFILES_HOME/third-party/asdf" "$HOME/.asdf"

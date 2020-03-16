@@ -3,7 +3,7 @@
 	url = https://github.com/sindresorhus/pure.git
 	shallow = true
 [submodule "tmux-theme"]
-	path = third-party/tmux-theme
+	path = third-party/oh-my-tmux
 	url = https://github.com/gpakosz/.tmux.git
 	shallow = true
 [submodule "zsh-syntax-highlighting"]

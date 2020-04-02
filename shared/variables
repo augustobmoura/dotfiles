@@ -5,6 +5,10 @@ export RC_FILE="$HOME/.zshrc"
 export EDITOR=vim
 export GIT_PAGER='less -F -X'
 
+# added both as alias and variable for more flexibility
+export xc='xclip -sel c'
+alias xc=$xc
+
 export TERMINAL=gnome-terminal
 if type alacritty > /dev/null 2>&1; then 
 	export TERMINAL=$(which alacritty)

@@ -1,0 +1,15 @@
+#! /usr/bin/env sh
+
+current=$(setxkbmap -query | awk '/layout/{print $2}')
+next=br
+if [ "x$current" = xus ]; then
+	next=br
+else 
+	next=us
+fi
+
+if which notify-send >/dev/null 2>&1; then
+	notify-send "keyboard: $next" -t 1500
+fi
+
+setxkbmap $next

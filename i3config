@@ -193,6 +193,9 @@ bindsym XF86Calculator exec gnome-calculator
 # Calendar
 bindsym $mod+XF86Calculator exec gnome-calendar
 
+# Toggle keyboard layout
+bindsym $mod+y exec togglekbd
+
 # Floating apps
 for_window [class="Gnome-calculator" instance="gnome-calculator"] floating enable
 for_window [class="Gnome-calendar" instance="gnome-calendar"] floating enable
@@ -208,4 +211,4 @@ for_window [title="Gerenciador de tarefas - Brave"] floating enable
 for_window [class="jetbrains-idea" title="^Changes between .* and .*$"] floating disable; resize set width 300px
 
 # nm-applet if exists
-exec sh -c 'which nm-applet && nm-applet'
+exec which nm-applet && nm-applet

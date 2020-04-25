@@ -113,8 +113,8 @@ plugins=(
 	node
 	yarn
 	npm
-	gradle
 	tmux
+	gradle
 	asdf
 	ripgrep
 	cargo
@@ -124,6 +124,8 @@ plugins=(
 	httpie
 	sdk
 	emoji
+	kubectl
+	#minikube
 )
 
 source $ZSH/oh-my-zsh.sh

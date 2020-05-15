@@ -23,3 +23,6 @@
 [submodule "third-party/asdf"]
 	path = third-party/asdf
 	url = https://github.com/asdf-vm/asdf.git
+[submodule "third-party/tpm"]
+	path = third-party/tpm
+	url = https://github.com/tmux-plugins/tpm

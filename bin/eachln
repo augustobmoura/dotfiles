@@ -1,0 +1,9 @@
+#! /usr/bin/env sh
+
+# Each argument in a new line, facilitate piping glob expanions to xargs:
+# eachln * | xargs -n1 -p2 -I{} sh -c 'cd {} && touch {}.txt'
+
+while [ $# != 0 ]; do
+	echo $1
+	shift
+done

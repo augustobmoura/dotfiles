@@ -51,10 +51,6 @@ alias git_quickup='git daemon --verbose --export-all --base-path=.git --reuseadd
 alias :q='echo "u foooool"; sleep 1'
 alias :wq='echo dumbass; sleep 1'
 
-if 2>&1 type nvim > /dev/null; then
-  alias vim='nvim'
-fi
-
 # Print each argument in a line, very handy for passing globbing to xargs
 peach() {
 	for arg in "$@"; do echo "$arg"; done

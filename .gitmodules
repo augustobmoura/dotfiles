@@ -26,3 +26,6 @@
 [submodule "third-party/tpm"]
 	path = third-party/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "third-party/fzf"]
+	path = third-party/fzf
+	url = https://github.com/junegunn/fzf.git

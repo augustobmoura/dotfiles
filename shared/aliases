@@ -49,7 +49,7 @@ alias git_quickup='git daemon --verbose --export-all --base-path=.git --reuseadd
 
 # Help to quit bad habits
 if type nvim 2>&1 > /dev/null; then
-	alias vim='echo "You mean nvim?"; sleep 1'
+	alias vim='echo "You mean nvim?" && sleep 1 && :'
 fi
 
 # yep

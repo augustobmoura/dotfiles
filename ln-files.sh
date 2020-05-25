@@ -1,8 +1,6 @@
 #! /usr/bin/env sh
 
-set -e
-
-DOTFILES_HOME="${DOTFILES_HOME:-"$HOME/dotfiles"}"
+set -eu
 
 # Choose a name not existent to rename the file, echoing it at the end
 mv_to_non_existent() (

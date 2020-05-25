@@ -6,7 +6,7 @@ export EDITOR=vim
 export GIT_PAGER='less -F -X'
 
 # added both as alias and variable for more flexibility
-export xc='xclip -sel c'
+export xc='xclip -sel c -o'
 alias xc=$xc
 
 export TERMINAL=gnome-terminal

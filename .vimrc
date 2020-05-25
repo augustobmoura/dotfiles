@@ -4,6 +4,8 @@ if has('nvim')
 	Plug 'chriskempson/base16-vim'
 	Plug 'sheerun/vim-polyglot'
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+	Plug 'junegunn/fzf.vim'
 
 	call plug#end()
 
@@ -44,6 +46,9 @@ set shiftwidth=2
 
 " Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>
+
+" ctrl-p
+nnoremap <C-p> :GFiles<CR>
 
 " ---
 " Config for CoC, mostly coppied from the example configuration

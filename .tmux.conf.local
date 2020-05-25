@@ -304,3 +304,5 @@ setw -g main-pane-width 110
 # There's also a bind for zsh, this one is for other applications
 bind -T root M-j send-keys Down
 bind -T root M-k send-keys Up
+
+bind -T prefix F run-shell -b "(cd #{pane_current_path} && fzf-tmux - | tr -d '\n' | tmux load-buffer -)"

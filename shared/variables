@@ -9,6 +9,10 @@ export GIT_PAGER='less -F -X'
 export xc='xclip -sel c -o'
 alias xc=$xc
 
+if type fd 2>&1 > /dev/null; then
+	export FZF_DEFAULT_COMMAND='fd --type f'
+fi
+
 export TERMINAL=gnome-terminal
 if type alacritty > /dev/null 2>&1; then 
 	export TERMINAL=$(which alacritty)

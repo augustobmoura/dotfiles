@@ -47,6 +47,11 @@ alias notmux='env TMUX="" ZSH_TMUX_AUTOSTART=false'
 # from https://datagrok.org/git/git-serve/
 alias git_quickup='git daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/'
 
+# Help to quit bad habits
+if type nvim 2>&1 > /dev/null; then
+	alias vim='echo "You mean nvim?" && sleep 1'
+fi
+
 # yep
 alias :q='echo "u foooool"; sleep 1'
 alias :wq='echo dumbass; sleep 1'

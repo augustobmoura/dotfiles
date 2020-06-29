@@ -1,15 +1,24 @@
+
+let plugged_path = '~/.local/share/nvim/plugged'
+
+if ! has('nvim')
+	let plugged_path = '~/.vim/plugged'
+endif
+
+" Plug
+call plug#begin(plugged_path)
+
+Plug 'chriskempson/base16-vim'
+Plug 'tpope/vim-fugitive'
+Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+
+call plug#end()
+
 if has('nvim')
-	call plug#begin('~/.local/share/nvim/plugged')
-
-	Plug 'chriskempson/base16-vim'
-	Plug 'sheerun/vim-polyglot'
-	Plug 'neoclide/coc.nvim', {'branch': 'release'}
-	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-	Plug 'junegunn/fzf.vim'
-	Plug 'prettier/vim-prettier', { 'do': 'npm install' }
-
-	call plug#end()
-
 	" Fix highlighting for spell checks in terminal
 	function! s:base16_customize() abort
 		" Colors: https://github.com/chriskempson/base16/blob/master/styling.md

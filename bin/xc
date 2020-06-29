@@ -1,0 +1,19 @@
+#! /usr/bin/env sh
+
+set -e
+
+STDIN_FD=0
+STDOUT_FD=1
+
+# If piping in assume write to clipboard
+if ! [ -t $STDIN_FD ]; then
+	filter_flag=
+	# When piping out, apply filter mode
+	if ! [ -t $STDOUT_FD ]; then
+		filter_flag=-f
+	fi
+
+	xclip -i -sel c $filter_flag "$@"
+else
+	xclip -o -sel c "$@"
+fi

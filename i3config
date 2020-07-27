@@ -217,5 +217,6 @@ for_window [title="Gerenciador de tarefas - Brave"] floating enable
 # Idea diff window
 for_window [class="jetbrains-idea" title="^Changes between .* and .*$"] floating disable; resize set width 300px
 
-# nm-applet if exists
+# auto start apps, if available
 exec which nm-applet && nm-applet
+exec which kdeconnect-indicator && kdeconnect-indicator

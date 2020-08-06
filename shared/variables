@@ -1,20 +1,33 @@
 #! /usr/bin/env sh
 
+exists() {
+	type "$1" > /dev/null 2>&1
+	return
+}
+
+choose_cmd() {
+	while [ $# -gt 0 ]; do
+		if exists "$1"; then
+			echo "$1"
+			return
+		else
+			shift
+		fi
+	done
+
+	return 1
+}
+
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 export RC_FILE="$HOME/.zshrc"
-export EDITOR=vim
 export GIT_PAGER='less -F -X'
 
-if type fd 2>&1 > /dev/null; then
+if exists fd; then
 	export FZF_DEFAULT_COMMAND='fd --type f'
 fi
 
-export TERMINAL=gnome-terminal
-if type alacritty > /dev/null 2>&1; then 
-	export TERMINAL=$(which alacritty)
-fi
-
-if type nvim 2>&1 > /dev/null; then
-  export EDITOR=nvim
-fi
+export TERMINAL=$(choose_cmd alacritty gnome-terminal xterm)
+export EDITOR=$(choose_cmd nvim vim vi nano emacs)
+export XEDITOR=$(choose_cmd gnvim gvim mousepad kate gedit ||
+	echo "$TERMINAL -e $EDITOR")
 

@@ -1,13 +1,13 @@
 #! /usr/bin/env sh
 
-exists() {
+_ag_exists() {
 	type "$1" > /dev/null 2>&1
 	return
 }
 
-choose_cmd() {
+_ag_choose_cmd() {
 	while [ $# -gt 0 ]; do
-		if exists "$1"; then
+		if _ag_exists "$1"; then
 			echo "$1"
 			return
 		else
@@ -22,13 +22,13 @@ export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 export RC_FILE="$HOME/.zshrc"
 export GIT_PAGER='less -F -X'
 
-if exists fd; then
+if _ag_exists fd; then
 	export FZF_DEFAULT_COMMAND='fd --type f'
 fi
 
-export OPENER=$(choose_cmd rifle xdg-open)
-export TERMINAL=$(choose_cmd alacritty gnome-terminal xterm)
-export EDITOR=$(choose_cmd nvim vim vi nano emacs)
-export XEDITOR=$(choose_cmd gnvim gvim mousepad kate gedit ||
+export OPENER=$(_ag_choose_cmd rifle xdg-open)
+export TERMINAL=$(_ag_choose_cmd alacritty gnome-terminal xterm)
+export EDITOR=$(_ag_choose_cmd nvim vim vi nano emacs)
+export XEDITOR=$(_ag_choose_cmd gnvim gvim mousepad kate gedit ||
 	echo "$TERMINAL -e $EDITOR")
 

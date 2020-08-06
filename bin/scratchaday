@@ -1,5 +1,10 @@
 #! /usr/bin/env sh
 
 XEDITOR="${XEDITOR:-${OPENER:-xdg-open}}"
+SCRATCHES_DIR="${SCRATCHES_DIR:-$HOME/scratches}"
 
-$XEDITOR "$(date -I).md"
+mkdir -p "$SCRATCHES_DIR"
+(
+	cd "$SCRATCHES_DIR"
+	$XEDITOR "$SCRATCHES_DIR/$(date -I).md"
+)

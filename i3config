@@ -1,4 +1,3 @@
-# i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 #
@@ -213,6 +212,7 @@ bindsym --release Print exec flameshot gui
 
 # Windows better suited for floating
 for_window [title="Gerenciador de tarefas - Brave"] floating enable
+for_window [class="microsoft teams - preview"] floating enable
 
 # Idea diff window
 for_window [class="jetbrains-idea" title="^Changes between .* and .*$"] floating disable; resize set width 300px

@@ -1,0 +1,5 @@
+#! /usr/bin/env sh
+
+XEDITOR="${XEDITOR:-${OPENER:-xdg-open}}"
+
+$XEDITOR "$(date -I).md"

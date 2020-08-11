@@ -40,6 +40,7 @@ alias tkothers='tmux list-sessions | awk -F: "!/attached/{print \$1}" | xargs -n
 alias dfh='df -h'
 alias please='sudo'
 alias des='mkdir -p "$HOME/des" && cd "$HOME/des"'
+alias work='cd "$HOME/workspace"'
 
 # Tmux is started by default, sometimes I need to get a session without it
 # usually to open a new terminal emulator like allacrity or gnome-terminal and

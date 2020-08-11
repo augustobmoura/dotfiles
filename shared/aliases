@@ -42,6 +42,7 @@ alias please='sudo'
 alias des='mkdir -p "$HOME/des" && cd "$HOME/des"'
 alias wrk='cd "$HOME/workspace"'
 alias dow='cd "$HOME/Downloads" || cd "$HOME/Transferências"'
+alias doc='cd "$HOME/Documents" || cd "$HOME/Documentos"'
 
 # Tmux is started by default, sometimes I need to get a session without it
 # usually to open a new terminal emulator like allacrity or gnome-terminal and

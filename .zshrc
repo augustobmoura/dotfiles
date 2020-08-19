@@ -1,113 +1,61 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 # Uncoment to skip config (test in )
 if [ "x$AGT_SKIP_CONFIG" != x ]; then
 	return 0
 fi
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-export fpath=( "$HOME/functions" $fpath )
-
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+
+export ZSH="$HOME/.oh-my-zsh"
+export fpath=("$HOME/functions" $fpath)
 
 function isjetbrains() {
 	[[ $TERMINAL_EMULATOR =~ 'JetBrains-JediTerm' ]]
-	return $?
+	return 
 }
 
 function cmd_exists() {
 	type "$@" &> /dev/null
-	return $?
+	return
 }
 
 function isvscode() {
-	# Needs to be configured in VSCode to pass this env var
+	# Needs to configure VSCode to pass this env var
 	[[ $TERMINAL_EMULATOR =~ 'VSCode' ]]
-	return $?
+	return
 }
 
-export PATH="$HOME/bin:$DOTFILES_HOME/bin:$PATH:$HOME/.cargo/bin"
+path=(
+	"$HOME/.local/bin"
+	"$DOTFILES_HOME/bin"
+	$path
+	"$HOME/.cargo/bin"
+)
 
 source "$DOTFILES_HOME/shared/variables"
 
-if isjetbrains || isvscode; then
-	export ZSH_TMUX_AUTOSTART=false
-fi
+# ---
+# Oh my zsh
+# ---
 
+# Config
 export ZSH_TMUX_AUTOSTART=${ZSH_TMUX_AUTOSTART:-true}
 export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# Tmux is usually buggy on embedded terminals, also is kinda unecessary in this context
+if isjetbrains || isvscode; then
+	export ZSH_TMUX_AUTOSTART=false
+fi
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
+# Should load before omz for custom directoty configuration
 if cmd_exists direnv; then
 	eval "$(direnv hook zsh)"
 fi
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="" # Custom theme
+# Should be provided by either Pure or Starship
+ZSH_THEME= # OMZ theme
 
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
 	node
@@ -125,48 +73,31 @@ plugins=(
 	sdk
 	emoji
 	kubectl
-	#minikube
+	#minikube # Giving some weird prints in random commands, disabled for now
 )
 
+# Run OMZ
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# ---
+# Customizations
+# ---
 
 source "$DOTFILES_HOME/shared/aliases"
 
 # Personal preference
 disable r
 
-# Base16 color scheme
+# Configure fzf, if it exists
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Generate Base16 color schemes
 export BASE16_SHELL="$DOTFILES_HOME/third-party/base16-shell/"
 [ -n "$PS1" ] && \
 	[ -s "$BASE16_SHELL/profile_helper.sh" ] && 
 		eval "$("$BASE16_SHELL/profile_helper.sh")"
 
+# Applies theme
 cmd_exists base16_seti && base16_seti
 
 # Enable hightlighting if exists
@@ -181,51 +112,49 @@ fi
 
 # This speeds up pasting w/ autosuggest
 # https://github.com/zsh-users/zsh-autosuggestions/issues/238
-pasteinit() {
+function pasteinit() {
 	OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
 	zle -N self-insert url-quote-magic
 }
 
-pastefinish() {
+function  pastefinish() {
 	zle -N self-insert $OLD_SELF_INSERT
 }
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
+# Applies sdkman if configured, I mostly use asdf by now, but whatever
 export SDKMAN_DIR="$HOME/.sdkman"
 [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+# Applies n if configured, I mostly use asdf by now, but whatever
 if cmd_exists n; then
 	export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 fi
 
-
+# Machine local configuration
 if [ -e "$HOME/.local.zsh" ]; then
 	source "$HOME/.local.zsh"
 fi
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.local/bin:$PATH"
 
 # Bind alt-j & alt-k to Down & Up for historic in the home row
 bindkey -s '^[j' '^[OB'
 bindkey -s '^[k' '^[OA'
 
+# Run broot if configured
 if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
 	source "$HOME/.config/broot/launcher/bash/br"
 fi
 
-if cmd_exists starship; then
-	# Activates starship
-	eval "$(starship init zsh)"
-else
-	# Activates Pure them
-	autoload -U promptinit; promptinit
-	prompt pure
+if [[ $ZSH_THEME = '' ]]; then
+	# Choose theme, prefer starship and then Pure
+	if cmd_exists starship; then
+		# Activates starship
+		eval "$(starship init zsh)"
+	else
+		# Activates Pure them
+		autoload -U promptinit; promptinit
+		prompt pure
+	fi
 fi
 
-br_path=$HOME/.config/broot/launcher/bash/br
-if cmd_exists broot && [ -x "$br_path" ]; then
-	source "$br_path"
-fi
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

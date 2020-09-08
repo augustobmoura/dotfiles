@@ -159,3 +159,16 @@ if [[ $ZSH_THEME = '' ]]; then
 	fi
 fi
 
+# Better expansion on ^X*
+# Adapted from the globalias plugin
+globalias() {
+	zle _expand_alias
+	zle expand-word
+	zle self-insert
+
+	# Needed to not add * at the end
+	zle backward-delete-char
+}
+zle -N globalias
+
+bindkey '^X*' globalias

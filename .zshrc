@@ -133,6 +133,10 @@ if cmd_exists n; then
 	export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 fi
 
+if [ -f "$ASDF_DIR/plugins/java/set-java-home.zsh" ]; then
+	. "$ASDF_DIR/plugins/java/set-java-home.zsh"
+fi
+
 # Machine local configuration
 if [ -e "$HOME/.local.zsh" ]; then
 	source "$HOME/.local.zsh"

@@ -111,6 +111,9 @@ bindsym $mod+Shift+minus move scratchpad
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
 
+# Toggle sticky window
+bindsym $mod+z sticky toggle
+
 # switch to workspace
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
@@ -215,7 +218,7 @@ for_window [class="Gnome-calendar" instance="gnome-calendar"] floating enable
 for_window [class="SimpleScreenRecorder" instance="simplescreenrecorder"] floating enable
 for_window [title="Gerenciador de tarefas - Brave"] floating enable
 
-# msteams notifications fixes
+# MSTeams notifications fixes
 for_window [class="Microsoft Teams - Preview" window_type="notification"] floating enable; resize set height 300px
 
 # Idea diff window

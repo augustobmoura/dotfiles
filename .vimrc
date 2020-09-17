@@ -15,6 +15,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+Plug 'editorconfig/editorconfig-vim'
 
 call plug#end()
 
@@ -53,6 +54,10 @@ set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
+
+" Split windows mappings
+nnoremap <C-w>M <C-w>\| <C-w>_
+nnoremap <C-w>% :vnew<CR>
 
 " Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>

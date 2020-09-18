@@ -1,0 +1,9 @@
+#! /usr/bin/env sh
+
+CMD=i3status
+
+if type i3status-rs > /dev/null 2>&1; then
+	CMD=i3status-rs
+fi
+
+exec $CMD "$@"

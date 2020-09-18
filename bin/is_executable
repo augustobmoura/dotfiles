@@ -1,0 +1,5 @@
+#! /usr/bin/env sh
+
+# Check if a expression is a command, function or alias, executable in any way
+type "$1" > /dev/null 2>&1
+exit $?

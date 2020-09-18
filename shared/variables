@@ -1,38 +1,48 @@
 #! /usr/bin/env sh
 
-_ag_exists() {
+# It's also a script in $DOTFILES_HOME/bin
+# Mainly for compatiblity in envs without the bin on the path
+choose() {
+	test_cmd="$1"
+	shift
+
+	for a in "$@"; do
+		if eval "> /dev/null $test_cmd \"$a\""; then
+			echo "$a"
+			return
+		fi
+	done
+
+	test_cmd=''
+	return 1
+}
+
+# It's also a script in $DOTFILES_HOME/bin
+# Mainly for compatiblity in envs without the bin on the path
+is_executable() {
 	type "$1" > /dev/null 2>&1
 	return
 }
 
-_ag_choose_cmd() {
-	while [ $# -gt 0 ]; do
-		if _ag_exists "$1"; then
-			echo "$1"
-			return
-		else
-			shift
-		fi
-	done
-
-	return 1
-}
+export DOWNLOADS_DIR="$(choose "test -d" "$HOME/Downloads" "$HOME/Transferências")"
+export DOCUMENTS_DIR="$(choose "test -d" "$HOME/Documents" "$HOME/Documentos")"
+export WORKSPACE_DIR="$(choose "test -d" "$HOME/workspace" "$HOME/des")"
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 export RC_FILE="$HOME/.zshrc"
 export GIT_PAGER='less -F -X'
 
-if _ag_exists delta; then
+if is_executable delta; then
 	export GIT_PAGER=delta
 fi
 
-if _ag_exists fd; then
+if is_executable fd; then
 	export FZF_DEFAULT_COMMAND='fd --type f'
 fi
 
-export OPENER=$(_ag_choose_cmd rifle xdg-open)
-export TERMINAL=$(_ag_choose_cmd alacritty gnome-terminal xterm)
-export EDITOR=$(_ag_choose_cmd nvim vim vi nano emacs)
-export XEDITOR=$(_ag_choose_cmd gnvim gvim mousepad kate gedit ||
+export OPENER=$(choose is_executable rifle xdg-open)
+export TERMINAL=$(choose is_executable alacritty gnome-terminal xterm)
+export EDITOR=$(choose is_executable nvim vim vi nano emacs)
+export XEDITOR=$(choose is_executable gnvim gvim mousepad kate gedit ||
 	echo "$TERMINAL -e $EDITOR")
 

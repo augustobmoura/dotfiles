@@ -1,0 +1,18 @@
+#! /usr/bin/env sh
+
+# First argument is a check, iterate all others checking by it
+# If one argument doesn't fail for the check it's printed
+# If none succeed then return 1
+# Nice to choose between commands, ex 'PAGER=$(choose which bat less cat)'
+
+check="$1"
+shift
+
+for arg in "$@"; do
+	if eval "> /dev/null $check \"$arg\""; then
+		echo "$arg"
+		exit 0
+	fi
+done
+
+exit 1

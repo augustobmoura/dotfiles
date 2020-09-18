@@ -78,7 +78,7 @@ plugins=(
 )
 
 # Run OMZ
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 
 # ---
 # Customizations

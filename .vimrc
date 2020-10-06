@@ -14,34 +14,42 @@ Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'editorconfig/editorconfig-vim'
+Plug 'preservim/nerdtree'
 
 call plug#end()
 
-if has('nvim')
-	" Fix highlighting for spell checks in terminal
-	function! s:base16_customize() abort
-		" Colors: https://github.com/chriskempson/base16/blob/master/styling.md
-		" Arguments: group, guifg, guibg, ctermfg, ctermbg, attr, guisp
-		call Base16hi("SpellBad",   "", "", g:base16_cterm08, g:base16_cterm00, "", "")
-		call Base16hi("SpellCap",   "", "", g:base16_cterm0A, g:base16_cterm00, "", "")
-		call Base16hi("SpellLocal", "", "", g:base16_cterm0D, g:base16_cterm00, "", "")
-		call Base16hi("SpellRare",  "", "", g:base16_cterm0B, g:base16_cterm00, "", "")
-	endfunction
-
-	augroup on_change_colorschema
-		autocmd!
-		autocmd ColorScheme * call s:base16_customize()
-	augroup END
-
-	" Theme
-	let base16colorspace=256
-	if filereadable(expand("~/.vimrc_background"))
-		source ~/.vimrc_background
-	endif
-	colorscheme base16-seti
+if ! has('nvim') 
+	let g:coc_disable_startup_warning = 1
 endif
+
+" Fix highlighting for spell checks in terminal
+function! s:base16_customize() abort
+	" Colors: https://github.com/chriskempson/base16/blob/master/styling.md
+	" Arguments: group, guifg, guibg, ctermfg, ctermbg, attr, guisp
+	call Base16hi("SpellBad",   "", "", g:base16_cterm08, g:base16_cterm00, "", "")
+	call Base16hi("SpellCap",   "", "", g:base16_cterm0A, g:base16_cterm00, "", "")
+	call Base16hi("SpellLocal", "", "", g:base16_cterm0D, g:base16_cterm00, "", "")
+	call Base16hi("SpellRare",  "", "", g:base16_cterm0B, g:base16_cterm00, "", "")
+endfunction
+
+augroup on_change_colorschema
+	autocmd!
+	autocmd ColorScheme * call s:base16_customize()
+augroup END
+
+" Theme
+let base16colorspace=256
+if filereadable(expand("~/.vimrc_background"))
+	source ~/.vimrc_background
+endif
+colorscheme base16-seti
+
+" Override the diff-mode highlights of base16.
+highlight DiffAdd    term=bold ctermfg=0 ctermbg=2 guifg=#2b2b2b guibg=#a5c261
+highlight DiffDelete term=bold ctermfg=0 ctermbg=1 gui=bold guifg=#2b2b2b guibg=#da4939
+highlight DiffChange term=bold ctermfg=0 ctermbg=4 guifg=#2b2b2b guibg=#6d9cbe
+highlight DiffText   term=reverse cterm=bold ctermfg=0 ctermbg=4 gui=bold guifg=#2b2b2b guibg=#6d9cbe
 
 inoremap <silent><expr> <c-space> coc#refresh()
 

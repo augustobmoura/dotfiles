@@ -74,6 +74,7 @@ if is_executable compdef; then
 fi
 
 alias ll="$LS_COMMAND -lah"
+alias l="ll"
 alias editor='$EDITOR'
 alias reloadrc='source $RC_FILE'
 alias rc='editor $RC_FILE'

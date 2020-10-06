@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#! /usr/bin/env zsh
 
 # It's also a script in $DOTFILES_HOME/bin
 # Mainly for compatiblity in envs without the bin on the path
@@ -43,6 +43,32 @@ alias hd="$(choose is_executable hexyl hd hexdump xxd)"
 cds() {
 	for arg in "$@"; do cd "$arg"; done
 }
+
+_cds() {
+	local line=()
+
+	for w in ${words[2,-1]}; do
+		if ! [ -z "$w" ]; then
+			local evaled="$(eval "echo $w")"
+			line+=("$evaled")
+		fi
+	done
+
+	local pref="${(j:/:)line[1,-2]}"
+	local opts=()
+
+	if [ -d "$pref/${line[-1]}" ]; then
+		pref="$pref/${line[-1]}"
+	else
+		opts+=(-g "${line[-1]}*")
+	fi
+
+	_path_files -W "$(realpath "${p:-.}")" -/ "${opts[@]}"
+}
+
+if is_executable compdef; then
+	compdef _cds cds
+fi
 
 alias ll="$LS_COMMAND -lah"
 alias editor='$EDITOR'

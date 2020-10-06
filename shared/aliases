@@ -63,7 +63,7 @@ _cds() {
 		opts+=(-g "${line[-1]}*")
 	fi
 
-	_path_files -W "$(realpath "${p:-.}")" -/ "${opts[@]}"
+	_path_files -W "$(realpath "${pref:-.}")" -/ "${opts[@]}" > ~/foo
 }
 
 if is_executable compdef; then

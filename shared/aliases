@@ -54,16 +54,21 @@ _cds() {
 		fi
 	done
 
-	local pref="${(j:/:)line[1,-2]}"
+	local idx=$((CURRENT - 1))
 	local opts=()
 
-	if [ -d "$pref/${line[-1]}" ]; then
-		pref="$pref/${line[-1]}"
-	else
-		opts+=(-g "${line[-1]}*")
+	local pref="${(j:/:)line[1,idx - 1]}"
+	log $pref
+	if ! [ -z "$pref" ]; then
+		opts+=(-W "$(realpath "$pref")")
 	fi
 
-	_path_files -W "$(realpath "${pref:-.}")" -/ "${opts[@]}" > ~/foo
+	if ! [ -z "${line[idx]}" ]; then
+		opts+=(-g "${line[idx]}*")
+	fi
+
+	log _path_files -/ "${opts[@]}"
+	_path_files -/ "${opts[@]}"
 }
 
 if is_executable compdef; then

@@ -73,6 +73,12 @@ nmap <Esc> :noh<CR>
 " ctrl-p
 nnoremap <C-p> :Files<CR>
 
+" Set prettier command
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+vmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>b <Plug>(coc-format)
+
 " ---
 " Config for CoC, mostly coppied from the example configuration
 " ---

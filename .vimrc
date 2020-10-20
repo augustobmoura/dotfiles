@@ -16,8 +16,33 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'preservim/nerdtree'
+Plug 'mattn/emmet-vim'
 
 call plug#end()
+
+
+function! Install_coc_extensions()
+	let cocExtensions = [
+		\'coc-actions',
+		\'coc-angular',
+		\'coc-calc',
+		\'coc-clangd',
+		\'coc-css',
+		\'coc-emmet',
+		\'coc-eslint',
+		\'coc-flow',
+		\'coc-html',
+		\'coc-json',
+		\'coc-prettier',
+		\'coc-rls',
+		\'coc-sh',
+		\'coc-sql',
+		\'coc-tsserver',
+		\'coc-xml',
+		\'coc-yaml']
+
+	execute 'CocInstall -sync ' . join(cocExtensions, ' ')
+endfunction
 
 if ! has('nvim') 
 	let g:coc_disable_startup_warning = 1

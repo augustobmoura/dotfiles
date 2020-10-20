@@ -30,7 +30,8 @@ export WORKSPACE_DIR="$(choose "test -d" "$HOME/workspace" "$HOME/des")"
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 export RC_FILE="$HOME/.zshrc"
-export GIT_PAGER='less -F -X'
+export PAGER='less -F -X'
+export GIT_PAGER='$PAGER'
 
 if is_executable delta; then
 	export GIT_PAGER=delta

@@ -1,0 +1,11 @@
+#! /usr/bin/env sh
+
+
+if [ $# -gt 0 ]; then
+	exp="$*"
+else
+	printf "> "
+	read exp
+fi
+
+echo "$exp" | bc -lq

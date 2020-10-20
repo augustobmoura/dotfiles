@@ -96,7 +96,7 @@ nnoremap <C-w>% :vnew<CR>
 nmap <Esc> :noh<CR>
 
 " ctrl-p
-nnoremap <C-p> :Files<CR>
+nnoremap <C-i> :Files<CR>
 
 " Set prettier command
 command! -nargs=0 Prettier :CocCommand prettier.formatFile

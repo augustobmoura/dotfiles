@@ -12,14 +12,15 @@ Plug 'chriskempson/base16-vim'
 Plug 'tpope/vim-fugitive'
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'preservim/nerdtree'
 Plug 'mattn/emmet-vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
-
 
 function! Install_coc_extensions()
 	let cocExtensions = [
@@ -58,17 +59,18 @@ function! s:base16_customize() abort
 	call Base16hi("SpellRare",  "", "", g:base16_cterm0B, g:base16_cterm00, "", "")
 endfunction
 
-augroup on_change_colorschema
-	autocmd!
-	autocmd ColorScheme * call s:base16_customize()
-augroup END
 
 " Theme
 let base16colorspace=256
 if filereadable(expand("~/.vimrc_background"))
 	source ~/.vimrc_background
+	augroup on_change_colorschema
+		autocmd!
+		autocmd ColorScheme * call s:base16_customize()
+	augroup END
 endif
-colorscheme base16-seti
+let g:airline_powerline_fonts = 1
+let g:airline_theme='base16_seti'
 
 " Override the diff-mode highlights of base16.
 highlight DiffAdd    term=bold ctermfg=0 ctermbg=2 guifg=#2b2b2b guibg=#a5c261

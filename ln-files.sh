@@ -25,6 +25,7 @@ mv_to_non_existent() (
 linkit() (
 	original_file="$1"
 	new_file="$2"
+	mkdir -p "$(dirname "$new_file")"
 
 	if [ -e "$new_file" ] || [ -h "$new_file" ]; then
 		printf "File $new_file already exists, override it? (y/N): "
@@ -46,9 +47,6 @@ linkit() (
 	ln -s "$original_file" "$new_file"
 )
 
-# Functions
-mkdir -p "$HOME/functions"
-
 # Basic
 linkit "$DOTFILES_HOME/.zshrc" "$HOME/.zshrc"
 
@@ -66,8 +64,6 @@ linkit "$DOTFILES_HOME/third-party/oh-my-tmux/.tmux.conf" "$HOME/.tmux.conf"
 linkit "$DOTFILES_HOME/.tmux.conf.local" "$HOME/.tmux.conf.local"
 
 # VIM
-mkdir -p "$HOME/.local/share/nvim/site/autoload"
-mkdir -p "$HOME/.vim/autoload"
 linkit "$DOTFILES_HOME/.vimrc" "$HOME/.vimrc"
 linkit "$DOTFILES_HOME/.vimrc" "$HOME/.config/nvim/init.vim"
 linkit "$DOTFILES_HOME/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
@@ -77,5 +73,8 @@ linkit "$DOTFILES_HOME/plug.vim" "$HOME/.vim/autoload/plug.vim"
 linkit "$DOTFILES_HOME/third-party/asdf" "$HOME/.asdf"
 
 # i3
-mkdir -p "$HOME/.i3"
 linkit "$DOTFILES_HOME/i3config" "$HOME/.i3/config"
+linkit "$DOTFILES_HOME/i3status-rs.conf.toml" "$HOME/.config/i3status-rust/config.toml"
+
+# Alacritty
+linkit "$DOTFILES_HOME/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"

@@ -62,6 +62,7 @@ linkit "$DOTFILES_HOME/third-party/pure/pure.zsh" "$HOME/functions/prompt_pure_s
 # Tmux
 linkit "$DOTFILES_HOME/third-party/oh-my-tmux/.tmux.conf" "$HOME/.tmux.conf"
 linkit "$DOTFILES_HOME/.tmux.conf.local" "$HOME/.tmux.conf.local"
+linkit "$DOTFILES_HOME/third-party/tpm" "$HOME/.tmux/plugins/tpm"
 
 # VIM
 linkit "$DOTFILES_HOME/.vimrc" "$HOME/.vimrc"

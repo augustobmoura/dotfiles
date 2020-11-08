@@ -3,7 +3,21 @@
 # Each argument in a new line, facilitate piping glob expanions to xargs:
 # eachln * | xargs -n1 -p2 -I{} sh -c 'cd {} && touch {}.txt'
 
-while [ $# != 0 ]; do
-	echo $1
+_sep="\n"
+
+if [ "$1" = -0 ]; then
+	_sep="\0"
+	shift
+fi
+
+_first=true
+
+while [ $# -gt 0 ]; do
+	if ! [ "$_first" = true ]; then
+		printf "$_sep"
+	fi
+
+	printf "%s" "$1"
+	_first=false
 	shift
 done

@@ -49,8 +49,7 @@ _cds() {
 
 	for w in ${words[2,-1]}; do
 		if ! [ -z "$w" ]; then
-			local evaled="$(eval "echo $w")"
-			line+=("$evaled")
+			line+=("$(eval "echo $w")")
 		fi
 	done
 

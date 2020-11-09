@@ -5,19 +5,23 @@
 
 _sep="\n"
 
-if [ "$1" = -0 ]; then
+if [ "$1" = -- ]; then
+	_escaped=1
+	shift
+fi
+
+if [ "$1" = -0 ] && [ -z "$_escaped" ]; then
 	_sep="\0"
 	shift
 fi
 
-_first=true
+if [ $# -gt 0 ]; then
+	printf "%s" "$1"
+	shift
+fi
 
 while [ $# -gt 0 ]; do
-	if ! [ "$_first" = true ]; then
-		printf "$_sep"
-	fi
-
-	printf "%s" "$1"
-	_first=false
+	printf "$_sep%s" "$1"
 	shift
 done
+

@@ -89,6 +89,9 @@ source "$DOTFILES_HOME/shared/aliases"
 # Personal preference
 disable r
 
+# Better globbing
+setopt extendedglob glob_dots
+
 # Configure fzf, if it exists
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 

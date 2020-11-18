@@ -193,6 +193,9 @@ bar {
 
 # Media keys
 bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioStop exec playerctl stop
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
 bindsym $mod+XF86AudioRaiseVolume exec playerctl next
 bindsym $mod+XF86AudioLowerVolume exec playerctl previous
 

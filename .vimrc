@@ -83,6 +83,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Options
 set nu
 set rnu
+set backup
 
 " Invisibles
 set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·

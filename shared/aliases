@@ -41,34 +41,40 @@ alias hd="$(choose is_executable hexyl hd hexdump xxd)"
 
 # For sequencing cds, nice to aliases like 'des $PROJECT' or 'doc $DOC_DIR'
 cds() {
-	for arg in "$@"; do cd "$arg"; done
-}
-
-_cds() {
-	local line=()
-
-	for w in ${words[2,-1]}; do
-		if ! [ -z "$w" ]; then
-			line+=("$(eval "echo $w")")
-		fi
-	done
-
-	local idx=$((CURRENT - 1))
-	local opts=()
-
-	local pref="${(j:/:)line[1,idx - 1]}"
-	if ! [ -z "$pref" ]; then
-		opts+=(-W "$(realpath "$pref")")
-	fi
-
-	if ! [ -z "${line[idx]}" ]; then
-		opts+=(-g "${line[idx]}*")
-	fi
-
-	_path_files -/ "${opts[@]}"
+	cd "$(printf "%s/" "$@")"
 }
 
 if is_executable compdef; then
+	_cds() {
+		local line=()
+
+		for w in ${words[2,-1]}; do
+			if ! [ -z "$w" ]; then
+				line+=("$(eval "echo $w")")
+			fi
+		done
+
+		local idx=$((CURRENT - 1))
+		local opts=()
+
+		local pref="${(j:/:)line[1,idx - 1]#/}"
+		if ! [ -z "$pref" ]; then
+			local abs="$(cd "$pref" &> /dev/null && pwd)"
+
+			if [ -z "$abs" ]; then
+				return
+			fi
+
+			opts+=(-W "${abs:-$pref}")
+		fi
+
+		if ! [ -z "${line[idx]}" ]; then
+			opts+=(-g "${line[idx]}*")
+		fi
+
+		_path_files -/ "${opts[@]}"
+	}
+
 	compdef _cds cds
 fi
 

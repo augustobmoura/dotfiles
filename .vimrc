@@ -1,3 +1,21 @@
+" Options
+set nu rnu
+set backup
+set splitbelow splitright
+
+" Invisibles
+set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+
+" Split windows mappings
+nnoremap <C-w>M <C-w>\| <C-w>_
+nnoremap <C-w>% :vnew<CR>
+
+" Hide search highlighting on double Esc
+nmap <Esc> :noh<CR>
+
 
 let plugged_path = '~/.local/share/nvim/plugged'
 
@@ -79,24 +97,6 @@ highlight DiffChange term=bold ctermfg=0 ctermbg=4 guifg=#2b2b2b guibg=#6d9cbe
 highlight DiffText   term=reverse cterm=bold ctermfg=0 ctermbg=4 gui=bold guifg=#2b2b2b guibg=#6d9cbe
 
 inoremap <silent><expr> <c-space> coc#refresh()
-
-" Options
-set nu
-set rnu
-set backup
-
-" Invisibles
-set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-
-" Split windows mappings
-nnoremap <C-w>M <C-w>\| <C-w>_
-nnoremap <C-w>% :vnew<CR>
-
-" Hide search highlighting on double Esc
-nmap <Esc> :noh<CR>
 
 " ctrl-p
 nnoremap \| :Files<CR>

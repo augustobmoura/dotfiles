@@ -28,3 +28,6 @@
 [submodule "third-party/oh-my-tmux"]
 	path = third-party/oh-my-tmux
 	url = https://github.com/augustobmoura/.tmux.git
+[submodule "third-party/mons"]
+	path = third-party/mons
+	url = https://github.com/Ventto/mons.git

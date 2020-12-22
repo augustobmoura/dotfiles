@@ -1,33 +1,33 @@
 [submodule "pure"]
-	path = third-party/pure
+	path = zsh/plugins/pure
 	url = https://github.com/sindresorhus/pure.git
 	shallow = true
 [submodule "zsh-syntax-highlighting"]
-	path = third-party/zsh-syntax-highlighting
+	path = zsh/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 	shallow = true
 [submodule "zsh-autosuggestions"]
-	path = third-party/zsh-autosuggestions
+	path = zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
 	shallow = true
-[submodule "third-party/oh-my-zsh"]
-	path = third-party/oh-my-zsh
+[submodule "oh-my-zsh"]
+	path = zsh/plugins/oh-my-zsh
 	url = git@github.com:robbyrussell/oh-my-zsh.git
-[submodule "third-party/base16-shell"]
-	path = third-party/base16-shell
+[submodule "base16-shell"]
+	path = sh/base16-shell
 	url = https://github.com/chriskempson/base16-shell.git
-[submodule "third-party/asdf"]
-	path = third-party/asdf
+[submodule "asdf"]
+	path = asdf
 	url = https://github.com/asdf-vm/asdf.git
-[submodule "third-party/tpm"]
-	path = third-party/tpm
+[submodule "tpm"]
+	path = tmux/tpm
 	url = https://github.com/tmux-plugins/tpm
-[submodule "third-party/fzf"]
-	path = third-party/fzf
+[submodule "fzf"]
+	path = fzf
 	url = https://github.com/junegunn/fzf.git
-[submodule "third-party/oh-my-tmux"]
-	path = third-party/oh-my-tmux
+[submodule "oh-my-tmux"]
+	path = tmux/oh-my-tmux
 	url = https://github.com/augustobmoura/.tmux.git
-[submodule "third-party/mons"]
-	path = third-party/mons
+[submodule "mons"]
+	path = mons
 	url = https://github.com/Ventto/mons.git

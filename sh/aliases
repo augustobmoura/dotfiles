@@ -1,0 +1,42 @@
+#! /usr/bin/env sh
+
+: ${LS_COMMAND:=ls}
+
+case "$LS_COMMAND" in
+	exa|lsd)
+		alias tree="$LS_COMMAND --tree"
+		;;
+esac
+
+alias ll="$LS_COMMAND -lah"
+alias l="ll"
+alias editor='${EDITOR:-vi}'
+alias reloadrc='source $RC_FILE'
+alias rc='editor "${RC_FILE:=~/.zshrc}"'
+alias lrc='editor "$HOME/.local.zsh"'
+alias t7='tail -f -n 700'
+alias npmr='npm run'
+alias dotfiles='cd "${DOTFILES_HOME:-"$HOME"/dotfiles}"'
+alias o='${XOPENER:-xdg-open}'
+alias gs='git status'
+alias r='ranger'
+alias bc='bc -lq'
+alias tkothers='tmux list-sessions | awk -F: "!/attached/{print \$1}" | xargs -n1 tmux kill-session -t'
+alias dfh='df -h'
+alias please='sudo'
+alias des='cds "$HOME/des"'
+alias wrk='cds "${WORKSPACE_DIR:-"$HOME"/workspace}"'
+alias dow='cds "${DOWNLOADS_DIR:-"$HOME"/Downloads}"'
+alias doc='cds "${DOCUMENTS_DIR:-"$HOME"/Documents}"'
+
+# from https://datagrok.org/git/git-serve/
+alias git_quickup='git daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/'
+
+# Help to quit bad habits, I can \vim anyways
+if type nvim > /dev/null 2>&1; then
+	alias vim='echo "You mean nvim?" && sleep 1 && :' # : is here to void arguments
+fi
+
+# yep
+alias :q='echo "You foooool"; sleep 1'
+alias :wq='echo "Foolish mortal"; sleep 1'

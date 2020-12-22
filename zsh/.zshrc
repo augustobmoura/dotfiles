@@ -1,13 +1,14 @@
 # Uncoment to skip config (test in )
-if [ "x$AGT_SKIP_CONFIG" != x ]; then
+if [ -n "$AGT_SKIP_CONFIG" ]; then
 	return 0
 fi
 
 # Path to your oh-my-zsh installation.
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 
-export ZSH="$HOME/.oh-my-zsh"
-export fpath=("$HOME/functions" $fpath)
+export fpath=("$HOME/functions" "$DOTFILES_HOME/zsh/functions" $fpath)
+
+export ZSH="$DOTFILES_HOME/zsh/plugins/oh-my-zsh"
 
 function isjetbrains() {
 	[[ $TERMINAL_EMULATOR =~ 'JetBrains-JediTerm' ]]
@@ -31,8 +32,6 @@ path=(
 	$path
 	"$HOME/.cargo/bin"
 )
-
-source "$DOTFILES_HOME/shared/variables"
 
 # ---
 # Oh my zsh
@@ -84,19 +83,20 @@ source "$ZSH/oh-my-zsh.sh"
 # Customizations
 # ---
 
-source "$DOTFILES_HOME/shared/aliases"
-
 # Personal preference
 disable r
 
 # Better globbing
 setopt extendedglob glob_dots
 
+source "$DOTFILES_HOME/sh/variables"
+source "$DOTFILES_HOME/sh/aliases"
+
 # Configure fzf, if it exists
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Generate Base16 color schemes
-export BASE16_SHELL="$DOTFILES_HOME/third-party/base16-shell/"
+export BASE16_SHELL="$DOTFILES_HOME/sh/base16-shell/"
 [ -n "$PS1" ] && \
 	[ -s "$BASE16_SHELL/profile_helper.sh" ] && 
 		eval "$("$BASE16_SHELL/profile_helper.sh")"
@@ -104,14 +104,9 @@ export BASE16_SHELL="$DOTFILES_HOME/third-party/base16-shell/"
 # Applies theme
 cmd_exists base16_seti && base16_seti
 
-# Enable hightlighting if exists
-if [ -e "$HOME/highlighting.zsh" ]; then
-	source "$HOME/highlighting.zsh"
-fi
-
 # Enable autosuggestions if exists
-if [ -e "$HOME/autosuggestion.zsh" ]; then
-	source "$HOME/autosuggestion.zsh"
+if [ -e "$DOTFILES_HOME/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+	source "$DOTFILES_HOME/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
 # This speeds up pasting w/ autosuggest
@@ -149,11 +144,6 @@ fi
 bindkey -s '^[j' '^[OB'
 bindkey -s '^[k' '^[OA'
 
-# Run broot if configured
-if [ -e "$HOME/.config/broot/launcher/bash/br" ]; then
-	source "$HOME/.config/broot/launcher/bash/br"
-fi
-
 if [[ $ZSH_THEME = '' ]]; then
 	# Choose theme, prefer starship and then Pure
 	if cmd_exists starship; then
@@ -179,3 +169,8 @@ globalias() {
 zle -N globalias
 
 bindkey '^X*' globalias
+
+if [ -e "$DOTFILES_HOME/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+	source "$DOTFILES_HOME/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
+

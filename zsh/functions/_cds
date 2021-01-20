@@ -1,0 +1,38 @@
+#compdef cds
+
+local line=()
+
+# Evaluate all arguments for expansions and variables
+# Might be dangerous but is teorically only used in completion in interactive
+# So you are responsible for what you write
+for w in ${words[2,-1]}; do
+	if [ -n "$w" ]; then
+		line+=("$(eval "echo $w")")
+	fi
+done
+
+local idx=$((CURRENT - 1)) # Index of current argument being completed
+local opts=()
+
+# Remove trailing slashes at the end for all arguments until before current
+local pref="${(j:/:)line[1,idx - 1]%/}"
+
+# If there's arguments besides the last
+if [ -n "$pref" ]; then
+	# Try to find the path in the filesystem, folowing links
+	local abs="$(cd "$pref" &> /dev/null && pwd)"
+
+	# If path doesn't exist just exit early
+	if [ -z "$abs" ]; then
+		return
+	fi
+
+	opts+=(-W "${abs:-$pref}")
+fi
+
+# Current argument always receive a wildcard
+if [ -n "${line[idx]}" ]; then
+	opts+=(-g "${line[idx]}*")
+fi
+
+_path_files -/ "${opts[@]}"

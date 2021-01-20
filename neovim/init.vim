@@ -16,6 +16,9 @@ nnoremap <C-w>% :vnew<CR>
 " Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>
 
+" Make shortcut
+nnoremap <C-m> :make<CR>
+
 
 let plugged_path = '~/.local/share/nvim/plugged'
 

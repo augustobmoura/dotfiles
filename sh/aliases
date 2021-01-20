@@ -8,6 +8,12 @@ case "$LS_COMMAND" in
 		;;
 esac
 
+# For sequencing cds, nice to aliases like 'des $PROJECT' or 'doc $DOC_DIR'
+cds() {
+	cd "$(printf "%s/" "$@")"
+}
+
+alias hd="${HEXDUMP_CMD:-hd}"
 alias ll="$LS_COMMAND -lah"
 alias l="ll"
 alias editor='${EDITOR:-vi}'

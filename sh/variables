@@ -33,6 +33,7 @@ export ZRC_FILE="$HOME/.zshrc"
 export PAGER='less -F -X'
 export GIT_PAGER='$PAGER'
 export LS_COMMAND="$(_choose _is_executable exa lsd ls)"
+export HEXDUMP_CMD="$(_choose _is_executable hexyl hd hexdump xxd)"
 
 if _is_executable delta; then
 	export GIT_PAGER=delta

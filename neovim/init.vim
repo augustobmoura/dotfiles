@@ -2,6 +2,7 @@
 set nu rnu
 set backup
 set splitbelow splitright
+set encoding=UTF-8
 
 " Invisibles
 set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·
@@ -37,6 +38,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 Plug 'mattn/emmet-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'

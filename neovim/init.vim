@@ -32,22 +32,34 @@ if ! has('nvim')
 	let plugged_path = '~/.vim/plugged'
 endif
 
-" Plug
+" Plugins
 call plug#begin(plugged_path)
 
+" Theme
 Plug 'chriskempson/base16-vim'
-Plug 'tpope/vim-fugitive'
-Plug 'sheerun/vim-polyglot'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'preservim/nerdtree'
-Plug 'ryanoasis/vim-devicons'
-Plug 'mattn/emmet-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" Language support
+Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'editorconfig/editorconfig-vim'
+
+" Editor tools
+Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdcommenter'
+
+" Additional tools
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-fugitive'
+
+" Files management/qol
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 

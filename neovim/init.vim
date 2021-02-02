@@ -14,6 +14,11 @@ set shiftwidth=2
 nnoremap <C-w>M <C-w>\| <C-w>_
 nnoremap <C-w>% :vnew<CR>
 
+" Mark bash as the default shell syntax
+" I'm already familiar with bashisms and I work in bashed sourced files most
+" of the time anyways
+let b:is_bash = 1
+
 " Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>
 

@@ -1,0 +1,290 @@
+#! /usr/bin/env sh
+
+set -eu
+
+export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+
+export RESOURCES=
+
+# Confirm results
+ALWAYS=255
+NO=1
+YES=0
+
+# Confirm options
+always_options=
+
+log() {
+	printf "%s\n" "$1" >&2
+}
+
+
+die() {
+	log "$1"
+	exit "${2:-1}"
+}
+
+
+silent() {
+	"$@" > /dev/null 2>&1
+}
+
+
+realpath() {
+	if silent hash realpath; then
+		command realpath "$1"
+	elif silent hash readlink; then
+		command readlink -f "$1"
+	fi
+}
+
+
+# Choose a name not existent to rename the file, echoing it at the end
+mv_to_non_existent() {
+	file_name="$1"
+
+	if ! [ -e "$file_name"]; then
+		return 0
+	fi
+
+	i=0
+
+	new_file_name="$file_name~"
+
+	while [ -e "$new_file_name" ]; do
+		i=$(($i + 1))
+		new_file_name="$file_name~$i"
+	done
+
+	mv "$file_name" "$new_file_name"
+	echo "$new_file_name"
+}
+
+
+# Asks a question and returns a exit code based on YES, NO or ALWAYS
+confirm() {
+	option_name="${1:-global}"
+
+	if printf "%s\n" "$always_options" | grep -q "^$option_name$"; then
+		return $YES
+	fi
+
+	printf "%s ([y]es/[n]o/[a]lways) default: no\n" "$2"
+	read confirmed
+
+	case "$confirmed" in
+		[yY]|[sS])
+			return $YES
+			;;
+		[aA])
+			always_options="$(printf "%s\n%s" "$always_options" "$option_name")"
+			return $ALWAYS
+			;;
+		*)
+			return $NO
+			;;
+	esac
+}
+
+
+first_dirname() {
+	prev="$1"
+	curr="$1"
+
+	while [ "$curr" != . ] && [ "$curr" != / ]; do
+		prev="$curr"
+		curr="$(dirname "$prev")"
+	done
+
+	echo "$prev"
+}
+
+
+# Soft links with confirmation of overriding
+link_resource() {
+	original_file="$(realpath "$DOTFILES_HOME/$1")"
+	dest_file="$2"
+
+	mkdir -p "$(dirname "$dest_file")"
+
+
+	# Destination file already exists
+	if [ -e "$dest_file" ]; then
+		dest_file_real="$(realpath "$dest_file")"
+
+		# If file points to correct location do nothing
+		# Else ask to move the file
+		if [ "$dest_file_real" = "$original_file" ]; then
+			log "File $dest_file already linked"
+		else
+			# Move the current file to a new name, if confirmed
+			if confirm link_override "File $dest_file exists and don't point to $original_file, it points to $dest_file_real, relink it?"; then
+				moved_file_name="$(mv_to_non_existent "$dest_file")"
+				log "File $dest_file moved to $moved_file_name"
+			else
+				log "Skipping file $dest_file"
+			fi
+		fi
+	fi
+
+
+	# If there's no file at this point create it
+	if ! [ -e "$dest_file" ]; then
+		log "Creating file $dest_file..."
+		ln -s "$original_file" "$dest_file"
+	fi
+}
+
+
+unlink_resource() {
+	resource_path="$(realpath "$DOTFILES_HOME/$1")"
+	destination_path="$(realpath "$2")"
+
+	if ! [ -L "$destination_path" ] && ! confirm unlink_not_ln "$destination_path is not a symlink, remove it anyways?"; then 
+		return 1
+	else
+		if ! [ "$destination_path" = "$resource_path" ] && ! confirm unlink_no_match "$destination_path doesn't point to the expected location, remove it anyways?"; then
+			return 2
+		fi
+	fi
+
+	rm "$destination_path"
+	log "File $destination_path removed"
+}
+
+
+list_resources() {
+	printf "Current resources (use --all to apply to all of them):\n"
+
+	printf "%s" "$RESOURCES" \
+		| cut -f1 \
+		| while IFS= read -r res; do printf "  %s\n" "$(first_dirname "$res")"; done \
+		| sort -u
+}
+
+
+process_lines_as_arguments() {
+	_cmd="$1"
+	_args="$2"
+
+	if printf "%s\n" "$_args" | grep -q \"; then
+		log "Some arguments contains quotes"
+		return 1
+	fi
+
+	eval "set -- $(printf "%s\n" "$_args" | xargs -n1 -I'{}' printf "\"%s\"\n" "{}" | tr \\n " ")"
+
+
+	for res; do
+		if [ "$_cmd" = install ]; then
+			link_resource "$(echo "$res" | cut -f1)" "$(echo "$res" | cut -f2)"
+		else
+			unlink_resource "$(echo "$res" | cut -f1)" "$(echo "$res" | cut -f2)"
+		fi
+	done
+}
+
+
+resource() {
+	resource_path="$1"
+	destination_path="$2"
+
+	if ! [ -e "$DOTFILES_HOME/$resource_path" ]; then
+		die "File $resource_path doesn't exist"
+	fi
+
+	if printf "%s\n" "$resource_path" "$destination_path" | grep -q "$(echo \\t)"; then
+		die "Destination or resource contains a tab in the name"
+	fi
+
+	if [ -z "$RESOURCES" ]; then
+		RESOURCES="$(printf "%s\t%s" "$resource_path" "$destination_path")"
+	else
+		RESOURCES="$(printf "%s\n%s\t%s" "$RESOURCES" "$resource_path" "$destination_path")"
+	fi
+}
+
+
+declare_resources() {
+	# Shell
+	resource "zsh/.zshrc" "$HOME/.zshrc"
+
+	# Tmux
+	resource "tmux/oh-my-tmux/.tmux.conf" "$HOME/.tmux.conf"
+	resource "tmux/.tmux.conf.local" "$HOME/.tmux.conf.local"
+	resource "tmux/tpm" "$HOME/.tmux/plugins/tpm"
+
+	# VIM
+	resource "neovim/init.vim" "$HOME/.vimrc"
+	resource "neovim/init.vim" "$HOME/.config/nvim/init.vim"
+	resource "neovim/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
+	resource "neovim/plug.vim" "$HOME/.vim/autoload/plug.vim"
+
+	# asdf
+	resource "asdf" "$HOME/.asdf"
+
+	# starship
+	resource "starship/starship.toml" "$HOME/.config/starship.toml"
+
+	# i3
+	resource "i3/i3config" "$HOME/.i3/config"
+	resource "i3/i3status-rs.conf.toml" "$HOME/.config/i3status-rust/config.toml"
+
+	# Alacritty
+	resource "alacritty/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
+}
+
+
+main() {
+	declare_resources
+
+	cmd=
+	resources=
+
+	case "$1" in
+		list|ls)
+			list_resources
+			exit 0
+			;;
+
+		install|add|i|link)
+			cmd=install
+			;;
+
+		uninstall|rm|remove|unlink)
+			cmd=uninstall
+			;;
+
+		*)
+			die "Unkown command $1. Possible commands: list, install, uninstall"
+			;;
+	esac
+
+	shift
+
+	if [ "$cmd" = install ] || [ "$cmd" = uninstall ]; then
+		if [ $# -gt 0 ]; then
+			if [ "$1" = --all ]; then
+				resources="$RESOURCES"
+			else
+				for arg; do
+					new_resources="$(
+						printf "%s" "$RESOURCES" \
+							| { grep "^$arg" || die "No resource found for \"$arg\""; }
+					)"
+					resources="$(printf "%s\n%s" "$resources" "$new_resources")"
+				done
+
+				resources="$(printf "%s" "$resources" | tail -n +2 | sort -u)"
+			fi
+		fi
+
+		if [ -z "$resources" ]; then
+			die "No resource given to $cmd" 12
+		fi
+
+		process_lines_as_arguments "$cmd" "$resources"
+	fi
+}
+
+main "$@"

@@ -18,7 +18,7 @@ alias ll="$LS_COMMAND -lah"
 alias l="ll"
 alias editor='${EDITOR:-vi}'
 alias reloadrc='source $RC_FILE'
-alias rc='editor "${RC_FILE:=~/.zshrc}"'
+alias rc='editor "${RC_FILE:=$HOME/.zshrc}"'
 alias lrc='editor "$HOME/.local.zsh"'
 alias t7='tail -f -n 700'
 alias npmr='npm run'

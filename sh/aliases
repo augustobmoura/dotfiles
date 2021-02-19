@@ -13,6 +13,10 @@ cds() {
 	cd "$(printf "%s/" "$@")"
 }
 
+fzf() {
+	fzf "$@" | xc -f
+}
+
 alias hd="${HEXDUMP_CMD:-hd}"
 alias ll="$LS_COMMAND -lah"
 alias l="ll"

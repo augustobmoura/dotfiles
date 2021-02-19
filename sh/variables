@@ -23,6 +23,8 @@ _is_executable() {
 	return
 }
 
+export SAVEHIST=300000
+
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 
 export DOWNLOADS_DIR="$(_choose "test -d" "$HOME/Downloads" "$HOME/Transferências")"

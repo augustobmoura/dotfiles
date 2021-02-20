@@ -32,6 +32,10 @@ set $right l
 
 set $mod Mod4
 
+# Key Alias
+set $F13 XF86Tools
+set $F15 XF86Launch6
+
 set $term i3-sensible-terminal
 
 # use Mouse+$mode to drag floating windows to their wanted position
@@ -218,8 +222,7 @@ bindsym XF86Calculator exec gnome-calculator
 bindsym $mod+XF86Calculator exec gnome-calendar
 
 # Toggle keyboard layout
-bindsym $mod+y exec togglekbd
-bindsym XF86Tools exec togglekbd
+bindsym $F15 exec togglekbd
 
 # Print screen
 bindsym --release Print exec flameshot gui

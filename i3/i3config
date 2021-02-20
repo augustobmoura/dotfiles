@@ -241,4 +241,4 @@ for_window [class="jetbrains-idea" title="^Changes between .* and .*$"] floating
 
 # auto start apps, if available
 exec which nm-applet && nm-applet
-#exec which kdeconnect-indicator && kdeconnect-indicator
+exec which kdeconnect-indicator && kdeconnect-indicator

@@ -46,7 +46,7 @@ if _is_executable fd; then
 fi
 
 export OPENER=$(_choose _is_executable rifle xdg-open)
-export TERMINAL=$(_choose _is_executable alacritty gnome-terminal xterm)
+export TERMINAL=$(_choose _is_executable sensible-terminal alacritty gnome-terminal xterm)
 export EDITOR=$(_choose _is_executable nvim vim vi nano emacs)
 export XEDITOR=$(_choose _is_executable gnvim gvim mousepad kate gedit ||
 	echo "$TERMINAL -e $EDITOR")

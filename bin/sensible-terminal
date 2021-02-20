@@ -1,0 +1,26 @@
+#!/bin/sh
+# Adapted from i3-senible-terminal
+#
+# This code is released in public domain by Han Boetes <han@mijncomputer.nl>
+#
+# This script tries to exec a terminal emulator by trying some known terminal
+# emulators.
+#
+# We welcome patches that add distribution-specific mechanisms to find the
+# preferred terminal emulator. On Debian, there is the x-terminal-emulator
+# symlink for example.
+
+# Try to prevent recursive behavior
+if { expr "$TERMINAL" : '.*sensible' || expr "$TERMINAL" : ".*$(basename "$0")"; } > /dev/null 2>&1; then
+    TERMINAL=""
+fi
+
+for terminal in "$TERMINAL" alacritty x-terminal-emulator urxvt rxvt gnome-terminal kitty st termit terminator Eterm aterm uxterm xterm roxterm xfce4-terminal termite lxterminal mate-terminal terminology qterminal lilyterm tilix terminix konsole; do
+    if [ -n "$terminal" ] && command -v "$terminal" > /dev/null 2>&1; then
+        exec "$terminal" "$@"
+    fi
+done
+
+echo "No terminal detected"
+exit 1
+

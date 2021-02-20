@@ -218,6 +218,7 @@ bindsym $mod+XF86Calculator exec gnome-calendar
 
 # Toggle keyboard layout
 bindsym $mod+y exec togglekbd
+bindsym XF86Tools exec togglekbd
 
 # Print screen
 bindsym --release Print exec flameshot gui

@@ -11,8 +11,7 @@ export fpath=("$HOME/functions" "$DOTFILES_HOME/zsh/functions" $fpath)
 export ZSH="$DOTFILES_HOME/zsh/plugins/oh-my-zsh"
 
 function isjetbrains() {
-	[[ $TERMINAL_EMULATOR =~ 'JetBrains-JediTerm' ]]
-	return 
+	[[ $TERMINAL_EMULATOR =~ 'JetBrains-JediTerm' ]] || return
 }
 
 function cmd_exists() {
@@ -22,8 +21,7 @@ function cmd_exists() {
 
 function isvscode() {
 	# Needs to configure VSCode to pass this env var
-	[[ $TERMINAL_EMULATOR =~ 'VSCode' ]]
-	return
+	[[ $TERMINAL_EMULATOR =~ 'VSCode' ]] || return
 }
 
 path=(
@@ -38,6 +36,10 @@ path=(
 # ---
 
 # Config
+if [ -n "$NO_TMUX" ];  then
+	ZSH_TMUX_AUTOSTART=false
+fi
+
 export ZSH_TMUX_AUTOSTART=${ZSH_TMUX_AUTOSTART:-true}
 export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false

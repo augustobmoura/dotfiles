@@ -28,6 +28,3 @@
 [submodule "fzf"]
 	path = fzf
 	url = https://github.com/junegunn/fzf.git
-[submodule "mons"]
-	path = mons
-	url = https://github.com/Ventto/mons.git

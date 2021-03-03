@@ -1,5 +1,5 @@
 [kubernetes]
-disabled = true # disabled for performance reasons
+disabled = false
 
 [status]
 disabled = false

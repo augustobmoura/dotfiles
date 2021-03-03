@@ -1,37 +1,64 @@
 #! /usr/bin/env sh
 
-set -e
+set -eu
+
+KBD_LAYOUTS="${KBD_LAYOUTS:-br: us:}"
+
+exists() {
+	which "$1" > /dev/null 2>&1
+	return
+}
 
 current_layout() {
-	setxkbmap -query | awk '/layout/{print $2}'
+	setxkbmap -query | awk '
+		/variant/ { variant = $2 }
+		/layout/ { layout = $2 }
+		END { print layout ":" variant }
+	'
 }
 
 set_layout() {
-	setxkbmap "$1"
+	setxkbmap "$@"
 }
 
 notify() {
-	notify-send -t 1500 "$@"
+	if exists notify-send; then
+		notify-send -t 1500 "$@"
+	fi
 }
 
-exists() {
-	which "$1" >/dev/null 2>&1
-	return $?
-}
-
-# Toggles keyboard layout between us and br
-main() {
-	current=$(current_layout)
-
-	next=br
-	if [ "$current" = br ]; then
-		next=us
+toggle() (
+	if [ $# -le 1 ]; then
+		return 0
 	fi
 
-	set_layout "$next"
+	current="$1"
+	shift
 
-	if exists notify-send; then
-		notify "keyboard: $next"
+	should_print=
+
+	for arg; do
+		if [ -n "$should_print" ]; then
+			printf "%s\n" "$arg"
+			return
+		fi
+
+		if [ "$arg" = "$current" ]; then
+			should_print=1
+		fi
+	done
+
+	printf "%s\n" "$1"
+)
+
+main() {
+	current="$(current_layout)"
+
+	next="$(toggle "$current" $KBD_LAYOUTS)"
+
+	if [ "$current" != "$next" ]; then
+		set_layout "${next%%:*}" "${next##*:}" 
+		notify "${next%%:}"
 	fi
 }
 

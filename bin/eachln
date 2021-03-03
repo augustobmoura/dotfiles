@@ -15,13 +15,5 @@ if [ "$1" = -0 ] && [ -z "$_escaped" ]; then
 	shift
 fi
 
-if [ $# -gt 0 ]; then
-	printf "%s" "$1"
-	shift
-fi
-
-while [ $# -gt 0 ]; do
-	printf "$_sep%s" "$1"
-	shift
-done
+printf "%s$_sep" "$@"
 

@@ -22,9 +22,15 @@ let g:is_bash = 1
 " Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>
 
-" Make shortcut
-nnoremap <C-m> :make<CR>
+" Coc shortcuts
+nmap <leader>aa :CocAction<CR>
+vmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>b <Plug>(coc-format)
 
+" NERDTree shortcuts
+nmap <leader>ne :NERDTreeFocus<CR>
+nmap <leader>nf :NERDTreeFind<CR>
 
 let plugged_path = '~/.local/share/nvim/plugged'
 
@@ -126,9 +132,6 @@ nnoremap \| :Files<CR>
 
 " Set prettier command
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
-vmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>b <Plug>(coc-format)
 
 " ---
 " Config for CoC, mostly coppied from the example configuration

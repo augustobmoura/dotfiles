@@ -3,6 +3,7 @@ set nu rnu
 set backup
 set splitbelow splitright
 set encoding=UTF-8
+set foldlevel=30
 
 " Invisibles
 set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·
@@ -21,6 +22,9 @@ let g:is_bash = 1
 
 " Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>
+
+" Make shortcut
+nnoremap <C-m> :make<CR>
 
 " Coc shortcuts
 nmap <leader>aa :CocAction<CR>
@@ -50,6 +54,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
+Plug 'tyru/open-browser.vim'
+Plug 'weirongxu/plantuml-previewer.vim'
 
 " Editor tools
 Plug 'mattn/emmet-vim'

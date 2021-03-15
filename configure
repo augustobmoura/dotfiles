@@ -43,7 +43,7 @@ realpath() {
 mv_to_non_existent() {
 	file_name="$1"
 
-	if ! [ -e "$file_name"]; then
+	if ! [ -e "$file_name" ]; then
 		return 0
 	fi
 
@@ -217,6 +217,8 @@ declare_resources() {
 	# VIM
 	resource "neovim/init.vim" "$HOME/.vimrc"
 	resource "neovim/init.vim" "$HOME/.config/nvim/init.vim"
+	resource "neovim/after" "$HOME/.config/nvim/after"
+	resource "neovim/after" "$HOME/.vim/after"
 	resource "neovim/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
 	resource "neovim/plug.vim" "$HOME/.vim/autoload/plug.vim"
 
@@ -240,8 +242,15 @@ main() {
 
 	cmd=
 	resources=
+	first_cmd=
+	if [ $# -lt 1 ]; then
+		log "You need to specify a directory or the --all switch"
+		first_cmd=ls
+	else
+		first_cmd="$1"
+	fi
 
-	case "$1" in
+	case "$first_cmd" in
 		list|ls)
 			list_resources
 			exit 0
@@ -256,7 +265,7 @@ main() {
 			;;
 
 		*)
-			die "Unkown command $1. Possible commands: list, install, uninstall"
+			die "Unkown command $first_cmd. Possible commands: list, install, uninstall"
 			;;
 	esac
 
@@ -264,7 +273,7 @@ main() {
 
 	if [ "$cmd" = install ] || [ "$cmd" = uninstall ]; then
 		if [ $# -gt 0 ]; then
-			if [ "$1" = --all ]; then
+			if [ "$first_cmd" = --all ]; then
 				resources="$RESOURCES"
 			else
 				for arg; do

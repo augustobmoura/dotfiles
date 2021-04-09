@@ -78,6 +78,7 @@ plugins=(
 	emoji
 	kubectl
 	bgnotify
+	ant
 	#minikube # Giving some weird prints in random commands, disabled for now
 )
 

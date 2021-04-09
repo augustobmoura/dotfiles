@@ -81,6 +81,7 @@ function! Install_coc_extensions()
 		\'coc-angular',
 		\'coc-calc',
 		\'coc-clangd',
+		\'coc-snippets',
 		\'coc-css',
 		\'coc-emmet',
 		\'coc-eslint',

@@ -6,7 +6,7 @@ fi
 # Path to your oh-my-zsh installation.
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 
-export fpath=("$HOME/functions" "$DOTFILES_HOME/zsh/functions" $fpath)
+export fpath=("$HOME/.zsh/functions" "$DOTFILES_HOME/zsh/functions" $fpath)
 
 export ZSH="$DOTFILES_HOME/zsh/plugins/oh-my-zsh"
 

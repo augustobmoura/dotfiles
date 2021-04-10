@@ -107,6 +107,10 @@ link_resource() {
 
 	mkdir -p "$(dirname "$dest_file")"
 
+	if [ -L "$dest_file" ] && ! [ -e "$dest_file" ]; then
+		log "Removing broken link $dest_file"
+		rm "$dest_file"
+	fi
 
 	# Destination file already exists
 	if [ -e "$dest_file" ]; then
@@ -273,7 +277,7 @@ main() {
 
 	if [ "$cmd" = install ] || [ "$cmd" = uninstall ]; then
 		if [ $# -gt 0 ]; then
-			if [ "$first_cmd" = --all ]; then
+			if [ "$1" = --all ]; then
 				resources="$RESOURCES"
 			else
 				for arg; do

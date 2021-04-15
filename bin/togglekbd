@@ -6,7 +6,6 @@ KBD_LAYOUTS="${KBD_LAYOUTS:-br: us:}"
 
 exists() {
 	which "$1" > /dev/null 2>&1
-	return
 }
 
 current_layout() {
@@ -32,23 +31,23 @@ toggle() (
 		return 0
 	fi
 
-	current="$1"
+	current="${1:-}"
 	shift
 
 	should_print=
 
 	for arg; do
-		if [ -n "$should_print" ]; then
+		if [ "$should_print" ]; then
 			printf "%s\n" "$arg"
 			return
 		fi
 
-		if [ "$arg" = "$current" ]; then
+		if [ "x$arg" = "x$current" ]; then
 			should_print=1
 		fi
 	done
 
-	printf "%s\n" "$1"
+	printf "%s\n" "${1:-$current}"
 )
 
 main() {

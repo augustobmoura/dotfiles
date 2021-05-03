@@ -1,8 +1,3 @@
-# Uncoment to skip config (test in )
-if [ -n "$AGT_SKIP_CONFIG" ]; then
-	return 0
-fi
-
 # Path to your oh-my-zsh installation.
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 
@@ -10,25 +5,33 @@ export fpath=("$HOME/.zsh/functions" "$DOTFILES_HOME/zsh/functions" $fpath)
 
 export ZSH="$DOTFILES_HOME/zsh/plugins/oh-my-zsh"
 
-function isjetbrains() {
-	[[ $TERMINAL_EMULATOR =~ 'JetBrains-JediTerm' ]] || return
+if ! type is_executable &> /dev/null; then
+	function is_executable {
+		type "$@" &> /dev/null
+	}
+fi
+
+function isjetbrains {
+	[[ "${TERMINAL_EMULATOR:l}" = *jetbrains* ]]
 }
 
-function cmd_exists() {
-	type "$@" &> /dev/null
-	return
+function isvscode {
+	[[ "${TERM_PROGRAM:l}" = *vscode* ]]
 }
 
-function isvscode() {
-	# Needs to configure VSCode to pass this env var
-	[[ $TERMINAL_EMULATOR =~ 'VSCode' ]] || return
-}
+LOCAL_PATH=("$HOME/"{bin,.local/bin} "$DOTFILES_HOME/bin")
+export LOCAL_PATH
 
+# Keeps PATH deduped
+typeset -U LOCAL_PATH PATH path
+
+# Add this directories now, because we gonna need them for other scripts
+# We fix the priority again at the end in the case that some script gets
+# prioritized over the local ones
 path=(
-	"$HOME/.local/bin"
-	"$DOTFILES_HOME/bin"
-	$path
+	"${LOCAL_PATH[@]}"
 	"$HOME/.cargo/bin"
+	"${path[@]}"
 )
 
 # ---
@@ -53,7 +56,7 @@ if isjetbrains || isvscode; then
 fi
 
 # Should load before omz for custom directoty configuration
-if cmd_exists direnv; then
+if is_executable direnv; then
 	eval "$(direnv hook zsh)"
 fi
 
@@ -108,7 +111,7 @@ export BASE16_SHELL="$DOTFILES_HOME/sh/base16-shell/"
 		eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 # Applies theme
-cmd_exists base16_seti && base16_seti
+is_executable base16_seti && base16_seti
 
 # Enable autosuggestions if exists
 if [ -e "$DOTFILES_HOME/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
@@ -117,42 +120,52 @@ fi
 
 # This speeds up pasting w/ autosuggest
 # https://github.com/zsh-users/zsh-autosuggestions/issues/238
-function pasteinit() {
-	OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
-	zle -N self-insert url-quote-magic
+function fix_paste {
+	function pasteinit {
+		OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+		zle -N self-insert url-quote-magic
+	}
+
+	function  pastefinish {
+		zle -N self-insert $OLD_SELF_INSERT
+	}
+	zstyle :bracketed-paste-magic paste-init pasteinit
+	zstyle :bracketed-paste-magic paste-finish pastefinish
 }
+fix_paste
 
-function  pastefinish() {
-	zle -N self-insert $OLD_SELF_INSERT
-}
-zstyle :bracketed-paste-magic paste-init pasteinit
-zstyle :bracketed-paste-magic paste-finish pastefinish
-
-# Applies sdkman if configured, I mostly use asdf by now, but whatever
-export SDKMAN_DIR="$HOME/.sdkman"
-[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# Applies n if configured, I mostly use asdf by now, but whatever
-if cmd_exists n; then
-	export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+# Applies sdkman if configured, I mostly use asdf now, but whatever
+SDKMAN_DIR="$HOME/.sdkman"
+if [ -d "$SDKMAN_DIR" ]; then
+	[ -r "$SDKMAN_DIR/bin/sdkman-init.sh" ] && SDKMAN_DIR="$SDKMAN_DIR" source "$SDKMAN_DIR/bin/sdkman-init.sh"
+	export SDKMAN_DIR
 fi
+
+# Applies n if configured, I mostly use asdf now, but whatever
+N_PREFIX="${N_PREFIX:-$HOME/n}"
+if [ -d "$N_PREFIX" ]; then
+	path+=("$N_PREFIX/bin")
+	export N_PREFIX
+fi
+
 
 if [ -f "$ASDF_DIR/plugins/java/set-java-home.zsh" ]; then
 	. "$ASDF_DIR/plugins/java/set-java-home.zsh"
 fi
 
 # Machine local configuration
-if [ -e "$HOME/.local.zsh" ]; then
-	source "$HOME/.local.zsh"
+: "${LOCAL_RC_FILE:=$HOME/.local.zsh}" 
+if [ -r "$LOCAL_RC_FILE" ]; then
+	source "$LOCAL_RC_FILE"
 fi
 
 # Bind alt-j & alt-k to Down & Up for historic in the home row
 bindkey -s '^[j' '^[OB'
 bindkey -s '^[k' '^[OA'
 
-if [[ $ZSH_THEME = '' ]]; then
+if ! [ $ZSH_THEME ]; then
 	# Choose theme, prefer starship and then Pure
-	if cmd_exists starship; then
+	if is_executable starship; then
 		# Activates starship
 		eval "$(starship init zsh)"
 	else
@@ -164,7 +177,7 @@ fi
 
 # Better expansion on ^X*
 # Adapted from the globalias plugin
-globalias() {
+function globalias {
 	zle _expand_alias
 	zle expand-word
 	zle self-insert
@@ -173,10 +186,14 @@ globalias() {
 	zle backward-delete-char
 }
 zle -N globalias
-
 bindkey '^X*' globalias
 
 if [ -e "$DOTFILES_HOME/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
 	source "$DOTFILES_HOME/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
+# Always gives priority for local binaries
+path=(
+	"${LOCAL_PATH[@]}"
+	"${path[@]}"
+)

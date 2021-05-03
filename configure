@@ -2,7 +2,44 @@
 
 set -eu
 
-export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+log() {
+	printf "%s\n" "$1" >&2
+}
+
+die() {
+	log "$1"
+	exit "${2:-1}"
+}
+
+silent() {
+	"$@" > /dev/null 2>&1
+}
+
+commandv() (
+	cmd=
+	for arg; do
+		if cmd="$(env which "$arg")"; then
+			printf "%s\n" "$cmd"
+			return 0
+		fi
+	done
+	return 1
+)
+
+realpath() (
+	cmd="$(commandv realpath grealpath readlink)"
+	if [ "${cmd##*/}" = readlink ]; then
+		env "$cmd" -f "$1"
+	else
+		env "$cmd" "$1"
+	fi
+)
+
+if ! [ "${DOTFILES_HOME-}" ]; then
+	DOTFILES_HOME="$(realpath "$0")"
+fi
+
+export DOTFILES_HOME
 
 export RESOURCES=
 
@@ -13,31 +50,6 @@ YES=0
 
 # Confirm options
 always_options=
-
-log() {
-	printf "%s\n" "$1" >&2
-}
-
-
-die() {
-	log "$1"
-	exit "${2:-1}"
-}
-
-
-silent() {
-	"$@" > /dev/null 2>&1
-}
-
-
-realpath() {
-	if silent hash realpath; then
-		command realpath "$1"
-	elif silent hash readlink; then
-		command readlink -f "$1"
-	fi
-}
-
 
 # Choose a name not existent to rename the file, echoing it at the end
 mv_to_non_existent() {
@@ -97,6 +109,18 @@ first_dirname() {
 	done
 
 	echo "$prev"
+}
+
+configure_profile() {
+	_text_dotfiles="$(realpath "$DOTFILES_HOME")"
+	if [ "${DOTFILES_HOME%%$HOME/}" != "$DOTFILES_HOME" ]; then
+		_text_dotfiles='$HOME/'"${DOTFILES_HOME%%$HOME/}"
+	fi
+	_source_profile_line="export DOTFILES_HOME=\"$_text_dotfiles\" && . \"\$DOTFILES_HOME/sh/profile\""
+
+	if ! grep -Fq "$_source_profile_line" .profile; then
+		printf "%s\n" "$_source_profile_line" >> ~/.profile
+	fi
 }
 
 

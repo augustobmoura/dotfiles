@@ -20,6 +20,10 @@ nnoremap <C-w>% :vnew<CR>
 " of the time anyways
 let g:is_bash = 1
 
+" Disable Language Server Protocol for Ale, because CoC will already handle
+" that
+let g:ale_disable_lsp = 1
+
 " Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>
 
@@ -56,6 +60,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tyru/open-browser.vim'
 Plug 'weirongxu/plantuml-previewer.vim'
+"Plug 'dense-analysis/ale'
 
 " Editor tools
 Plug 'mattn/emmet-vim'

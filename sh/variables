@@ -1,53 +1,104 @@
 #! /usr/bin/env sh
 
 # It's also a script in $DOTFILES_HOME/bin
-# Mainly for compatiblity in envs without the bin on the path
-_choose() (
-	test_cmd="$1"
-	shift
-
-	for opt; do
-		if eval " > /dev/null $test_cmd \"$opt\""; then
-			echo "$opt"
-			return
-		fi
-	done
-
-	return 1
-)
+# Duplicated for compatiblity in envs without the bin on the path
+if ! type is_executable > /dev/null 2>&1; then
+	is_executable() {
+		type "$@" > /dev/null 2>&1
+	}
+fi
 
 # It's also a script in $DOTFILES_HOME/bin
-# Mainly for compatiblity in envs without the bin on the path
-_is_executable() {
-	type "$1" > /dev/null 2>&1
-	return
+# Duplicated for compatiblity in envs without the bin on the path
+if ! is_executable choose; then
+	choose() (
+		test_cmd="$1"
+		shift
+
+		for opt; do
+			if eval " > /dev/null $test_cmd \"$opt\""; then
+				echo "$opt"
+				return
+			fi
+		done
+
+		return 1
+	)
+fi
+
+first_line() {
+	line=
+	IFS= read -r line
+	printf "%s" "$line"
 }
 
 export SAVEHIST=300000
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
 
-export DOWNLOADS_DIR="$(_choose "test -d" "$HOME/Downloads" "$HOME/Transferências")"
-export DOCUMENTS_DIR="$(_choose "test -d" "$HOME/Documents" "$HOME/Documentos")"
-export WORKSPACE_DIR="$(_choose "test -d" "$HOME/workspace" "$HOME/des")"
+export DOWNLOADS_DIR="$(choose "test -d" "$HOME/Downloads" "$HOME/Transferências")"
+export DOCUMENTS_DIR="$(choose "test -d" "$HOME/Documents" "$HOME/Documentos")"
+export WORKSPACE_DIR="$(choose "test -d" "$HOME/workspace" "$HOME/des")"
 
 export ZRC_FILE="$HOME/.zshrc"
 export PAGER='less -F -X'
 export GIT_PAGER='$PAGER'
-export LS_COMMAND="$(_choose _is_executable exa lsd ls)"
-export HEXDUMP_CMD="$(_choose _is_executable hexyl hd hexdump xxd)"
+export LS_COMMAND="$(choose is_executable exa lsd ls || echo false)"
+export HEXDUMP_CMD="$(choose is_executable hexyl hd hexdump xxd || echo false)"
 
-if _is_executable delta; then
+RC_FILE="$HOME/.profile"
+if [ "$ZSH_VERSION" ]; then
+	RC_FILE="$HOME/.zshrc"
+elif [ "$BASH_VERSION" ]; then
+	RC_FILE="$HOME/.bashrc"
+fi
+export RC_FILE
+
+LOCAL_RC_FILE="${RC_FILE##*/}"
+LOCAL_RC_FILE="$HOME/local.${LOCAL_RC_FILE#.}"
+export LOCAL_RC_FILE
+
+
+if is_executable delta; then
 	export GIT_PAGER=delta
 fi
 
-if _is_executable fd; then
+if is_executable fd; then
 	export FZF_DEFAULT_COMMAND='fd --type f'
 fi
 
-export OPENER=$(_choose _is_executable rifle xdg-open)
-export TERMINAL=$(_choose _is_executable sensible-terminal alacritty gnome-terminal xterm)
-export EDITOR=$(_choose _is_executable nvim vim vi nano emacs)
-export XEDITOR=$(_choose _is_executable gnvim gvim mousepad kate gedit ||
-	echo "$TERMINAL -e $EDITOR")
+export OPENER=$(choose is_executable rifle xdg-open || echo false)
+export TERMINAL=$(choose is_executable sensible-terminal alacritty gnome-terminal xterm || echo "${TERMINAL:-false}")
+export EDITOR=$(choose is_executable nvim vim vi nano emacs || echo false)
+export XEDITOR=$(choose is_executable gnvim gvim mousepad kate gedit || echo false)
 
+# Configure coc to the global nodejs installation
+if is_executable node; then
+	COC_NODE_PATH="${COC_NODE_PATH:-$(cd ~ && "$(command -v asdf env | first_line)" which node)}"
+	export COC_NODE_PATH
+fi
+
+# Global npm installs
+if is_executable npm; then
+	GLOBAL_NPM_CMD=
+
+	if is_executable asdf; then
+		exit_code=0
+
+		GLOBAL_NPM_CMD="$(cd ~ && asdf which npm)" || exit_code=$?
+
+		if [ "$exit_code" != 0 ]; then
+			GLOBAL_NPM_CMD=
+		fi
+	fi
+
+	if ! [ "$GLOBAL_NPM_CMD" ]; then
+		GLOBAL_NPM_CMD="$(cd ~ && which npm)"
+	fi
+
+	GLOBAL_NPM_PREFIX="$("$GLOBAL_NPM_CMD" config get prefix)"
+
+	PATH="$GLOBAL_NPM_PREFIX/bin:$PATH"
+
+	export GLOBAL_NPM_INSTALL GLOBAL_NPM_PREFIX
+fi

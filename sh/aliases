@@ -17,21 +17,27 @@ f() {
 	fzf "$@" | xc -f
 }
 
+editor() {
+	"${EDITOR:-vi}" "$@"
+}
+
+o() {
+	"${XOPENER:-xdg-open}" "$@"
+}
+
 alias hd="${HEXDUMP_CMD:-hd}"
 alias ll="$LS_COMMAND -lah"
 alias l="ll"
-alias editor='${EDITOR:-vi}'
 alias reloadrc='source $RC_FILE'
-alias rc='editor "${RC_FILE:=$HOME/.zshrc}"'
-alias lrc='editor "$HOME/.local.zsh"'
+alias rc='editor "$RC_FILE"'
+alias lrc='editor "$LOCAL_RC_FILE"'
 alias t7='tail -f -n 700'
 alias npmr='npm run'
 alias dotfiles='cd "${DOTFILES_HOME:-"$HOME"/dotfiles}"'
-alias o='${XOPENER:-xdg-open}'
 alias gs='git status'
 alias r='ranger'
 alias bc='bc -lq'
-alias tkothers='tmux list-sessions | awk -F: "!/attached/{print \$1}" | xargs -n1 tmux kill-session -t'
+alias tkothers='tmux list-sessions | awk -F: "! /attached/ { print \$1 }" | xargs -n1 tmux kill-session -t'
 alias dfh='df -h'
 alias please='sudo'
 alias des='cds "$HOME/des"'

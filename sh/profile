@@ -1,0 +1,26 @@
+#! /usr/bin/env sh
+
+export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+
+if [ -d "$HOME/.asdf" ]; then
+	PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
+fi
+
+if [ -d "$DOTFILES_HOME" ]; then
+	. "$DOTFILES_HOME/sh/variables"
+	. "$DOTFILES_HOME/sh/aliases"
+	PATH="$DOTFILES_HOME/bin:$PATH"
+fi
+
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+	PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+	PATH="$HOME/.local/bin:$PATH"
+fi

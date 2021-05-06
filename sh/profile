@@ -1,26 +1,20 @@
 #! /usr/bin/env sh
 
-export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+# Just for the case it is not being called in a profile env
+# I don't know if is even possible, but better safe than sorry
+export PATH
 
-if [ -d "$HOME/.asdf" ]; then
-	PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
-fi
+for dir in "$HOME/.cargo/bin" "$HOME/go/bin" "$HOME/bin" "$HOME/.local/bin" "$HOME/.asdf/bin" "$HOME/.asdf/shims"; do
+	if [ -d "$dir" ]; then
+		PATH="$dir:$PATH"
+	fi
+done
+
+DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
+export DOTFILES_HOME
 
 if [ -d "$DOTFILES_HOME" ]; then
+	PATH="$DOTFILES_HOME/bin:$PATH"
 	. "$DOTFILES_HOME/sh/variables"
 	. "$DOTFILES_HOME/sh/aliases"
-	PATH="$DOTFILES_HOME/bin:$PATH"
-fi
-
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-	PATH="$HOME/bin:$PATH"
-fi
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-	PATH="$HOME/.local/bin:$PATH"
 fi

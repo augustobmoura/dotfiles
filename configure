@@ -111,17 +111,18 @@ first_dirname() {
 	echo "$prev"
 }
 
-configure_profile() {
+configure_profile() (
+	set -x
 	_text_dotfiles="$(realpath "$DOTFILES_HOME")"
 	if [ "${DOTFILES_HOME%%$HOME/}" != "$DOTFILES_HOME" ]; then
 		_text_dotfiles='$HOME/'"${DOTFILES_HOME%%$HOME/}"
 	fi
 	_source_profile_line="export DOTFILES_HOME=\"$_text_dotfiles\" && . \"\$DOTFILES_HOME/sh/profile\""
 
-	if ! grep -Fq "$_source_profile_line" .profile; then
+	if ! grep -Fq "$_source_profile_line" ~/.profile; then
 		printf "%s\n" "$_source_profile_line" >> ~/.profile
 	fi
-}
+)
 
 
 # Soft links with confirmation of overriding
@@ -292,36 +293,46 @@ main() {
 			cmd=uninstall
 			;;
 
+		profile)
+			cmd=profile
+			;;
+
 		*)
-			die "Unkown command $first_cmd. Possible commands: list, install, uninstall"
+			die "Unkown command $first_cmd. Possible commands: list, install, uninstall, profile"
 			;;
 	esac
 
 	shift
 
-	if [ "$cmd" = install ] || [ "$cmd" = uninstall ]; then
-		if [ $# -gt 0 ]; then
-			if [ "$1" = --all ]; then
-				resources="$RESOURCES"
-			else
-				for arg; do
-					new_resources="$(
-						printf "%s" "$RESOURCES" \
-							| { grep "^$arg" || die "No resource found for \"$arg\""; }
-					)"
-					resources="$(printf "%s\n%s" "$resources" "$new_resources")"
-				done
+	case "$cmd" in
+		install|uninstall)
+			if [ $# -gt 0 ]; then
+				if [ "$1" = --all ]; then
+					resources="$RESOURCES"
+				else
+					for arg; do
+						new_resources="$(
+							printf "%s" "$RESOURCES" \
+								| { grep "^$arg" || die "No resource found for \"$arg\""; }
+						)"
+						resources="$(printf "%s\n%s" "$resources" "$new_resources")"
+					done
 
-				resources="$(printf "%s" "$resources" | tail -n +2 | sort -u)"
+					resources="$(printf "%s" "$resources" | tail -n +2 | sort -u)"
+				fi
 			fi
-		fi
 
-		if [ -z "$resources" ]; then
-			die "No resource given to $cmd" 12
-		fi
+			if [ -z "$resources" ]; then
+				die "No resource given to $cmd" 12
+			fi
 
-		process_lines_as_arguments "$cmd" "$resources"
-	fi
+			process_lines_as_arguments "$cmd" "$resources"
+			;;
+
+		profile)
+			configure_profile
+			;;
+	esac
 }
 
 main "$@"

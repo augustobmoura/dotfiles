@@ -19,6 +19,10 @@ function isvscode {
 	[[ "${TERM_PROGRAM:l}" = *vscode* ]]
 }
 
+function isvim {
+	[[ "$VIM" ]]
+}
+
 LOCAL_PATH=("$HOME/"{bin,.local/bin} "$DOTFILES_HOME/bin")
 export LOCAL_PATH
 
@@ -51,7 +55,7 @@ export ZSH_TMUX_AUTOCONNECT=false
 export DISABLE_AUTO_UPDATE=true
 
 # Tmux is usually buggy on embedded terminals, also is kinda unecessary in this context
-if isjetbrains || isvscode; then
+if isjetbrains || isvscode || isvim; then
 	export ZSH_TMUX_AUTOSTART=false
 fi
 

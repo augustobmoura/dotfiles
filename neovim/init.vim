@@ -60,13 +60,15 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tyru/open-browser.vim'
 Plug 'weirongxu/plantuml-previewer.vim'
-"Plug 'dense-analysis/ale'
+Plug 'AndrewRadev/tagalong.vim'
+Plug 'alvan/vim-closetag'
 
 " Editor tools
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
+Plug 'andymass/vim-matchup'
 
 " Additional tools
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
@@ -80,11 +82,13 @@ Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
-function! Install_coc_extensions()
-	let cocExtensions = [
+let g:coc_global_extensions = [
 		\'coc-actions',
 		\'coc-angular',
 		\'coc-calc',
+		\'coc-pyright',
+		\'coc-htmldjango',
+		\'coc-diagnostic',
 		\'coc-clangd',
 		\'coc-snippets',
 		\'coc-css',
@@ -100,9 +104,6 @@ function! Install_coc_extensions()
 		\'coc-tsserver',
 		\'coc-xml',
 		\'coc-yaml']
-
-	execute 'CocInstall -sync ' . join(cocExtensions, ' ')
-endfunction
 
 if ! has('nvim') 
 	let g:coc_disable_startup_warning = 1

@@ -240,7 +240,7 @@ declare_resources() {
 
 	# Tmux
 	resource "tmux/oh-my-tmux/.tmux.conf" "$HOME/.tmux.conf"
-	resource "tmux/.tmux.conf.local" "$HOME/.tmux.conf.local"
+	resource "tmux/local.tmux.conf" "$HOME/.tmux.conf.local"
 	resource "tmux/tpm" "$HOME/.tmux/plugins/tpm"
 
 	# VIM

@@ -4,6 +4,7 @@ set backup
 set splitbelow splitright
 set encoding=UTF-8
 set foldlevel=30
+set mouse=a
 
 " Invisibles
 set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·
@@ -79,6 +80,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
+Plug 'dhruvasagar/vim-zoom'
 
 call plug#end()
 

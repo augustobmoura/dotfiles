@@ -4,10 +4,6 @@ set -eu
 
 KBD_LAYOUTS="${KBD_LAYOUTS:-br: us:}"
 
-exists() {
-	which "$1" > /dev/null 2>&1
-}
-
 current_layout() {
 	setxkbmap -query | awk '
 		/variant/ { variant = $2 }
@@ -21,7 +17,7 @@ set_layout() {
 }
 
 notify() {
-	if exists notify-send; then
+	if command -v notify-send > /dev/null 2>&1; then
 		notify-send -t 1500 "$@"
 	fi
 }

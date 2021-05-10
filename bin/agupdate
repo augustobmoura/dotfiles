@@ -1,0 +1,147 @@
+#! /usr/bin/env sh
+
+set -eu
+
+ME="${0##*/}"
+INSTALL_CONTEXT=
+
+# Colors
+RESET="\033[0m"
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+BLUE="\033[34m"
+MAGENTA="\033[35m"
+CYAN="\033[36m"
+
+COLOR_FILE="$(mktemp)"
+trap "rm '$COLOR_FILE'" EXIT
+
+# Setup kill to children processes
+trap "trap - TERM && pkill -P $$ || true" INT TERM EXIT
+
+next_color() {
+	apply_next=
+	COLOR="$(cat "$COLOR_FILE")"
+	COLOR="${COLOR:-$CYAN}"
+
+	if [ "$COLOR" = "$CYAN" ]; then
+		printf "%s\n" "$RED" > "$COLOR_FILE"
+	else
+		for col in "$RED" "$GREEN" "$YELLOW" "$BLUE" "$MAGENTA" "$CYAN"; do
+			if [ "$apply_next" ]; then
+				printf "%s\n" "$col" > "$COLOR_FILE"
+				break
+			fi
+
+			if [ "$col" = "$COLOR" ]; then
+				apply_next=1
+			fi
+		done
+	fi
+
+	cat "$COLOR_FILE"
+}
+
+silent() {
+	eval > /dev/null 2>&1 "$@"
+}
+
+commandv() {
+	for arg; do
+		if command -v "$arg"; then
+			return 0
+		fi
+	done
+	return 1
+}
+
+say() {
+	if ! [ "$SILENT" ]; then
+		printf "%s: %s\n" "$ME" "$*"
+	fi
+}
+
+ensure_sudo() {
+	sudo -v
+
+	# Keep sudo alive
+	{ while kill -0 "$$"; do sudo -v; sleep 60; done; } > /dev/null 2>&1 &
+
+	printf "%s\n" "$!" 
+}
+
+update_apt() {
+	if apt_cmd="$(commandv apt apt-get)"; then
+		sudo "$apt_cmd" update
+		sudo "$apt_cmd" dist-upgrade -y
+	fi
+}
+
+update_cargo() {
+	if silent commandv cargo; then
+		if ! cargo list | grep -q cargo install-update; then
+			cargo install cargo-update
+		fi
+
+		cargo install-update --all
+	fi
+}
+
+update_snap() {
+	if silent commandv snap; then
+		sudo snap refresh
+	fi
+}
+
+update_npm() {
+	if silent commandv npm; then
+		npm up -g
+	fi
+}
+
+label() {
+	awk -v label="$1" '{ printf "%s: %s\n", label, $0 }'
+}
+
+main() {
+	is_parallel=
+	sudo_pid="$(ensure_sudo)"
+
+	for arg; do
+		case "$arg" in
+			-p|--parallel)
+				is_parallel=1
+				;;
+
+			*) ;;
+		esac
+	done
+
+	for ctx in apt snap cargo npm; do
+		LABEL="$(next_color)$ctx$RESET"
+
+		say "Starting $ctx update..."
+
+		(
+			INSTALL_CONTEXT="$ctx"
+			eval "update_$INSTALL_CONTEXT" 2>&1 | label "$LABEL"
+			say "Done updating $INSTALL_CONTEXT!"
+		) &
+
+		job_pid=$!
+
+		if ! [ "$is_parallel" ]; then
+			wait "$job_pid"
+		fi
+	done
+
+	kill "$sudo_pid"
+
+	if [ "$is_parallel" ]; then
+		say "Waiting for jobs to finish..."
+		wait
+	fi
+}
+
+main "$@"

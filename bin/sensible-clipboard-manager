@@ -1,0 +1,67 @@
+#! /usr/bin/env sh
+
+isx() {
+	type "$1" > /dev/null 2>&1
+}
+
+_start() {
+	if isx copyq; then
+		exec copyq
+	else
+		printf "No-op, clipboard manager not found\n" >&2
+	fi
+}
+
+_show() {
+	if isx copyq; then
+		exec copyq show
+	else
+		printf "No-op, clipboard manager not found\n" >&2
+	fi
+}
+
+_print_help() {
+	printf "Available commands: start, show\n"
+}
+
+main() {
+	cmd=show
+
+	if [ "${1-}" ]; then
+		should_shift=1
+
+		case "$1" in
+			st|start)
+				cmd=start
+				;;
+			sh|show)
+				cmd=show
+				;;
+			--) ;;
+			-*)
+				should_shift=
+				;;
+			*)
+				printf "Command %s not recognized\n" "$arg"
+				_print_help
+				return 1
+				;;
+		esac
+
+		if [ "$should_shift" ]; then
+			shift
+		fi
+	fi
+
+	case "$cmd" in
+		show)
+			_show "$@"
+			;;
+
+		start)
+			_start "$@"
+			;;
+	esac
+}
+
+main "$@"

@@ -107,7 +107,9 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # focus the child container
-bindsym $mod+c focus child
+# I rarely use this, is better to assign $mod+c to the clipboard manager
+# Might reassign it to another bind some day
+#bindsym $mod+c focus child
 
 # move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -225,14 +227,20 @@ bindsym $mod+XF86Calculator exec gnome-calendar
 bindsym $F15 exec togglekbd
 bindsym $mod+y exec togglekbd
 
+# Show clipboard manager
+bindsym $mod+c exec sensible-clipboard-manager show
+
 # Print screen
 bindsym --release Print exec flameshot gui
 
-# Windows better suited for floating
+# ---
+# Windows customizations
+# ---
+
 for_window [class="Gnome-calculator" instance="gnome-calculator"] floating enable
 for_window [class="Gnome-calendar" instance="gnome-calendar"] floating enable
 for_window [class="SimpleScreenRecorder" instance="simplescreenrecorder"] floating enable
-for_window [title="Gerenciador de tarefas - Brave"] floating enable
+for_window [class="copyq"] floating enable
 
 # MSTeams notifications fixes
 for_window [class="Microsoft Teams - Preview" window_type="notification"] floating enable; resize set height 300px
@@ -246,3 +254,4 @@ exec which kdeconnect-indicator && kdeconnect-indicator
 exec which flameshot && flameshot
 exec which compton && compton
 exec which solaar && solaar
+exec which sensible-clipboard-manager && sensible-clipboard-manager start

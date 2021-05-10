@@ -36,7 +36,7 @@ realpath() (
 )
 
 if ! [ "${DOTFILES_HOME-}" ]; then
-	DOTFILES_HOME="$(realpath "$0")"
+	DOTFILES_HOME="$(realpath "$(dirname "$0")")"
 fi
 
 export DOTFILES_HOME

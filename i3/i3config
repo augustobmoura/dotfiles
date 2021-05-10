@@ -241,6 +241,7 @@ for_window [class="Gnome-calculator" instance="gnome-calculator"] floating enabl
 for_window [class="Gnome-calendar" instance="gnome-calendar"] floating enable
 for_window [class="SimpleScreenRecorder" instance="simplescreenrecorder"] floating enable
 for_window [class="copyq"] floating enable
+for_window [class="scrcpy"] floating enable
 
 # MSTeams notifications fixes
 for_window [class="Microsoft Teams - Preview" window_type="notification"] floating enable; resize set height 300px

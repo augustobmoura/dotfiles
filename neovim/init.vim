@@ -29,7 +29,7 @@ let g:ale_disable_lsp = 1
 nmap <Esc> :noh<CR>
 
 " Make shortcut
-nnoremap <C-m> :make<CR>
+nnoremap <C-m> :Make<CR>
 
 " Coc shortcuts
 nmap <leader>aa :CocAction<CR>
@@ -68,7 +68,7 @@ Plug 'alvan/vim-closetag'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 Plug 'andymass/vim-matchup'
 
 " Additional tools
@@ -76,11 +76,15 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 
-" Files management/qol
+" File management
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
+
+" QOL
+Plug 'tpope/vim-dispatch'
 Plug 'dhruvasagar/vim-zoom'
+Plug 'tpope/vim-repeat'
 
 call plug#end()
 

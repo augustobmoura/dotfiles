@@ -86,6 +86,7 @@ plugins=(
 	kubectl
 	bgnotify
 	ant
+	adb
 	#minikube # Giving some weird prints in random commands, disabled for now
 )
 

@@ -78,27 +78,3 @@ if is_executable node; then
 	export COC_NODE_PATH
 fi
 
-# Global npm installs
-if is_executable npm; then
-	GLOBAL_NPM_CMD=
-
-	if is_executable asdf; then
-		exit_code=0
-
-		GLOBAL_NPM_CMD="$(cd ~ && asdf which npm)" || exit_code=$?
-
-		if [ "$exit_code" != 0 ]; then
-			GLOBAL_NPM_CMD=
-		fi
-	fi
-
-	if ! [ "$GLOBAL_NPM_CMD" ]; then
-		GLOBAL_NPM_CMD="$(cd ~ && which npm)"
-	fi
-
-	GLOBAL_NPM_PREFIX="$("$GLOBAL_NPM_CMD" config get prefix)"
-
-	PATH="$GLOBAL_NPM_PREFIX/bin:$PATH"
-
-	export GLOBAL_NPM_INSTALL GLOBAL_NPM_PREFIX
-fi

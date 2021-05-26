@@ -13,7 +13,7 @@ set softtabstop=2
 set shiftwidth=2
 
 " Split windows mappings
-nnoremap <C-w>M <C-w>\| <C-w>_
+nnoremap <C-w>z <C-w>\| <C-w>_
 nnoremap <C-w>% :vnew<CR>
 
 " Mark bash as the default shell syntax
@@ -63,6 +63,7 @@ Plug 'tyru/open-browser.vim'
 Plug 'weirongxu/plantuml-previewer.vim'
 Plug 'AndrewRadev/tagalong.vim'
 Plug 'alvan/vim-closetag'
+Plug 'raimondi/delimitmate'
 
 " Editor tools
 Plug 'mattn/emmet-vim'
@@ -75,6 +76,7 @@ Plug 'andymass/vim-matchup'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-obsession'
 
 " File management
 Plug 'preservim/nerdtree'
@@ -83,7 +85,6 @@ Plug 'airblade/vim-gitgutter'
 
 " QOL
 Plug 'tpope/vim-dispatch'
-Plug 'dhruvasagar/vim-zoom'
 Plug 'tpope/vim-repeat'
 
 call plug#end()

@@ -112,7 +112,6 @@ first_dirname() {
 }
 
 configure_profile() (
-	set -x
 	_text_dotfiles="$(realpath "$DOTFILES_HOME")"
 	if [ "${DOTFILES_HOME%%$HOME/}" != "$DOTFILES_HOME" ]; then
 		_text_dotfiles='$HOME/'"${DOTFILES_HOME%%$HOME/}"
@@ -201,7 +200,7 @@ process_lines_as_arguments() {
 		return 1
 	fi
 
-	eval "set -- $(printf "%s\n" "$_args" | xargs -n1 -I'{}' printf "\"%s\"\n" "{}" | tr \\n " ")"
+	eval "set -- $(printf "%s\n" "$_args" | xargs -I'{}' printf "\"%s\"\n" "{}" | tr \\n " ")"
 
 
 	for res; do
@@ -220,10 +219,6 @@ resource() {
 
 	if ! [ -e "$DOTFILES_HOME/$resource_path" ]; then
 		die "File $resource_path doesn't exist"
-	fi
-
-	if printf "%s\n" "$resource_path" "$destination_path" | grep -q "$(echo \\t)"; then
-		die "Destination or resource contains a tab in the name"
 	fi
 
 	if [ -z "$RESOURCES" ]; then

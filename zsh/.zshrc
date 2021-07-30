@@ -6,22 +6,12 @@ export fpath=("$HOME/.zsh/functions" "$DOTFILES_HOME/zsh/functions" $fpath)
 export ZSH="$DOTFILES_HOME/zsh/plugins/oh-my-zsh"
 
 if ! type is_executable &> /dev/null; then
-	function is_executable {
-		type "$@" &> /dev/null
-	}
+	function is_executable() type "$@" &> /dev/null
 fi
 
-function isjetbrains {
-	[[ "${TERMINAL_EMULATOR:l}" = *jetbrains* ]]
-}
-
-function isvscode {
-	[[ "${TERM_PROGRAM:l}" = *vscode* ]]
-}
-
-function isvim {
-	[[ "$VIM" ]]
-}
+function isjetbrains() [[ "${TERMINAL_EMULATOR:l}" = *jetbrains* ]]
+function isvscode() [[ "${TERM_PROGRAM:l}" = *vscode* ]]
+function isvim() [[ "$VIM" ]]
 
 LOCAL_PATH=("$HOME/"{bin,.local/bin} "$DOTFILES_HOME/bin")
 export LOCAL_PATH
@@ -87,6 +77,8 @@ plugins=(
 	bgnotify
 	ant
 	adb
+	poetry
+	gh
 	#minikube # Giving some weird prints in random commands, disabled for now
 )
 
@@ -153,6 +145,9 @@ if [ -d "$N_PREFIX" ]; then
 	export N_PREFIX
 fi
 
+if [ -d "$HOME/.poetry/bin" ]; then
+	path+=("$HOME/.poetry/bin")
+fi
 
 if [ -f "$ASDF_DIR/plugins/java/set-java-home.zsh" ]; then
 	. "$ASDF_DIR/plugins/java/set-java-home.zsh"

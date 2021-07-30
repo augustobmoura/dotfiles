@@ -28,9 +28,6 @@ let g:ale_disable_lsp = 1
 " Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>
 
-" Make shortcut
-nnoremap <C-m> :Make<CR>
-
 " Coc shortcuts
 nmap <leader>aa :CocAction<CR>
 vmap <leader>f <Plug>(coc-format-selected)
@@ -77,6 +74,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-unimpaired'
 
 " File management
 Plug 'preservim/nerdtree'
@@ -95,7 +93,6 @@ let g:coc_global_extensions = [
 		\'coc-calc',
 		\'coc-pyright',
 		\'coc-htmldjango',
-		\'coc-diagnostic',
 		\'coc-clangd',
 		\'coc-snippets',
 		\'coc-css',

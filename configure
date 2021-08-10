@@ -231,7 +231,7 @@ resource() {
 
 declare_resources() {
 	# Shell
-	resource "zsh/.zshrc" "$HOME/.zshrc"
+	resource "zsh/zshrc.zsh" "$HOME/.zshrc"
 
 	# Tmux
 	resource "tmux/oh-my-tmux/.tmux.conf" "$HOME/.tmux.conf"

@@ -231,7 +231,7 @@ bindsym $mod+y exec togglekbd
 bindsym $mod+c exec sensible-clipboard-manager show
 
 # 1password gui
-bindsym $mod+q exec 1password --toggle
+bindsym $mod+b exec 1password --toggle
 
 # Print screen
 bindsym --release Print exec flameshot gui
@@ -245,6 +245,7 @@ for_window [class="SimpleScreenRecorder" instance="simplescreenrecorder"] floati
 for_window [class="copyq"] floating enable
 for_window [class="scrcpy"] floating enable
 for_window [class="1Password"] floating enable
+for_window [class="zoom" title="^Chat$"] floating enable
 
 # MSTeams notifications fixes
 for_window [class="Microsoft Teams - Preview" window_type="notification"] floating enable; resize set height 300px
@@ -259,4 +260,4 @@ exec which flameshot && flameshot
 exec which compton && compton
 exec which solaar && solaar
 exec which sensible-clipboard-manager && sensible-clipboard-manager start
-exec which 1password && 1password
+exec which 1password && 1password --silent

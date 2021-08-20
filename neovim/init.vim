@@ -28,15 +28,7 @@ let g:ale_disable_lsp = 1
 " Hide search highlighting on double Esc
 nmap <Esc> :noh<CR>
 
-" Coc shortcuts
-nmap <leader>aa :CocAction<CR>
-vmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>b <Plug>(coc-format)
-
-" NERDTree shortcuts
-nmap <leader>ne :NERDTreeFocus<CR>
-nmap <leader>nf :NERDTreeFind<CR>
+let use_telescope = has('nvim-0.5')
 
 let plugged_path = '~/.local/share/nvim/plugged'
 
@@ -70,8 +62,6 @@ Plug 'tpope/vim-commentary'
 Plug 'andymass/vim-matchup'
 
 " Additional tools
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-unimpaired'
@@ -80,6 +70,15 @@ Plug 'tpope/vim-unimpaired'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
+
+" File searching
+if use_telescope
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'nvim-telescope/telescope.nvim'
+else
+	Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
+	Plug 'junegunn/fzf.vim'
+endif
 
 " QOL
 Plug 'tpope/vim-dispatch'
@@ -108,6 +107,30 @@ let g:coc_global_extensions = [
 		\'coc-tsserver',
 		\'coc-xml',
 		\'coc-yaml']
+
+" Coc shortcuts
+nmap <leader>aa :CocAction<CR>
+vmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>b <Plug>(coc-format)
+
+" Telescope/fzf shortcuts
+if use_telescope
+	nnoremap <leader>ff <cmd>Telescope find_files<CR>
+	nnoremap <leader>fg <cmd>Telescope live_grep<CR>
+	nnoremap <leader>fb <cmd>Telescope buffers<CR>
+	nnoremap <leader>fh <cmd>Telescope help_tags<CR>
+	if executable('rg')
+		lua require('telescope').setup{ 'rg', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' }
+	endif
+else
+	nnoremap <leader>ff :Files<CR>
+	nnoremap <leader>fb :Buffers<CR>
+endif
+
+" NERDTree shortcuts
+nmap <leader>ne :NERDTreeFocus<CR>
+nmap <leader>nf :NERDTreeFind<CR>
 
 if ! has('nvim') 
 	let g:coc_disable_startup_warning = 1
@@ -143,9 +166,6 @@ highlight DiffChange term=bold ctermfg=0 ctermbg=4 guifg=#2b2b2b guibg=#6d9cbe
 highlight DiffText   term=reverse cterm=bold ctermfg=0 ctermbg=4 gui=bold guifg=#2b2b2b guibg=#6d9cbe
 
 inoremap <silent><expr> <c-space> coc#refresh()
-
-" ctrl-p
-nnoremap \| :Files<CR>
 
 " Set prettier command
 command! -nargs=0 Prettier :CocCommand prettier.formatFile

@@ -231,7 +231,7 @@ bindsym $mod+y exec togglekbd
 bindsym $mod+c exec sensible-clipboard-manager show
 
 # 1password gui
-bindsym $mod+b exec 1password --toggle
+bindsym $mod+Tab exec 1password --toggle
 
 # Print screen
 bindsym --release Print exec flameshot gui
@@ -247,11 +247,14 @@ for_window [class="scrcpy"] floating enable
 for_window [class="1Password"] floating enable
 for_window [class="zoom" title="^Chat$"] floating enable
 
+for_window [title="^Android Emulator - .*$"] floating enable, sticky enable
+for_window [title="^Emulator$"] floating enable, sticky enable
+
 # MSTeams notifications fixes
-for_window [class="Microsoft Teams - Preview" window_type="notification"] floating enable; resize set height 300px
+for_window [class="Microsoft Teams - Preview" window_type="notification"] floating enable, resize set height 300px
 
 # Idea diff window
-for_window [class="jetbrains-idea" title="^Changes between .* and .*$"] floating disable; resize set width 300px
+for_window [class="jetbrains-idea" title="^Changes between .* and .*$"] floating disable, resize set width 300px
 
 # Auto start apps, if available
 exec which nm-applet && nm-applet

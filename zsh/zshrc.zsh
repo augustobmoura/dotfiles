@@ -69,7 +69,7 @@ plugins=(
 	mvn
 	asdf
 	ripgrep
-	cargo
+	rust
 	colored-man-pages
 	docker
 	fancy-ctrl-z

@@ -53,6 +53,7 @@ Plug 'weirongxu/plantuml-previewer.vim'
 Plug 'AndrewRadev/tagalong.vim'
 Plug 'alvan/vim-closetag'
 Plug 'raimondi/delimitmate'
+Plug 'honza/vim-snippets'
 
 " Editor tools
 Plug 'mattn/emmet-vim'
@@ -68,6 +69,7 @@ Plug 'tpope/vim-unimpaired'
 
 " File management
 Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 

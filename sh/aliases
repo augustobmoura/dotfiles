@@ -26,7 +26,7 @@ o() {
 }
 
 alias hd="${HEXDUMP_CMD:-hd}"
-alias ll="$LS_COMMAND -lah"
+alias ll="$LS_COMMAND -lahF"
 alias l="ll"
 alias reloadrc='source $RC_FILE'
 alias rc='editor "$RC_FILE"'

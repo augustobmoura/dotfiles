@@ -32,6 +32,24 @@ first_line() {
 	printf "%s" "$line"
 }
 
+if is_executable make; then
+	# Try to find the closest Makefile so that nested directory make commands work (kinda of)
+	make() {
+		(
+			old_pwd="$PWD"
+			while ! [ -r Makefile ] && [ "$PWD" != / ]; do
+				cd ..
+			done
+
+			if ! [ "$old_pwd" = "$PWD" ]; then
+				printf "Running make on %s\n" "$PWD" >&2
+			fi
+
+			exec command make "$@"
+		)
+	}
+fi
+
 export SAVEHIST=300000
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
@@ -74,7 +92,7 @@ export XEDITOR=$(choose is_executable gnvim gvim mousepad kate gedit || echo fal
 
 # Configure coc to the global nodejs installation
 if is_executable node; then
-	COC_NODE_PATH="${COC_NODE_PATH:-$(cd ~ && "$(command -v asdf env | first_line)" which node)}"
+	COC_NODE_PATH="$(cd ~ && "$(command -v asdf env | first_line)" which node)"
 	export COC_NODE_PATH
 fi
 

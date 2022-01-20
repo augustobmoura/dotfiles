@@ -28,6 +28,8 @@ path=(
 	"${path[@]}"
 )
 
+source "$DOTFILES_HOME/sh/profile"
+
 # ---
 # Oh my zsh
 # ---
@@ -64,6 +66,7 @@ plugins=(
 	npm
 	tmux
 	gradle
+	mvn
 	asdf
 	ripgrep
 	cargo
@@ -78,6 +81,7 @@ plugins=(
 	ant
 	adb
 	poetry
+	extract
 	gh
 	#minikube # Giving some weird prints in random commands, disabled for now
 )
@@ -197,3 +201,5 @@ path=(
 	"${LOCAL_PATH[@]}"
 	"${path[@]}"
 )
+
+export PATH="$HOME/.poetry/bin:$PATH"

@@ -1,0 +1,11 @@
+#! /usr/bin/env sh
+
+if is_executable rofi; then
+	exec rofi -show run -modi calc,emoji -matching fuzzy -calc-command 'printf "%s\n" "{result}" | xc' "$@"
+else
+	for cmd in dmenu_run i3-dmenu-desktop dmenu; do
+		if is_executable "$cmd"; then
+			exec "$cmd" "$@"
+		fi
+	done
+fi

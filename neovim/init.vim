@@ -54,6 +54,7 @@ Plug 'AndrewRadev/tagalong.vim'
 Plug 'alvan/vim-closetag'
 Plug 'raimondi/delimitmate'
 Plug 'honza/vim-snippets'
+Plug 'masukomi/vim-markdown-folding'
 
 " Editor tools
 Plug 'mattn/emmet-vim'
@@ -87,6 +88,8 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-repeat'
 
 call plug#end()
+
+autocmd FileType markdown set foldexpr=NestedMarkdownFolds()
 
 let g:coc_global_extensions = [
 		\'coc-actions',

@@ -130,7 +130,7 @@ if use_telescope
 	nnoremap <leader>fb <cmd>Telescope buffers<CR>
 	nnoremap <leader>fh <cmd>Telescope help_tags<CR>
 	if executable('rg')
-		lua require('telescope').setup{ 'rg', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' }
+		lua require('telescope').setup{ 'rg', '--color=never', '--hidden', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' }
 	endif
 else
 	nnoremap <leader>ff :Files<CR>

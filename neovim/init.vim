@@ -111,6 +111,9 @@ let g:coc_global_extensions = [
 		\'coc-sh',
 		\'coc-sql',
 		\'coc-tsserver',
+		\'coc-spell-checker',
+		\'coc-cspell-dicts',
+		\'coc-ltex',
 		\'coc-xml',
 		\'coc-yaml']
 

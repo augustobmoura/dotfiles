@@ -1,0 +1,19 @@
+#! /bin/sh
+
+CMD=$(basename "$0")
+
+SYSTEMD=$(is_executable systemctl && echo 1)
+
+case "$CMD" in
+	suspend)
+		if [ "$SYSTEMD" ]; then
+			exec systemctl suspend
+		fi
+		;;
+
+	hibernate)
+		if [ "$SYSTEMD" ]; then
+			exec systemctl hibernate
+		fi
+		;;
+esac

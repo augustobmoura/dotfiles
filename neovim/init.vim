@@ -54,6 +54,7 @@ Plug 'AndrewRadev/tagalong.vim'
 Plug 'alvan/vim-closetag'
 Plug 'raimondi/delimitmate'
 Plug 'honza/vim-snippets'
+Plug 'chrisbra/csv.vim'
 Plug 'masukomi/vim-markdown-folding'
 
 " Editor tools

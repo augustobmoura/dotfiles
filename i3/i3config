@@ -247,6 +247,9 @@ for_window [class="scrcpy"] floating enable
 for_window [class="1Password"] floating enable
 for_window [class="zoom" title="^Chat$"] floating enable
 
+# Zoom notification-like windows
+for_window [class="zoom" title="zoom"] floating enable
+
 for_window [title="^Android Emulator - .*$"] floating enable, sticky enable
 for_window [title="^Emulator$"] floating enable, sticky enable
 

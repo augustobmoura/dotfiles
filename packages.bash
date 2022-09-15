@@ -31,13 +31,13 @@ missing_must_have=($(check_missing "${must_have[@]}"))
 missing_optional=($(check_missing "${optional[@]}"))
 
 if (( "${#missing_must_have}" )); then
-	print "The following MUST HAVE commands are missing:\n  "
+	printf "The following MUST HAVE commands are missing:\n  "
 	printf "%s " "${missing_must_have[@]}"
 	printf "\n\n"
 fi
 
 if (( "${#missing_optional}" )); then
-	print "The following optional commands are missing:\n  "
+	printf "The following optional commands are missing:\n  "
 	printf "%s " "${missing_optional[@]}"
 	printf "\n"
 fi

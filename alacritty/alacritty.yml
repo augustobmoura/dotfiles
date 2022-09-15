@@ -268,7 +268,7 @@ font:
 # Bell
 #
 # The bell is rung every time the BEL control character is received.
-#bell:
+bell:
   # Visual Bell Animation
   #
   # Animation effect for flashing the screen when the visual bell is rung.
@@ -284,7 +284,7 @@ font:
   #   - EaseOutExpo
   #   - EaseOutCirc
   #   - Linear
-  #animation: EaseOutExpo
+  animation: EaseOutExpo
 
   # Duration of the visual bell flash. A `duration` of `0` will disable the
   # visual bell animation.
@@ -304,7 +304,8 @@ font:
   #     program: notify-send
   #     args: ["Hello, World!"]
   #
-  #command: None
+  command:
+    program: beep
 
 # Background opacity
 #

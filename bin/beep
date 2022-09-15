@@ -1,0 +1,3 @@
+#! /usr/bin/env zsh
+
+mpv --volume=50 ~/Música/notification-pretty-good.ogg

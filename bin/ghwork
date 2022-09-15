@@ -1,0 +1,88 @@
+#! /usr/bin/zsh
+
+set -eu -o pipefail
+
+yaml_to_json() {
+	python3 -c 'import sys, yaml, json; y=yaml.safe_load(sys.stdin.read()); print(json.dumps(y))'
+}
+
+GIT_BRANCH="${GIT_BRANCH=}"
+
+curr_branch=$(git rev-parse --abbrev-ref HEAD)
+
+if ! [ "$GIT_BRANCH" ]; then
+	quest=$(read -esk1 "?Show for current branch '$curr_branch'? (Yn)")
+	if ! [ "$quest" = $'\n' ]; then
+		echo
+	fi
+	quest=$(tr -d '[[:space:]]' <<< "$quest")
+
+	case "$quest" in 
+		[Yy]|"")
+			GIT_BRANCH="$curr_branch"
+			;;
+		*)
+			GIT_BRANCH=$(git branch | fzf --header 'Select the branch to run the workflow' | cut -c3-)
+			;;
+	esac
+fi
+
+GIT_WORKFLOW="${GIT_WORKFLOW=}"
+
+if ! [ "$GIT_WORKFLOW" ]; then
+	GIT_WORKFLOW=$(git ls-files .github/workflows | xargs -n1 basename | sort | fzf --header 'Select which workflow to run' --preview="bat -p --color=always .github/workflows/{}")
+fi
+
+
+printf '\nSUMMARY:\n'
+printf '  repo: %s\n' "$(git rev-parse --show-toplevel | xargs basename)"
+printf '  branch: %s\n' "$GIT_BRANCH"
+printf '  workflow: %s\n' "$GIT_WORKFLOW"
+printf '  \ncommand: GIT_BRANCH="%s" GIT_WORKFLOW="%s" %s\n\n' "$GIT_BRANCH" "$GIT_WORKFLOW" "$0"
+
+follow_only="${FOLLOW_ONLY:-}"
+cmd=
+
+if ! [ "$follow_only" ]; then
+	read -k1 'cmd?Continue? ([e]xit|[f]ollow-only|[r]un-and-follow) Default: run-and-follow'
+	echo
+
+	case "$cmd" in
+		e)
+			exit 0
+			;;
+		
+		f)
+			follow_only=1
+			;;
+	esac
+
+	if ! [ "$follow_only" ]; then
+		printf "Starting workflow...\n"
+		gh workflow run "$GIT_WORKFLOW" --ref "$GIT_BRANCH"
+	fi
+fi
+
+printf "Watching workflow..."
+run_id=
+
+for i in {0..3}; do
+	run_id=$(
+		gh run list -b "$GIT_BRANCH" --workflow="$GIT_WORKFLOW" --json status,databaseId \
+			| jq -r 'map(select(.status == "in_progress" or .status == "queued")) | .[].databaseId' \
+			| head -n1 || true
+	)
+
+	if [ "$run_id" ]; then
+		break
+	fi
+
+	sleep 1
+done
+
+if ! [ "$run_id" ]; then
+	printf "Couldn't find an run ID\n"
+	exit 1
+fi
+
+gh run watch -i 5 "$run_id"

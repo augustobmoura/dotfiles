@@ -267,3 +267,4 @@ exec which compton && compton
 exec which solaar && solaar
 exec which sensible-clipboard-manager && sensible-clipboard-manager start
 exec which 1password && 1password --silent
+exec which feh && [ -x ~/.fehbg ] && ~/.fehbg

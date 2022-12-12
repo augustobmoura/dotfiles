@@ -9,12 +9,15 @@ must_have=(
 	http
 	jq
 	curl
+	xclip
 )
 
 optional=(
+	nmap
 	alacritty
 	i3
 	i3status-rs
+	rofi
 	docker
 	starship
 )

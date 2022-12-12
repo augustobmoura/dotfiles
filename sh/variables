@@ -59,7 +59,8 @@ export DOCUMENTS_DIR="$(choose "test -d" "$HOME/Documents" "$HOME/Documentos")"
 export WORKSPACE_DIR="$(choose "test -d" "$HOME/workspace" "$HOME/des")"
 
 export ZRC_FILE="$HOME/.zshrc"
-export PAGER='less -F -X'
+export PAGER=$(choose is_executable bat || echo 'less -F -X')
+export READNULLCMD=$(choose is_executable bat less more cat)
 export GIT_PAGER='$PAGER'
 export LS_COMMAND="$(choose is_executable exa lsd ls || echo false)"
 export HEXDUMP_CMD="$(choose is_executable hexyl hd hexdump xxd || echo false)"

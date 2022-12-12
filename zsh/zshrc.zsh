@@ -25,6 +25,7 @@ typeset -U LOCAL_PATH PATH path
 path=(
 	"${LOCAL_PATH[@]}"
 	"$HOME/.cargo/bin"
+	"$HOME/.local/share/JetBrains/Toolbox/scripts"
 	"${path[@]}"
 )
 
@@ -35,6 +36,8 @@ source "$DOTFILES_HOME/sh/profile"
 # ---
 
 # Config
+zstyle :omz:plugins:ssh-agent lazy yes
+
 if [ -n "$NO_TMUX" ];  then
 	ZSH_TMUX_AUTOSTART=false
 fi
@@ -60,6 +63,7 @@ fi
 ZSH_THEME= # OMZ theme
 
 plugins=(
+	ssh-agent
 	git
 	node
 	yarn
@@ -218,4 +222,3 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-

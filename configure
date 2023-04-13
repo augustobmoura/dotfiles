@@ -254,6 +254,7 @@ declare_resources() {
 
 	# i3
 	resource "i3/i3config" "$HOME/.i3/config"
+	resource "i3/i3config" "$HOME/.config/i3/config"
 	resource "i3/i3status-rs.conf.toml" "$HOME/.config/i3status-rust/config.toml"
 
 	# Alacritty

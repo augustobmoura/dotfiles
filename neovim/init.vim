@@ -88,6 +88,7 @@ endif
 " QOL
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-repeat'
+Plug 'ConradIrwin/vim-bracketed-paste'
 
 call plug#end()
 

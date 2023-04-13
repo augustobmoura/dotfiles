@@ -63,6 +63,7 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'andymass/vim-matchup'
+Plug 'github/copilot.vim'
 
 " Additional tools
 Plug 'tpope/vim-fugitive'

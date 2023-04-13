@@ -119,6 +119,7 @@ let g:coc_global_extensions = [
 		\'coc-yaml']
 
 " Coc shortcuts
+" nmap <leader>aa <Plug>(coc-codeaction-cursor)
 vmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>b <Plug>(coc-format)

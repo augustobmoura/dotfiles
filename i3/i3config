@@ -260,11 +260,14 @@ for_window [class="Microsoft Teams - Preview" window_type="notification"] floati
 for_window [class="jetbrains-idea" title="^Changes between .* and .*$"] floating disable, resize set width 300px
 
 # Auto start apps, if available
-exec which nm-applet && nm-applet
-exec which kdeconnect-indicator && kdeconnect-indicator
-exec which flameshot && flameshot
-exec which compton && compton
-exec which solaar && solaar
-exec which sensible-clipboard-manager && sensible-clipboard-manager start
-exec which 1password && 1password --silent
-exec which feh && [ -x ~/.fehbg ] && ~/.fehbg
+exec --no-startup-id which nm-applet && nm-applet
+exec --no-startup-id which kdeconnect-indicator && kdeconnect-indicator
+exec --no-startup-id which flameshot && flameshot
+exec --no-startup-id which compton && compton
+exec --no-startup-id which solaar && solaar
+exec --no-startup-id which sensible-clipboard-manager && sensible-clipboard-manager start
+exec --no-startup-id which 1password && 1password --silent
+exec --no-startup-id which feh && [ -x ~/.fehbg ] && ~/.fehbg
+exec --no-startup-id which autorandr && autorandr --load main
+exec --no-startup-id which copyq && copyq
+exec --no-startup-id which lxsession && lxsession

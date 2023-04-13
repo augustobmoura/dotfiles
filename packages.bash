@@ -9,6 +9,9 @@ must_have=(
 	http
 	jq
 	curl
+	delta
+	ncdu
+	htop
 	xclip
 )
 

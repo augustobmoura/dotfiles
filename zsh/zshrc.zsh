@@ -87,6 +87,8 @@ plugins=(
 	poetry
 	extract
 	gh
+	fzf
+	rust
 	#minikube # Giving some weird prints in random commands, disabled for now
 )
 
@@ -105,9 +107,6 @@ setopt extendedglob glob_dots
 
 source "$DOTFILES_HOME/sh/variables"
 source "$DOTFILES_HOME/sh/aliases"
-
-# Configure fzf, if it exists
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Generate Base16 color schemes
 export BASE16_SHELL="$DOTFILES_HOME/sh/base16-shell/"
@@ -200,12 +199,6 @@ if [ -e "$DOTFILES_HOME/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlight
 	source "$DOTFILES_HOME/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
-# Always gives priority for local binaries
-path=(
-	"${LOCAL_PATH[@]}"
-	"${path[@]}"
-)
-
 export PATH="$HOME/.poetry/bin:$PATH"
 
 # >>> conda initialize >>>
@@ -222,3 +215,20 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+if [ -d "$HOME/.deno" ]; then
+	export DENO_INSTALL="$HOME/.deno"
+	path+=("$DENO_INSTALL/bin")
+fi
+
+# pnpm
+export PNPM_HOME="/home/amoura/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
+
+# Always gives priority for local binaries
+path=(
+	"${LOCAL_PATH[@]}"
+	"${path[@]}"
+)
+

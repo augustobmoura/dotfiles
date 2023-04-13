@@ -1,10 +1,8 @@
 [theme]
 theme = "modern"
-[icons]
-icons = "awesome"
 
-[[block]]
-block = "battery"
+[icons]
+icons = "awesome4"
 
 [[block]]
 block = "keyboard_layout"
@@ -20,9 +18,7 @@ alert = 10.0
 
 [[block]]
 block = "memory"
-display_type = "memory"
-format_mem = "$mem_total_used_percents"
-format_swap = "{swap_used_percents}%"
+format = " $icon $mem_total_used / $mem_total ($mem_total_used_percents.eng(w:2))"
 
 [[block]]
 block = "cpu"
@@ -34,7 +30,7 @@ block = "temperature"
 [[block]]
 block = "load"
 interval = 1
-format = "{1m}"
+format = " $icon $1m.eng(w:4)"
 
 [[block]]
 block = "sound"
@@ -42,7 +38,7 @@ block = "sound"
 [[block]]
 block = "time"
 interval = 60
-format = "%a %d/%m %R"
+format = " $icon $timestamp.datetime()"
 
 [[block]]
 block = "keyboard_layout"

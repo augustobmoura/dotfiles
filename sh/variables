@@ -74,7 +74,7 @@ fi
 export RC_FILE
 
 LOCAL_RC_FILE="${RC_FILE##*/}"
-LOCAL_RC_FILE="$HOME/local.${LOCAL_RC_FILE#.}"
+LOCAL_RC_FILE="$HOME/.local.${LOCAL_RC_FILE#.}"
 export LOCAL_RC_FILE
 
 

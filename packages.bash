@@ -20,6 +20,7 @@ optional=(
 	alacritty
 	i3
 	i3status-rs
+	dex
 	rofi
 	docker
 	starship

@@ -64,6 +64,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'andymass/vim-matchup'
 Plug 'github/copilot.vim'
+Plug 'svermeulen/vim-yoink'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 " Additional tools
 Plug 'tpope/vim-fugitive'
@@ -92,6 +94,24 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 
 call plug#end()
 
+" Clipboard settings
+set clipboard=unnamedplus
+
+" Have history on 1-9 registers
+let g:yoinkSyncNumberedRegisters=1
+
+" Enable for cut operations, cutlass already deals with deletes
+let g:yoinkIncludeDeleteOperations=1
+
+nmap <c-n> <plug>(YoinkPostPasteSwapBack)
+nmap <c-p> <plug>(YoinkPostPasteSwapForward)
+
+nmap p <plug>(YoinkPaste_p)
+nmap P <plug>(YoinkPaste_P)
+
+nmap gp <plug>(YoinkPaste_gp)
+nmap gP <plug>(YoinkPaste_gP)
+
 autocmd FileType markdown set foldexpr=NestedMarkdownFolds()
 
 let g:coc_global_extensions = [
@@ -113,6 +133,7 @@ let g:coc_global_extensions = [
 		\'coc-sh',
 		\'coc-sql',
 		\'coc-tsserver',
+		\'@yaegassy/coc-tailwindcss3',
 		\'coc-spell-checker',
 		\'coc-cspell-dicts',
 		\'coc-ltex',

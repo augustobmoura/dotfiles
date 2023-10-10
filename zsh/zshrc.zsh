@@ -111,8 +111,8 @@ source "$DOTFILES_HOME/sh/aliases"
 # Generate Base16 color schemes
 export BASE16_SHELL="$DOTFILES_HOME/sh/base16-shell/"
 [ -n "$PS1" ] && \
-	[ -s "$BASE16_SHELL/profile_helper.sh" ] && 
-		eval "$("$BASE16_SHELL/profile_helper.sh")"
+    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        source "$BASE16_SHELL/profile_helper.sh"
 
 # Applies theme
 is_executable base16_seti && base16_seti
@@ -223,7 +223,10 @@ fi
 
 # pnpm
 export PNPM_HOME="/home/amoura/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
 # pnpm end
 
 # Always gives priority for local binaries
@@ -232,3 +235,10 @@ path=(
 	"${path[@]}"
 )
 
+
+# bun completions
+[ -s "/home/amoura/.bun/_bun" ] && source "/home/amoura/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

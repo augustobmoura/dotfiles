@@ -212,7 +212,7 @@ bindsym XF86AudioRaiseVolume exec amixer -D pulse set Master 10%+ unmute && noti
 bindsym XF86AudioLowerVolume exec amixer -D pulse set Master 10%- unmute && notify-volume
 
 # Lock screen
-bindsym --release $mod+p exec slock
+bindsym --release $mod+p exec xflock4
 
 # Opens file explorer
 bindsym $mod+i exec xdg-open ~

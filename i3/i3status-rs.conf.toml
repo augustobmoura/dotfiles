@@ -4,9 +4,14 @@ theme = "modern"
 [icons]
 icons = "awesome4"
 
+
 [[block]]
 block = "keyboard_layout"
 interval = 2
+
+[[block]]
+block = "battery"
+driver = "apc_ups"
 
 [[block]]
 block = "disk_space"
@@ -18,7 +23,7 @@ alert = 10.0
 
 [[block]]
 block = "memory"
-format = " $icon $mem_total_used / $mem_total ($mem_total_used_percents.eng(w:2))"
+format = " $icon $mem_used / $mem_total ($mem_used_percents.eng(w:2))"
 
 [[block]]
 block = "cpu"

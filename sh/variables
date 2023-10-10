@@ -89,7 +89,7 @@ fi
 export OPENER=$(choose is_executable rifle xdg-open || echo false)
 export TERMINAL=$(choose is_executable sensible-terminal alacritty gnome-terminal xterm || echo "${TERMINAL:-false}")
 export EDITOR=$(choose is_executable nvim vim vi nano emacs || echo false)
-export XEDITOR=$(choose is_executable gnvim gvim mousepad kate gedit || echo false)
+export XEDITOR=$(choose is_executable gnvim gvim mousepad kate gedit xed || echo false)
 
 # Configure coc to the global nodejs installation
 if is_executable node; then
@@ -97,3 +97,4 @@ if is_executable node; then
 	export COC_NODE_PATH
 fi
 
+export ASDF_NODEJS_LEGACY_FILE_DYNAMIC_STRATEGY=latest_installed

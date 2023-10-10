@@ -1,334 +1,98 @@
-#! /usr/bin/env sh
+#! /usr/bin/env zsh
 
-set -eu
+set -euo pipefail
 
-log() {
-	printf "%s\n" "$1" >&2
-}
+# exec > Makefile
 
-die() {
-	log "$1"
-	exit "${2:-1}"
-}
+declare -A resources
 
-silent() {
-	"$@" > /dev/null 2>&1
-}
-
-commandv() (
-	cmd=
-	for arg; do
-		if cmd="$(env which "$arg")"; then
-			printf "%s\n" "$cmd"
-			return 0
-		fi
-	done
-	return 1
-)
-
-realpath() (
-	cmd="$(commandv realpath grealpath readlink)"
-	if [ "${cmd##*/}" = readlink ]; then
-		env "$cmd" -f "$1"
-	else
-		env "$cmd" "$1"
-	fi
-)
-
-if ! [ "${DOTFILES_HOME-}" ]; then
-	DOTFILES_HOME="$(realpath "$(dirname "$0")")"
-fi
-
-export DOTFILES_HOME
-
-export RESOURCES=
-
-# Confirm results
-ALWAYS=255
-NO=1
-YES=0
-
-# Confirm options
-always_options=
-
-# Choose a name not existent to rename the file, echoing it at the end
-mv_to_non_existent() {
-	file_name="$1"
-
-	if ! [ -e "$file_name" ]; then
-		return 0
-	fi
-
-	i=0
-
-	new_file_name="$file_name~"
-
-	while [ -e "$new_file_name" ]; do
-		i=$(($i + 1))
-		new_file_name="$file_name~$i"
-	done
-
-	mv "$file_name" "$new_file_name"
-	echo "$new_file_name"
-}
-
-
-# Asks a question and returns a exit code based on YES, NO or ALWAYS
-confirm() {
-	option_name="${1:-global}"
-
-	if printf "%s\n" "$always_options" | grep -q "^$option_name$"; then
-		return $YES
-	fi
-
-	printf "%s ([y]es/[n]o/[a]lways) default: no\n" "$2"
-	read confirmed
-
-	case "$confirmed" in
-		[yY]|[sS])
-			return $YES
-			;;
-		[aA])
-			always_options="$(printf "%s\n%s" "$always_options" "$option_name")"
-			return $ALWAYS
-			;;
-		*)
-			return $NO
-			;;
-	esac
-}
-
-
-first_dirname() {
-	prev="$1"
-	curr="$1"
-
-	while [ "$curr" != . ] && [ "$curr" != / ]; do
-		prev="$curr"
-		curr="$(dirname "$prev")"
-	done
-
-	echo "$prev"
-}
-
-configure_profile() (
-	_text_dotfiles="$(realpath "$DOTFILES_HOME")"
-	if [ "${DOTFILES_HOME%%$HOME/}" != "$DOTFILES_HOME" ]; then
-		_text_dotfiles='$HOME/'"${DOTFILES_HOME%%$HOME/}"
-	fi
-	_source_profile_line="export DOTFILES_HOME=\"$_text_dotfiles\" && . \"\$DOTFILES_HOME/sh/profile\""
-
-	if ! grep -Fq "$_source_profile_line" ~/.profile; then
-		printf "%s\n" "$_source_profile_line" >> ~/.profile
-	fi
-)
-
-
-# Soft links with confirmation of overriding
-link_resource() {
-	original_file="$(realpath "$DOTFILES_HOME/$1")"
-	dest_file="$2"
-
-	mkdir -p "$(dirname "$dest_file")"
-
-	if [ -L "$dest_file" ] && ! [ -e "$dest_file" ]; then
-		log "Removing broken link $dest_file"
-		rm "$dest_file"
-	fi
-
-	# Destination file already exists
-	if [ -e "$dest_file" ]; then
-		dest_file_real="$(realpath "$dest_file")"
-
-		# If file points to correct location do nothing
-		# Else ask to move the file
-		if [ "$dest_file_real" = "$original_file" ]; then
-			log "File $dest_file already linked"
-		else
-			# Move the current file to a new name, if confirmed
-			if confirm link_override "File $dest_file exists and don't point to $original_file, it points to $dest_file_real, relink it?"; then
-				moved_file_name="$(mv_to_non_existent "$dest_file")"
-				log "File $dest_file moved to $moved_file_name"
-			else
-				log "Skipping file $dest_file"
-			fi
-		fi
-	fi
-
-
-	# If there's no file at this point create it
-	if ! [ -e "$dest_file" ]; then
-		log "Creating file $dest_file..."
-		ln -s "$original_file" "$dest_file"
-	fi
-}
-
-
-unlink_resource() {
-	resource_path="$(realpath "$DOTFILES_HOME/$1")"
-	destination_path="$(realpath "$2")"
-
-	if ! [ -L "$destination_path" ] && ! confirm unlink_not_ln "$destination_path is not a symlink, remove it anyways?"; then 
-		return 1
-	else
-		if ! [ "$destination_path" = "$resource_path" ] && ! confirm unlink_no_match "$destination_path doesn't point to the expected location, remove it anyways?"; then
-			return 2
-		fi
-	fi
-
-	rm "$destination_path"
-	log "File $destination_path removed"
-}
-
-
-list_resources() {
-	printf "Current resources (use --all to apply to all of them):\n"
-
-	printf "%s" "$RESOURCES" \
-		| cut -f1 \
-		| while IFS= read -r res; do printf "  %s\n" "$(first_dirname "$res")"; done \
-		| sort -u
-}
-
-
-process_lines_as_arguments() {
-	_cmd="$1"
-	_args="$2"
-
-	if printf "%s\n" "$_args" | grep -q \"; then
-		log "Some arguments contains quotes"
-		return 1
-	fi
-
-	eval "set -- $(printf "%s\n" "$_args" | xargs -I'{}' printf "\"%s\"\n" "{}" | tr \\n " ")"
-
-
-	for res; do
-		if [ "$_cmd" = install ]; then
-			link_resource "$(echo "$res" | cut -f1)" "$(echo "$res" | cut -f2)"
-		else
-			unlink_resource "$(echo "$res" | cut -f1)" "$(echo "$res" | cut -f2)"
-		fi
-	done
-}
-
-
-resource() {
-	resource_path="$1"
-	destination_path="$2"
-
-	if ! [ -e "$DOTFILES_HOME/$resource_path" ]; then
-		die "File $resource_path doesn't exist"
-	fi
-
-	if [ -z "$RESOURCES" ]; then
-		RESOURCES="$(printf "%s\t%s" "$resource_path" "$destination_path")"
-	else
-		RESOURCES="$(printf "%s\n%s\t%s" "$RESOURCES" "$resource_path" "$destination_path")"
-	fi
-}
-
-
-declare_resources() {
+decl_resources() {
 	# Shell
-	resource "zsh/zshrc.zsh" "$HOME/.zshrc"
+	resources[\$(HOME)/.zshrc]='zsh/zshrc.zsh'
 
 	# Tmux
-	resource "tmux/oh-my-tmux/.tmux.conf" "$HOME/.tmux.conf"
-	resource "tmux/local.tmux.conf" "$HOME/.tmux.conf.local"
-	resource "tmux/tpm" "$HOME/.tmux/plugins/tpm"
+	resources[\$(HOME)/.tmux.conf]='tmux/oh-my-tmux/.tmux.conf'
+	resources[\$(HOME)/.tmux.conf.local]='tmux/local.tmux.conf'
+	resources[\$(HOME)/.tmux/plugins/tpm]='tmux/tpm'
 
 	# VIM
-	resource "neovim/init.vim" "$HOME/.vimrc"
-	resource "neovim/init.vim" "$HOME/.config/nvim/init.vim"
-	resource "neovim/after" "$HOME/.config/nvim/after"
-	resource "neovim/after" "$HOME/.vim/after"
-	resource "neovim/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
-	resource "neovim/plug.vim" "$HOME/.vim/autoload/plug.vim"
+	resources[\$(HOME)/.vimrc]='neovim/init.vim'
+	resources[\$(HOME)/.config/nvim/init.vim]='neovim/init.vim'
+	resources[\$(HOME)/.config/nvim/after]='neovim/after'
+	resources[\$(HOME)/.vim/after]='neovim/after'
+	resources[\$(HOME)/.local/share/nvim/site/autoload/plug.vim]='neovim/plug.vim'
+	resources[\$(HOME)/.vim/autoload/plug.vim]='neovim/plug.vim'
 
 	# asdf
-	resource "asdf" "$HOME/.asdf"
+	resources[\$(HOME)/.asdf]='asdf'
 
 	# starship
-	resource "starship/starship.toml" "$HOME/.config/starship.toml"
+	resources[\$(HOME)/.config/starship.toml]='starship/starship.toml'
 
 	# i3
-	resource "i3/i3config" "$HOME/.i3/config"
-	resource "i3/i3config" "$HOME/.config/i3/config"
-	resource "i3/i3status-rs.conf.toml" "$HOME/.config/i3status-rust/config.toml"
+	resources[\$(HOME)/.i3/config]='i3/i3config'
+	resources[\$(HOME)/.config/i3/config]='i3/i3config'
+	resources[\$(HOME)/.config/i3status-rust/config.toml]='i3/i3status-rs.conf.toml'
 
 	# Alacritty
-	resource "alacritty/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
+	resources[\$(HOME)/.config/alacritty/alacritty.yml]='alacritty/alacritty.yml'
+}
+
+
+generate_makefile() {
+	printf "# Auto genrated from ./configure\n\n"
+
+	printf '
+export PATH := $(DOTFILES_HOME)/_scripts:$(PATH)
+
+define link
+@safe-link.sh $< $@
+endef\n\n'
+
+	printf "
+.PHONY: all
+all:\n\n"
+
+	declare -A rules
+	declare -A deps
+
+	for target src in ${(kv)resources}; do 
+		pkg=${src%%/*}
+
+		deps[$pkg]+=" $target"
+
+		rules[$pkg]+="
+.PHONY: $target
+$target: \$(DOTFILES_HOME)/$src
+	\$(link)
+"
+	done
+
+	for pkg targets in ${(kv)rules}; do
+		printf "
+.PHONY: %s
+%s:%s
+%s
+" "$pkg" "$pkg" "${deps[$pkg]}" "$targets"
+	done
+
+	printf "\nall: %s\n" "$(echo "${(k)deps}")"
 }
 
 
 main() {
-	declare_resources
+	local target_mkfile=Makefile
 
-	cmd=
-	resources=
-	first_cmd=
-	if [ $# -lt 1 ]; then
-		log "You need to specify a directory or the --all switch"
-		first_cmd=ls
-	else
-		first_cmd="$1"
-	fi
+	for arg; do
+		case $arg in
+			--print) target_mkfile=/dev/stdout;;
+			*) echo "Unknown argument: $arg" >&2; exit 1 ;;
+		esac
+	done
 
-	case "$first_cmd" in
-		list|ls)
-			list_resources
-			exit 0
-			;;
-
-		install|add|i|link)
-			cmd=install
-			;;
-
-		uninstall|rm|remove|unlink)
-			cmd=uninstall
-			;;
-
-		profile)
-			cmd=profile
-			;;
-
-		*)
-			die "Unkown command $first_cmd. Possible commands: list, install, uninstall, profile"
-			;;
-	esac
-
-	shift
-
-	case "$cmd" in
-		install|uninstall)
-			if [ $# -gt 0 ]; then
-				if [ "$1" = --all ]; then
-					resources="$RESOURCES"
-				else
-					for arg; do
-						new_resources="$(
-							printf "%s" "$RESOURCES" \
-								| { grep "^$arg" || die "No resource found for \"$arg\""; }
-						)"
-						resources="$(printf "%s\n%s" "$resources" "$new_resources")"
-					done
-
-					resources="$(printf "%s" "$resources" | tail -n +2 | sort -u)"
-				fi
-			fi
-
-			if [ -z "$resources" ]; then
-				die "No resource given to $cmd" 12
-			fi
-
-			process_lines_as_arguments "$cmd" "$resources"
-			;;
-
-		profile)
-			configure_profile
-			;;
-	esac
+	decl_resources
+	generate_makefile > "$target_mkfile"
 }
+
 
 main "$@"

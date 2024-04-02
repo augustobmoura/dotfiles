@@ -31,6 +31,7 @@ interval = 1
 
 [[block]]
 block = "temperature"
+chip = "nct6798-isa-0290"
 
 [[block]]
 block = "load"
@@ -39,6 +40,10 @@ format = " $icon $1m.eng(w:4)"
 
 [[block]]
 block = "sound"
+
+[[block]]
+block = "temperature"
+chip = "nvme-pci-0100"
 
 [[block]]
 block = "time"

@@ -245,6 +245,7 @@ for_window [class="SimpleScreenRecorder" instance="simplescreenrecorder"] floati
 for_window [class="copyq"] floating enable
 for_window [class="scrcpy"] floating enable
 for_window [class="1Password"] floating enable
+for_window [class="Anki"] floating enable
 for_window [class="zoom" title="^Chat$"] floating enable
 
 # Zoom notification-like windows

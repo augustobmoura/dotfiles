@@ -13,14 +13,10 @@ all:
 
 
 .PHONY: neovim
-neovim: $(HOME)/.local/share/nvim/site/autoload/plug.vim $(HOME)/.config/nvim/init.vim $(HOME)/.vimrc $(HOME)/.config/nvim/after $(HOME)/.vim/autoload/plug.vim $(HOME)/.vim/after
+neovim: $(HOME)/.config/nvim/init.lua $(HOME)/.vimrc $(HOME)/.config/nvim/after $(HOME)/.vim/autoload/plug.vim $(HOME)/.vim/after
 
-.PHONY: $(HOME)/.local/share/nvim/site/autoload/plug.vim
-$(HOME)/.local/share/nvim/site/autoload/plug.vim: $(DOTFILES_HOME)/neovim/plug.vim
-	$(link)
-
-.PHONY: $(HOME)/.config/nvim/init.vim
-$(HOME)/.config/nvim/init.vim: $(DOTFILES_HOME)/neovim/init.vim
+.PHONY: $(HOME)/.config/nvim/init.lua
+$(HOME)/.config/nvim/init.lua: $(DOTFILES_HOME)/neovim/init.lua
 	$(link)
 
 .PHONY: $(HOME)/.vimrc

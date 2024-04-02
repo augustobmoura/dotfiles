@@ -17,11 +17,14 @@ decl_resources() {
 
 	# VIM
 	resources[\$(HOME)/.vimrc]='neovim/init.vim'
-	resources[\$(HOME)/.config/nvim/init.vim]='neovim/init.vim'
 	resources[\$(HOME)/.config/nvim/after]='neovim/after'
 	resources[\$(HOME)/.vim/after]='neovim/after'
-	resources[\$(HOME)/.local/share/nvim/site/autoload/plug.vim]='neovim/plug.vim'
 	resources[\$(HOME)/.vim/autoload/plug.vim]='neovim/plug.vim'
+	resources[\$(HOME)/.config/nvim/init.lua]='neovim/init.lua'
+
+	## Old .vim settings
+	#resources[\$(HOME)/.config/nvim/init.vim]='neovim/init.vim'
+	#resources[\$(HOME)/.local/share/nvim/site/autoload/plug.vim]='neovim/plug.vim'
 
 	# asdf
 	resources[\$(HOME)/.asdf]='asdf'

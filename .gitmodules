@@ -30,3 +30,6 @@
 	url = https://github.com/junegunn/fzf.git
 [submodule "zsh/plugins/oh-my-zsh"]
 	url = https://github.com/robbyrussell/oh-my-zsh.git
+[submodule "neovim/lazy"]
+	path = neovim/lazy
+	url = https://github.com/folke/lazy.nvim.git

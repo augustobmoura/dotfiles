@@ -5,6 +5,7 @@ set splitbelow splitright
 set encoding=UTF-8
 set foldlevel=30
 set mouse=a
+set expandtab
 
 " Invisibles
 set list listchars=tab:»─,extends:›,precedes:‹,nbsp:·,trail:·,space:·
@@ -45,23 +46,22 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " Language support
-Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
-Plug 'tyru/open-browser.vim'
-Plug 'weirongxu/plantuml-previewer.vim'
 Plug 'AndrewRadev/tagalong.vim'
 Plug 'alvan/vim-closetag'
 Plug 'raimondi/delimitmate'
 Plug 'honza/vim-snippets'
 Plug 'chrisbra/csv.vim'
 Plug 'masukomi/vim-markdown-folding'
+Plug 'vim-scripts/AnsiEsc.vim'
 
 " Editor tools
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-commentary'
+Plug 'numToStr/Comment.nvim'
 Plug 'andymass/vim-matchup'
 Plug 'github/copilot.vim'
 Plug 'svermeulen/vim-yoink'
@@ -71,6 +71,7 @@ Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-unimpaired'
+Plug 'ActivityWatch/aw-watcher-vim'
 
 " File management
 Plug 'preservim/nerdtree'
@@ -93,6 +94,8 @@ Plug 'tpope/vim-repeat'
 Plug 'ConradIrwin/vim-bracketed-paste'
 
 call plug#end()
+
+lua require('Comment').setup()
 
 " Clipboard settings
 set clipboard=unnamedplus
@@ -126,6 +129,7 @@ let g:coc_global_extensions = [
 		\'coc-emmet',
 		\'coc-eslint',
 		\'coc-flow',
+		\'@yaegassy/coc-volar',
 		\'coc-html',
 		\'coc-json',
 		\'coc-prettier',

@@ -2,34 +2,44 @@
 	path = zsh/plugins/pure
 	url = https://github.com/sindresorhus/pure.git
 	shallow = true
+
 [submodule "zsh-syntax-highlighting"]
 	path = zsh/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 	shallow = true
+
 [submodule "zsh-autosuggestions"]
 	path = zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
 	shallow = true
+
 [submodule "oh-my-zsh"]
 	path = zsh/plugins/oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
+
 [submodule "sh/base16-shell"]
 	path = sh/base16-shell
 	url = https://github.com/chriskempson/base16-shell.git
+
 [submodule "tpm"]
 	path = tmux/tpm
 	url = https://github.com/tmux-plugins/tpm
+
 [submodule "oh-my-tmux"]
 	path = tmux/oh-my-tmux
-	url = https://github.com/augustobmoura/.tmux.git
+	url = https://github.com/gpakosz/.tmux.git
+
 [submodule "asdf"]
 	path = asdf
 	url = https://github.com/asdf-vm/asdf.git
+
 [submodule "fzf"]
 	path = fzf
 	url = https://github.com/junegunn/fzf.git
+
 [submodule "zsh/plugins/oh-my-zsh"]
 	url = https://github.com/robbyrussell/oh-my-zsh.git
+
 [submodule "neovim/lazy"]
 	path = neovim/lazy
 	url = https://github.com/folke/lazy.nvim.git

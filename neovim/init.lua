@@ -13,6 +13,7 @@ vim.opt.encoding = 'UTF-8'
 vim.opt.foldlevel = 30
 vim.opt.mouse = 'a'
 vim.opt.expandtab = true
+vim.opt.cursorline = true
 
 -- Colors
 vim.opt.termguicolors = true
@@ -49,11 +50,14 @@ require('lazy').setup {
   {
     'RRethy/base16-nvim',
     lazy = false,
+    priority = 100,
     config = function()
       require('base16-colorscheme').with_config({
           telescope = false,
       })
-      vim.cmd('colorscheme base16-seti')
+
+      vim.cmd.colorscheme('base16-seti')
+      vim.cmd.highlight { 'CursorLineNr', 'guifg=NONE' }
     end
   },
 
@@ -64,6 +68,7 @@ require('lazy').setup {
   'tpope/vim-unimpaired',
   'AndrewRadev/tagalong.vim',
   { 'numToStr/Comment.nvim', opts = {}, lazy = false },
+  { 'windwp/nvim-autopairs', event = "InsertEnter", config = true },
   {
     'nvim-treesitter/nvim-treesitter',
     lazy = false,
@@ -82,9 +87,15 @@ require('lazy').setup {
 
   -- External tools
   'ActivityWatch/aw-watcher-vim',
-  'github/copilot.vim',
+  'github/copilot.vim', --
+  'tribela/vim-transparent',
 
   -- UI
+  'nvim-tree/nvim-web-devicons',
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' }
+  },
   {
     "lewis6991/gitsigns.nvim",
     config = function()
@@ -115,6 +126,7 @@ require('lazy').setup {
   },
 }
 
+vim.g.transparent_groups_add = { 'GitGutterAdd', 'GitGutterChange', 'GitGutterDelete' }
 
 -- LSP support
 require('mason').setup()

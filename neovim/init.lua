@@ -32,6 +32,10 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 
+-- Disabling netrw, because of incompatible behavior with nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- Mark bash as the default shell syntax
 -- I'm already familiar with bashisms and I work in bashed sourced files most
 -- of the time anyways
@@ -93,8 +97,13 @@ require('lazy').setup {
   -- UI
   'nvim-tree/nvim-web-devicons',
   {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' }
+    'nvim-tree/nvim-tree.lua',
+    config = function()
+      require("nvim-tree").setup()
+
+      vim.keymap.set('n', '<leader>nf', '<cmd>NvimTreeFindFile<cr>')
+      vim.keymap.set('n', '<leader>ne', '<cmd>NvimTreeOpen<cr>')
+    end
   },
   {
     "lewis6991/gitsigns.nvim",

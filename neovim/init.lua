@@ -45,7 +45,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>noh<cr>')
 vim.opt.rtp:prepend(DOTFILES_HOME .. '/neovim/lazy')
 
 require('lazy').setup {
-  { 'numToStr/Comment.nvim' },
+  -- Theme
   {
     'RRethy/base16-nvim',
     lazy = false,
@@ -57,6 +57,40 @@ require('lazy').setup {
     end
   },
 
+  -- Editor support
+  'tpope/vim-fugitive',
+  'tpope/vim-surround',
+  'tpope/vim-abolish',
+  'tpope/vim-unimpaired',
+  'AndrewRadev/tagalong.vim',
+  { 'numToStr/Comment.nvim', opts = {}, lazy = false },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    lazy = false,
+    config = function()
+      local ts_configs = require('nvim-treesitter.configs')
+
+      ts_configs.setup {
+        ensure_installed = { 'c', 'cpp', 'rust', 'go', 'lua', 'javascript', 'typescript', 'python', 'tsx', 'html', 'bash', 'vim', 'vimdoc', 'query', 'regex', 'sql', 'vue' },
+        sync_install = false,
+        highlight = { enable = true },
+        indent = { enable = true },
+      }
+    end
+  },
+  { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'neovim/nvim-lspconfig' },
+
+  -- External tools
+  'ActivityWatch/aw-watcher-vim',
+  'github/copilot.vim',
+
+  -- UI
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require('gitsigns').setup()
+    end
+  },
   {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.6',
@@ -79,24 +113,6 @@ require('lazy').setup {
       }
     end
   },
-
-  {
-    'nvim-treesitter/nvim-treesitter',
-    lazy = false,
-    config = function()
-      local ts_configs = require('nvim-treesitter.configs')
-
-      ts_configs.setup {
-        ensure_installed = { 'c', 'cpp', 'rust', 'go', 'lua', 'javascript', 'typescript', 'python', 'tsx', 'html', 'bash', 'vim', 'vimdoc', 'query', 'regex', 'sql', 'vue' },
-        sync_install = false,
-        highlight = { enable = true },
-        indent = { enable = true },
-      }
-    end
-  },
-
-  { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'neovim/nvim-lspconfig' },
-  { 'github/copilot.vim' },
 }
 
 

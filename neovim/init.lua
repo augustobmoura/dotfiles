@@ -1,4 +1,9 @@
+-- Only to make diagnostics shut up
+---@diagnostic disable-next-line: undefined-global
+local vim = vim
+
 local DOTFILES_HOME = vim.env.DOTFILES_HOME or (vim.env.HOME .. '/dotfiles')
+
 
 local function noop() end
 local function merge(...)
@@ -25,6 +30,8 @@ vim.opt.foldlevel = 30
 vim.opt.mouse = 'a'
 vim.opt.expandtab = true
 vim.opt.cursorline = true
+
+-- Folding
 
 -- Colors
 vim.opt.termguicolors = true
@@ -127,6 +134,7 @@ require('lazy').setup {
   'tribela/vim-transparent',
 
   -- UI
+  'stevearc/dressing.nvim',
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -138,11 +146,22 @@ require('lazy').setup {
     end
   },
   {
+    'nvimdev/dashboard-nvim',
+    event = 'VimEnter',
+    config = function()
+      require('dashboard').setup {
+      }
+    end,
+    dependencies = { {'nvim-tree/nvim-web-devicons'}}
+  },
+  {
     "lewis6991/gitsigns.nvim",
     config = function()
       require('gitsigns').setup()
     end
   },
+  { 'petertriho/nvim-scrollbar', main = 'scrollbar' },
+  'psliwka/vim-smoothie',
   {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.6',
@@ -262,6 +281,10 @@ local function lsp_keymaps()
       end, opts)
 
       vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+
+      vim.opt.foldmethod = 'expr'
+      vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+      vim.opt.foldenable = false
     end,
   })
 end

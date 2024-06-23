@@ -98,3 +98,4 @@ if is_executable node; then
 fi
 
 export ASDF_NODEJS_LEGACY_FILE_DYNAMIC_STRATEGY=latest_installed
+export COREPACK_ENABLE_AUTO_PIN=0

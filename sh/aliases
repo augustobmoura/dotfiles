@@ -25,12 +25,16 @@ o() {
 	"${XOPENER:-xdg-open}" "$@"
 }
 
+refresh_sh() {
+  exec zsh -l
+}
+
 alias hd="${HEXDUMP_CMD:-hd}"
 alias ll="$LS_COMMAND -lahF"
 alias l="ll"
-alias reloadrc='source $RC_FILE'
-alias rc='editor "$RC_FILE"'
-alias lrc='editor "$LOCAL_RC_FILE"'
+alias reloadrc='source "$RC_FILE"'
+alias rc='editor "$RC_FILE" && refresh_sh'
+alias lrc='editor "$LOCAL_RC_FILE" && refresh_sh'
 alias t7='tail -f -n 700'
 alias npmr='npm run'
 alias dotfiles='cd "${DOTFILES_HOME:-"$HOME"/dotfiles}"'
@@ -44,6 +48,8 @@ alias des='cds "$HOME/des"'
 alias wrk='cds "${WORKSPACE_DIR:-"$HOME"/workspace}"'
 alias dow='cds "${DOWNLOADS_DIR:-"$HOME"/Downloads}"'
 alias doc='cds "${DOCUMENTS_DIR:-"$HOME"/Documents}"'
+
+alias gpp='git push -u origin HEAD --force-with-lease'
 
 # from https://datagrok.org/git/git-serve/
 alias git_quickup='git daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/'

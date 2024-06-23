@@ -14,6 +14,12 @@ block = "battery"
 driver = "apc_ups"
 
 [[block]]
+block = "custom"
+hide_when_empty = true
+interval = 5
+command = '''(apcaccess status || :) | awk '$1 == "LOADPCT" { print $3" %" }''''
+
+[[block]]
 block = "disk_space"
 path = "/"
 info_type = "available"

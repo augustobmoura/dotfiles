@@ -1,8 +1,9 @@
-#! /usr/bin/env sh
+#! /usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
-KBD_LAYOUTS="${KBD_LAYOUTS:-br: us:}"
+KBD_LAYOUTS=(br: us:)
+XKB_SYM_DIR=/usr/share/X11/xkb/symbols
 
 current_layout() {
 	setxkbmap -query | awk '
@@ -16,6 +17,23 @@ set_layout() {
 	setxkbmap "$@"
 }
 
+if [ "$XDG_SESSION_TYPE" = wayland ]; then
+	if command -v swaymsg > /dev/null 2>&1; then
+		current_layout() {
+			local desc=
+			desc=$(swaymsg -t get_inputs | jq -r 'map(select(.type == "keyboard")) | .[0] | .xkb_active_layout_name')
+			rg -F "$desc" "$XKB_SYM_DIR" -l | head -n1 | xargs basename | sed 's/$/:/'
+		}
+
+		set_layout() {
+			swaymsg input type:keyboard xkb_layout "$1"
+		}
+	else
+		printf "Wayland and DE combination not supported\n" >&2
+		exit 200
+	fi
+fi
+
 notify() {
 	if command -v notify-send > /dev/null 2>&1; then
 		notify-send -t 1500 "$@"
@@ -27,29 +45,25 @@ toggle() (
 		return 0
 	fi
 
+	local current='' prev_ls=''
+
 	current="${1:-}"
 	shift
 
-	should_print=
-
-	for arg; do
-		if [ "$should_print" ]; then
-			printf "%s\n" "$arg"
+	for layout in "$@" "$@"; do
+		if [ "$prev_ls" = "$current" ]; then
+			printf "%s\n" "$layout"
 			return
 		fi
 
-		if [ "x$arg" = "x$current" ]; then
-			should_print=1
-		fi
+		prev_ls="$layout"
 	done
-
-	printf "%s\n" "${1:-$current}"
 )
 
 main() {
 	current="$(current_layout)"
 
-	next="$(toggle "$current" $KBD_LAYOUTS)"
+	next="$(toggle "$current" "${KBD_LAYOUTS[@]}")"
 
 	if [ "$current" != "$next" ]; then
 		set_layout "${next%%:*}" "${next##*:}" 

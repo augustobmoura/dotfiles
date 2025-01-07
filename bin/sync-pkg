@@ -1,8 +1,16 @@
 #! /usr/bin/env zsh
 
+set -eu -o pipefail
 
 sync-pkg() {
 	local query="$1"
+	local dynamic=
+
+	if [[ $query = :* ]]; then
+		dynamic=true
+		query="${query#:}"
+	fi
+
 	local aux="$query" pkg_version=()
 
 	if [[ $query = @* ]]; then
@@ -16,17 +24,17 @@ sync-pkg() {
 	fi
 
 	# Match not x.x.x versions
-	# if [[ $pkg_version[2] != [[:digit:]]##.[[:digit:]]##.[[:digit:]]## ]]; then
-	# 	printf "Searching for dynamic version of %s@%s ...\n" "$pkg_version[1]" "$pkg_version[2]"
-	# 	pkg_version[2]=$(
-	# 		npm info "${pkg_version[1]}@${pkg_version[2]}" version --json \
-	# 			| jq -r 'if type == "array" then .[-1] else . end'
-	# 	)
-	# 	printf "Found version %s\n" "$pkg_version[2]"
-	# fi
+	if [[ $dynamic ]]; then
+		printf "Searching for dynamic version of %s@%s ...\n" "$pkg_version[1]" "$pkg_version[2]"
+		pkg_version[2]=$(
+			npm info "${pkg_version[1]}@${pkg_version[2]}" version --json \
+				| jq -r 'if type == "array" then .[-1] else . end'
+		)
+		printf "Found version %s\n" "$pkg_version[2]"
+	fi
 
 	local files=()
-	files=("${(@f)$(git ls-files '**/package.json' package.json | xargs rg "$pkg_version[1]" -g package.json -l)}")
+	files=("${(@f)$(git ls-files '**/package.json' package.json | xargs rg "$pkg_version[1]" -g package.json -l || true)}")
 
 	for f in $files; do
 		printf "Updating dependency %s on file %s...\n" "$pkg_version[1]" "$f"

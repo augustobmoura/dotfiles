@@ -72,10 +72,14 @@ vim.opt.shiftwidth = 2
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Option for session managament
+vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 -- Mark bash as the default shell syntax
 -- I'm already familiar with bashisms and I work in bashed sourced files most
 -- of the time anyways
 vim.g.is_bash = true
+
 
 -- Clear selection being searched on Esc
 vim.keymap.set('n', '<Esc>', '<cmd>noh<cr>')
@@ -118,13 +122,24 @@ require('lazy').setup {
   -- External tools
   'ActivityWatch/aw-watcher-vim',
   'github/copilot.vim', --
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      { "github/copilot.vim" },
+      { "nvim-lua/plenary.nvim" },
+    },
+    build = "make tiktoken",
+    opts = {
+    },
+  },
+
 
   -- Editor support
   'tpope/vim-fugitive',
   'tpope/vim-surround',
   'tpope/vim-abolish',
   'tpope/vim-unimpaired',
-  'AndrewRadev/tagalong.vim',
+  'mattn/emmet-vim',
   'nvimtools/none-ls.nvim',
   { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'neovim/nvim-lspconfig' },
 
@@ -154,11 +169,25 @@ require('lazy').setup {
           'json', 'json5', 'yaml', 'make',                                                     -- Config/CI
           'markdown', 'markdown_inline', 'query', 'regex', 'sql', 'comment', 'beancount'       -- Other
         },
-        sync_install = false,
+        sync_install = true,
         highlight = { enable = true },
         indent = { enable = true },
       }
     end
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    lazy = false,
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require('nvim-ts-autotag').setup({
+        opts = {
+          enable_close = true,
+          enable_rename = true,
+          enable_close_on_slash = true
+        },
+      })
+    end,
   },
 
   {
@@ -174,7 +203,6 @@ require('lazy').setup {
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline', 'saadparwaiz1/cmp_luasnip', 'L3MON4D3/LuaSnip' },
     config = function()
       local cmp = require 'cmp'
-      local luasnip = require 'luasnip'
 
       cmp.setup {
         snippet = {
@@ -229,9 +257,59 @@ require('lazy').setup {
   },
 
   {
+    'tpope/vim-obsession',
+    lazy = false,
+  },
+
+  {
     "lewis6991/gitsigns.nvim",
     config = function()
-      require('gitsigns').setup()
+      require('gitsigns').setup {
+        on_attach = function(bufnr)
+          local gitsigns = require('gitsigns')
+
+          local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+
+          -- Navigation
+          map('n', ']c', function()
+            if vim.wo.diff then
+              vim.cmd.normal({ ']c', bang = true })
+            else
+              gitsigns.nav_hunk('next')
+            end
+          end)
+
+          map('n', '[c', function()
+            if vim.wo.diff then
+              vim.cmd.normal({ '[c', bang = true })
+            else
+              gitsigns.nav_hunk('prev')
+            end
+          end)
+
+          -- Actions
+          map('n', '<leader>hs', gitsigns.stage_hunk)
+          map('n', '<leader>hr', gitsigns.reset_hunk)
+          map('v', '<leader>hs', function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
+          map('v', '<leader>hr', function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
+          map('n', '<leader>hS', gitsigns.stage_buffer)
+          map('n', '<leader>hu', gitsigns.undo_stage_hunk)
+          map('n', '<leader>hR', gitsigns.reset_buffer)
+          map('n', '<leader>hp', gitsigns.preview_hunk)
+          map('n', '<leader>hb', function() gitsigns.blame_line { full = true } end)
+          map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
+          map('n', '<leader>hd', gitsigns.diffthis)
+          map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
+          map('n', '<leader>td', gitsigns.toggle_deleted)
+
+          -- Text object
+          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        end
+      }
     end
   },
 
@@ -272,13 +350,13 @@ local function setup_lsp()
 
   local lang_servers = {
     'lua_ls',
-    'tsserver',
+    'ts_ls',
     'bashls',
     'jsonls',
     'pyright',
     'rust_analyzer',
     'tailwindcss',
-    'vuels',
+    'volar',
     'beancount',
   }
 
@@ -306,8 +384,6 @@ local function setup_lsp()
     },
   }
 
-  local DENY_AUTO_SETUP = { 'beancount' }
-
   mason_lspconfig.setup_handlers {
     function(server_name)
       local server_config = lspconfig[server_name]
@@ -315,7 +391,7 @@ local function setup_lsp()
       local custom_setups = {
         beancount = {
           init_options = {
-            journal_file = ""
+            journal_file = vim.env.BEANCOUNT_JOURNAL_FILE or ""
           }
         }
       }
@@ -334,9 +410,12 @@ local function setup_lsp()
   }
 
   null_ls.setup {
-    debug = true,
+    -- debug = true,
     sources = {
       null_ls.builtins.formatting.prettier,
+      null_ls.builtins.formatting.shfmt,
+      null_ls.builtins.formatting.djlint,
+      null_ls.builtins.formatting.black,
     }
   }
 end
@@ -375,7 +454,11 @@ local function lsp_keymaps()
       vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
       vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, opts)
       vim.keymap.set('n', '<leader>b', function()
-        vim.lsp.buf.format()
+        vim.lsp.buf.format {
+          filter = function(client)
+            return client.name ~= 'jsonls'
+          end
+        }
       end, opts)
 
       -- wat is dis?
@@ -392,6 +475,12 @@ local function lsp_keymaps()
       vim.opt.foldenable = false
     end,
   })
+end
+
+function UpdateEverything()
+  vim.cmd('Lazy update')
+  vim.cmd('TSUpdate')
+  vim.cmd('MasonUpdate')
 end
 
 setup_lsp()

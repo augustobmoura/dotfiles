@@ -16,12 +16,20 @@ driver = "apc_ups"
 [[block]]
 block = "custom"
 hide_when_empty = true
-interval = 5
+interval = 10
 command = '''(apcaccess status || :) | awk '$1 == "LOADPCT" { print $3" %" }''''
 
 [[block]]
 block = "disk_space"
 path = "/"
+info_type = "available"
+interval = 20
+warning = 20.0
+alert = 10.0
+
+[[block]]
+block = "disk_space"
+path = "/data/steel"
 info_type = "available"
 interval = 20
 warning = 20.0
@@ -54,7 +62,7 @@ chip = "nvme-pci-0100"
 [[block]]
 block = "time"
 interval = 60
-format = " $icon $timestamp.datetime()"
+format = " $icon  $timestamp.datetime(l:pt_BR)"
 
 [[block]]
 block = "keyboard_layout"

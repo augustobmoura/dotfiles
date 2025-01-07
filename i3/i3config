@@ -196,6 +196,7 @@ bar {
         font pango:FiraCode Nerd Font, FuraCode Nerd Font, DejaVu Sans Mono 7.9
         status_command i3status-support
         tray_padding 0
+        tray_output primary
 }
 
 # Media keys
@@ -212,7 +213,7 @@ bindsym XF86AudioRaiseVolume exec amixer -D pulse set Master 10%+ unmute && noti
 bindsym XF86AudioLowerVolume exec amixer -D pulse set Master 10%- unmute && notify-volume
 
 # Lock screen
-bindsym --release $mod+p exec xflock4
+bindsym --release $mod+p exec sensible-lock
 
 # Opens file explorer
 bindsym $mod+i exec xdg-open ~
@@ -240,19 +241,20 @@ bindsym --release Print exec flameshot gui
 # Windows customizations
 # ---
 for_window [class="Gnome-calculator" instance="gnome-calculator"] floating enable
+for_window [class="Galculator" instance="galculator"] floating enable
 for_window [class="Gnome-calendar" instance="gnome-calendar"] floating enable
 for_window [class="SimpleScreenRecorder" instance="simplescreenrecorder"] floating enable
 for_window [class="copyq"] floating enable
 for_window [class="scrcpy"] floating enable
 for_window [class="1Password"] floating enable
-for_window [class="Anki"] floating enable
-for_window [class="zoom" title="^Chat$"] floating enable
-
-# Zoom notification-like windows
-for_window [class="zoom" title="zoom"] floating enable
+for_window [class="zoom" title="^Meeting chat$"] floating enable
 
 for_window [title="^Android Emulator - .*$"] floating enable, sticky enable
 for_window [title="^Emulator$"] floating enable, sticky enable
+
+for_window [class="zoom"] floating enable
+for_window [class="zoom" title="^Meeting$"] floating disable
+for_window [class="zoom" title="^Zoom Workplace -"] floating disable
 
 # MSTeams notifications fixes
 for_window [class="Microsoft Teams - Preview" window_type="notification"] floating enable, resize set height 300px

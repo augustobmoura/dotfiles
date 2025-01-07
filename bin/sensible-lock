@@ -1,0 +1,5 @@
+#! /usr/bin/env bash
+
+set -eu -o pipefail
+
+gdbus call --session --dest org.xfce.ScreenSaver --object-path /org/xfce/ScreenSaver --method org.xfce.ScreenSaver.Lock

@@ -1,0 +1,20 @@
+#! /usr/bin/env bash
+
+set -eu -o pipefail
+
+if ! [ "${1:-}" ]; then
+  echo "Usage: $0 <version> [starting_path]"
+  exit 1
+fi
+
+find_up() {
+  local target="$1" loc="${2:-$PWD}"
+
+  while ! [ -f "$loc/$target" ] && ! [ "$loc" = / ]; do
+    loc="$(dirname "$loc")"
+  done
+
+  printf "%s\n" "$loc"
+}
+
+find_up "$@"

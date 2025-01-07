@@ -32,24 +32,6 @@ first_line() {
 	printf "%s" "$line"
 }
 
-if is_executable make; then
-	# Try to find the closest Makefile so that nested directory make commands work (kinda of)
-	make() {
-		(
-			old_pwd="$PWD"
-			while ! [ -r Makefile ] && [ "$PWD" != / ]; do
-				cd ..
-			done
-
-			if ! [ "$old_pwd" = "$PWD" ]; then
-				printf "Running make on %s\n" "$PWD" >&2
-			fi
-
-			exec command make "$@"
-		)
-	}
-fi
-
 export SAVEHIST=300000
 
 export DOTFILES_HOME="${DOTFILES_HOME:-$HOME/dotfiles}"
@@ -98,4 +80,6 @@ if is_executable node; then
 fi
 
 export ASDF_NODEJS_LEGACY_FILE_DYNAMIC_STRATEGY=latest_installed
+export ASDF_NODEJS_AUTO_ENABLE_COREPACK=true
+
 export COREPACK_ENABLE_AUTO_PIN=0

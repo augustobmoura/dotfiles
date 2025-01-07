@@ -36,7 +36,7 @@ fi
 
 notify() {
 	if command -v notify-send > /dev/null 2>&1; then
-		notify-send -t 1500 "$@"
+		notify-send --expire-time=1500 --replace-id=272764 "$@"
 	fi
 }
 
@@ -60,6 +60,16 @@ toggle() (
 	done
 )
 
+notification_msg() {
+	local layout="$1"
+
+	case "$layout" in
+		br) printf " 🇧🇷" ;;
+		us) printf " 🇺🇸" ;;
+		*) printf "%s\n" "$layout" ;;
+	esac
+}
+
 main() {
 	current="$(current_layout)"
 
@@ -67,7 +77,7 @@ main() {
 
 	if [ "$current" != "$next" ]; then
 		set_layout "${next%%:*}" "${next##*:}" 
-		notify "${next%%:}"
+		notify "Switched layout" "$(notification_msg "${next%%:}")"
 	fi
 }
 

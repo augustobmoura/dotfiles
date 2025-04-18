@@ -148,6 +148,7 @@ require('lazy').setup {
   'tpope/vim-unimpaired',
   'mattn/emmet-vim',
   'nvimtools/none-ls.nvim',
+  { "pocco81/auto-save.nvim" },
   { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'neovim/nvim-lspconfig' },
 
   {

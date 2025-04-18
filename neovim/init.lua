@@ -247,7 +247,13 @@ require('lazy').setup {
     'nvim-tree/nvim-tree.lua',
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      require("nvim-tree").setup()
+      require("nvim-tree").setup {
+        view = {
+          width = {
+            min = 50
+          }
+        }
+      }
 
       vim.keymap.set('n', '<leader>nf', '<cmd>NvimTreeFindFile<cr>')
       vim.keymap.set('n', '<leader>ne', '<cmd>NvimTreeOpen<cr>')

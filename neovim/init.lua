@@ -43,11 +43,15 @@ end
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.backup = true
+vim.opt.writebackup = true
+vim.opt.undofile = true
 vim.opt.encoding = 'UTF-8'
 vim.opt.foldlevel = 30
 vim.opt.mouse = 'a'
 vim.opt.expandtab = true
 vim.opt.cursorline = true
+vim.opt.updatetime = 300
+vim.opt.ignorecase = true
 
 -- Folding
 

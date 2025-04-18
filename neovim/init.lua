@@ -136,7 +136,10 @@ require('lazy').setup {
     opts = {
     },
   },
-
+  {
+    "lowitea/aw-watcher.nvim",
+    opts = {},
+  },
 
   -- Editor support
   'tpope/vim-fugitive',

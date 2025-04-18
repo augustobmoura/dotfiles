@@ -338,7 +338,8 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>ff', tele_builtins.find_files, {})
       vim.keymap.set('n', '<leader>fg', tele_builtins.live_grep, {})
       vim.keymap.set('n', '<leader>fb', tele_builtins.buffers, {})
-      vim.keymap.set('n', '<leader>fh', tele_builtins.help_tags, {})
+      vim.keymap.set('n', '<leader>fs', tele_builtins.git_status, {})
+      vim.keymap.set('n', '<leader>fq', tele_builtins.quickfixhistory, {})
 
       telescope.setup {}
     end,

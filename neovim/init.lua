@@ -341,7 +341,11 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>fs', tele_builtins.git_status, {})
       vim.keymap.set('n', '<leader>fq', tele_builtins.quickfixhistory, {})
 
-      telescope.setup {}
+      telescope.setup {
+        defaults = {
+          path_display = { 'truncate' }
+        }
+      }
     end,
   },
 }

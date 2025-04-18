@@ -168,13 +168,13 @@ require('lazy').setup {
 
       ts_configs.setup {
         ensure_installed = {
-          'javascript', 'typescript', 'tsx', 'html', 'vue', 'graphql', 'jsdoc', 'css', 'scss', -- Frontend
-          'c', 'cpp', 'rust', 'go', 'java',                                                    -- System
-          'python', 'lua', 'bash', 'groovy', 'ruby',                                           -- Scripting
-          'vim', 'vimdoc',                                                                     -- Vim
-          'git_rebase', 'diff', 'gitcommit',                                                   -- Git
-          'json', 'json5', 'yaml', 'make',                                                     -- Config/CI
-          'markdown', 'markdown_inline', 'query', 'regex', 'sql', 'comment', 'beancount'       -- Other
+          'javascript', 'typescript', 'tsx', 'html', 'vue', 'graphql', 'jsdoc', 'css', 'scss', 'styled', -- Frontend
+          'c', 'cpp', 'rust', 'go', 'java',                                                              -- System
+          'python', 'lua', 'bash', 'groovy', 'ruby',                                                     -- Scripting
+          'vim', 'vimdoc',                                                                               -- Vim
+          'git_rebase', 'diff', 'gitcommit',                                                             -- Git
+          'json', 'json5', 'yaml', 'make', 'just',                                                       -- Config/CI
+          'markdown', 'markdown_inline', 'query', 'regex', 'sql', 'comment', 'beancount'                 -- Other
         },
         sync_install = true,
         highlight = { enable = true },

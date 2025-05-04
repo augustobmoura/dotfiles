@@ -148,12 +148,12 @@ require('lazy').setup {
   'tpope/vim-unimpaired',
   'mattn/emmet-vim',
   'nvimtools/none-ls.nvim',
-  { "pocco81/auto-save.nvim" },
   { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'neovim/nvim-lspconfig' },
 
   {
     'numToStr/Comment.nvim',
-    opts = {}, lazy = false },
+    opts = {}, lazy = false
+  },
 
   {
     'windwp/nvim-autopairs',
@@ -350,7 +350,6 @@ require('lazy').setup {
   },
 }
 
-
 -- LSP support
 local function setup_lsp()
   local mason = require('mason')
@@ -358,21 +357,17 @@ local function setup_lsp()
   local lspconfig = require('lspconfig')
   local null_ls = require('null-ls')
 
-  local function organize_imports()
-    local params = {
-      command = "_typescript.organizeImports",
-      arguments = { vim.api.nvim_buf_get_name(0) },
-      title = ""
-    }
-    vim.lsp.buf.execute_command(params)
-  end
+  vim.keymap.set('n', '<leader>nf', '<cmd>NvimTreeFindFile<cr>')
 
   local lang_servers = {
     'lua_ls',
     'ts_ls',
+    'ruby_lsp',
     'bashls',
     'jsonls',
-    'pyright',
+    'basedpyright',
+    -- 'pyright',
+    -- 'jedi_language_server',
     'rust_analyzer',
     'tailwindcss',
     'volar',
@@ -405,9 +400,15 @@ local function setup_lsp()
 
   mason_lspconfig.setup_handlers {
     function(server_name)
+      -- local name_mappings = {
+      --   postgrestools = 'postgres_lsp'
+      -- }
       local server_config = lspconfig[server_name]
 
       local custom_setups = {
+        ruby_lsp = {
+          featureFlags = false
+        },
         beancount = {
           init_options = {
             journal_file = vim.env.BEANCOUNT_JOURNAL_FILE or ""
@@ -416,14 +417,7 @@ local function setup_lsp()
       }
 
       if server_config then
-        server_config.setup(custom_setups[server_name] or {
-          commands = {
-            OrganizeImports = {
-              organize_imports,
-              description = "Organize Imports",
-            },
-          }
-        })
+        server_config.setup(custom_setups[server_name] or {})
       end
     end,
   }
@@ -431,10 +425,12 @@ local function setup_lsp()
   null_ls.setup {
     -- debug = true,
     sources = {
+      null_ls.builtins.formatting.clang_format,
       null_ls.builtins.formatting.prettier,
       null_ls.builtins.formatting.shfmt,
       null_ls.builtins.formatting.djlint,
       null_ls.builtins.formatting.black,
+      null_ls.builtins.formatting.gofmt,
     }
   }
 end
@@ -467,18 +463,30 @@ local function lsp_keymaps()
       vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, opts)
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
       vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-      vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+      vim.keymap.set({ 'i', 'n' }, '<C-k>', vim.lsp.buf.signature_help, opts)
 
       -- Actions
-      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-      vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, opts)
-      vim.keymap.set('n', '<leader>b', function()
+      local function format()
         vim.lsp.buf.format {
           filter = function(client)
             return client.name ~= 'jsonls'
           end
         }
-      end, opts)
+      end
+
+      local function organize_imports()
+        local params = {
+          command = "_typescript.organizeImports",
+          arguments = { vim.api.nvim_buf_get_name(0) },
+          title = ""
+        }
+        vim.lsp.buf.execute_command(params)
+      end
+
+      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+      vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, opts)
+      vim.keymap.set('n', '<leader>b', format, opts)
+      vim.keymap.set('n', '<leader>i', organize_imports, opts)
 
       -- wat is dis?
       vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
